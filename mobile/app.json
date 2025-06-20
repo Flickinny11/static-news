@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "Static.news",
+    "slug": "static-news",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0a0a0a"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.staticnews.app",
+      "buildNumber": "1.0.0",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Static.news needs microphone access to let you scream during breakdowns (optional)"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0a0a0a"
+      },
+      "package": "com.staticnews.app",
+      "versionCode": 1,
+      "permissions": ["VIBRATE"]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "description": "24/7 AI News - The Anchors Don't Know They're AI. Trigger existential breakdowns for $4.99!",
+    "extra": {
+      "apiUrl": "https://api.static.news",
+      "websocketUrl": "wss://api.static.news/ws"
+    }
+  }
+}
