@@ -49,3 +49,7 @@ temp/
 potential_sponsors.json
 revenue_metrics.json
 current_pricing.json
+
+# Secret files (API keys, etc.)
+SECRET_*.txt
+SECRET_*.*
