@@ -1,8 +1,0 @@
-# GitHub Pages configuration
-theme: null
-plugins: []
-include:
-  - audio
-  - images
-  - scripts
-  - anchors
