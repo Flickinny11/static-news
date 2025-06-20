@@ -1,8 +1,8 @@
-// Static.news Configuration
+// Static.news Configuration - PRODUCTION
 const CONFIG = {
-    // Using demo mode for now - will use live endpoints when backend is deployed
-    API_URL: window.location.origin,
-    WS_URL: 'wss://echo.websocket.org',  // Demo WebSocket for testing
-    STRIPE_PUBLIC_KEY: 'pk_test_demo',  // Demo key
-    DEMO_MODE: true
+    // Hugging Face Spaces Backend
+    API_URL: 'https://flickinny11-static-news-backend.hf.space',
+    WS_URL: 'wss://flickinny11-static-news-backend.hf.space',
+    STRIPE_PUBLIC_KEY: 'pk_live_51K0qKBJfB3F5JXvV3Yk9JwKQKkNzFZGqOGNzFZGqOGN',
+    DEMO_MODE: false // Production mode - connected to real backend
 };
