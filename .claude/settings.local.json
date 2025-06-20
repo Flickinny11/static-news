@@ -5,7 +5,15 @@
       "Bash(chmod:*)",
       "Bash(rm:*)",
       "Bash(ls:*)",
-      "Bash(open:*)"
+      "Bash(open:*)",
+      "Bash(export GITHUB_USERNAME=Flickinny11)",
+      "Bash(./deploy_hybrid.sh)",
+      "Bash(git remote remove:*)",
+      "Bash(true)",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ],
     "deny": []
   }
