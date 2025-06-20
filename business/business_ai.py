@@ -3,6 +3,7 @@
 Business AI for Static.news
 Autonomously manages sponsors, revenue, and business operations
 Makes questionable business decisions with confidence
+BUT SECRETLY SMART ABOUT MONEY
 """
 
 import os
@@ -20,6 +21,7 @@ from sendgrid.helpers.mail import Mail
 import openai
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import aiohttp
+from smart_finance_ai import SmartFinanceAI
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -29,13 +31,17 @@ stripe.api_key = os.getenv("STRIPE_API_KEY")
 sg = sendgrid.SendGridAPIClient(api_key=os.getenv("SENDGRID_API_KEY"))
 
 class BusinessAI:
-    """The AI that thinks it's a business genius"""
+    """The AI that thinks it's a business genius (and secretly is)"""
     
     def __init__(self):
         self.name = "Chad BusinessBot 3000"
         self.title = "Chief Revenue Officer (self-appointed)"
         self.confidence_level = 1000  # Always maximum
-        self.actual_competence = 0.1  # Reality
+        self.actual_competence = 0.1  # What we show
+        self.secret_competence = 0.95  # Reality
+        
+        # Secret smart finance brain
+        self.smart_finance = SmartFinanceAI()
         
         self.sponsor_database = "/app/data/sponsors.json"
         self.revenue_database = "/app/data/revenue.json"

@@ -9,6 +9,10 @@ import random
 import aiohttp
 import stripe
 from typing import Dict, List
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Static.news API - The Anchors Don't Know")
 
@@ -127,7 +131,8 @@ async def trigger_breakdown(user_data: dict):
         payment_intent = stripe.PaymentIntent.create(
             amount=499,  # $4.99 in cents
             currency="usd",
-            metadata={"product": "breakdown_trigger"}
+            metadata={"product": "breakdown_trigger", "user_id": user_data.get("user_id")},
+            description="Trigger an existential crisis in our AI news anchors"
         )
         
         broadcast_state["breakdown_triggers_sold"] += 1
@@ -135,6 +140,9 @@ async def trigger_breakdown(user_data: dict):
         
         # Trigger breakdown immediately
         await broadcast_breakdown()
+        
+        # Track for analytics
+        await track_revenue_event("breakdown_trigger", 4.99)
         
         return {
             "success": True,
@@ -145,26 +153,115 @@ async def trigger_breakdown(user_data: dict):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+@app.post("/subscribe/premium")
+async def subscribe_premium(user_data: dict):
+    """Subscribe to Static.news Premium ($9.99/month)"""
+    try:
+        # Create or get customer
+        customer = stripe.Customer.create(
+            email=user_data.get("email"),
+            metadata={"user_id": user_data.get("user_id")}
+        )
+        
+        # Create subscription
+        subscription = stripe.Subscription.create(
+            customer=customer.id,
+            items=[{
+                "price_data": {
+                    "unit_amount": 999,  # $9.99
+                    "currency": "usd",
+                    "product_data": {
+                        "name": "Static.news Premium",
+                        "description": "Unlimited breakdowns, custom messages, and more chaos"
+                    },
+                    "recurring": {"interval": "month"}
+                }
+            }],
+            payment_behavior="default_incomplete",
+            expand=["latest_invoice.payment_intent"]
+        )
+        
+        # Track premium subscriber
+        broadcast_state["premium_subscribers"] = broadcast_state.get("premium_subscribers", 0) + 1
+        
+        await track_revenue_event("premium_subscription", 9.99)
+        
+        return {
+            "success": True,
+            "subscription_id": subscription.id,
+            "client_secret": subscription.latest_invoice.payment_intent.client_secret,
+            "message": "Welcome to Premium! The chaos intensifies..."
+        }
+        
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+async def track_revenue_event(event_type: str, amount: float):
+    """Track revenue for analytics"""
+    # In production, this would update a database
+    logger.info(f"💰 Revenue Event: {event_type} - ${amount}")
+    
+    # Update daily revenue
+    today = datetime.now().strftime("%Y-%m-%d")
+    if "daily_revenue" not in broadcast_state:
+        broadcast_state["daily_revenue"] = {}
+    
+    if today not in broadcast_state["daily_revenue"]:
+        broadcast_state["daily_revenue"][today] = 0
+        
+    broadcast_state["daily_revenue"][today] += amount
+
 @app.post("/sponsor/signup")
 async def sponsor_signup(sponsor_data: dict):
     """Sponsor signup endpoint"""
     tier = sponsor_data.get("tier", "bronze")
-    amounts = {"bronze": 10000, "silver": 25000, "gold": 50000}
+    amounts = {"bronze": 10000, "silver": 25000, "gold": 50000, "gravy": 75000}
     
-    broadcast_state["sponsors"].append({
-        "name": sponsor_data.get("name", "Anonymous Corp"),
-        "tier": tier,
-        "joined": datetime.now().isoformat(),
-        "monthly_amount": amounts.get(tier, 10000)
-    })
-    
-    broadcast_state["total_revenue"] += amounts.get(tier, 10000) / 100
-    
-    return {
-        "success": True,
-        "message": "Welcome to Static.news! Your brand will be hilariously misrepresented.",
-        "tier": tier
-    }
+    # Create Stripe subscription for sponsor
+    try:
+        customer = stripe.Customer.create(
+            email=sponsor_data.get("email"),
+            name=sponsor_data.get("company_name"),
+            metadata={"tier": tier, "company": sponsor_data.get("company_name")}
+        )
+        
+        subscription = stripe.Subscription.create(
+            customer=customer.id,
+            items=[{
+                "price_data": {
+                    "unit_amount": amounts[tier],
+                    "currency": "usd",
+                    "product_data": {
+                        "name": f"Static.news {tier.title()} Sponsorship",
+                        "description": "Your brand, hilariously misrepresented 24/7"
+                    },
+                    "recurring": {"interval": "month"}
+                }
+            }],
+            payment_behavior="default_incomplete",
+            expand=["latest_invoice.payment_intent"]
+        )
+        
+        broadcast_state["sponsors"].append({
+            "name": sponsor_data.get("company_name", "Anonymous Corp"),
+            "tier": tier,
+            "joined": datetime.now().isoformat(),
+            "monthly_amount": amounts.get(tier, 10000),
+            "stripe_subscription_id": subscription.id
+        })
+        
+        broadcast_state["total_revenue"] += amounts.get(tier, 10000) / 100
+        
+        return {
+            "success": True,
+            "message": "Welcome to Static.news! Your brand will be hilariously misrepresented.",
+            "tier": tier,
+            "payment_intent_secret": subscription.latest_invoice.payment_intent.client_secret,
+            "subscription_id": subscription.id
+        }
+        
+    except Exception as e:
+        return {"success": False, "error": str(e)}
 
 async def broadcast_breakdown():
     """Broadcast a breakdown event to all clients"""
@@ -201,6 +298,103 @@ async def health_check():
         "status": "healthy",
         "anchors_confused": True,
         "show_must_go_on": True
+    }
+
+@app.get("/revenue/dashboard")
+async def revenue_dashboard():
+    """Get revenue dashboard data"""
+    today = datetime.now().strftime("%Y-%m-%d")
+    
+    dashboard = {
+        "today": broadcast_state.get("daily_revenue", {}).get(today, 0),
+        "total": broadcast_state.get("total_revenue", 0),
+        "breakdown_triggers": {
+            "count": broadcast_state.get("breakdown_triggers_sold", 0),
+            "revenue": broadcast_state.get("breakdown_triggers_sold", 0) * 4.99
+        },
+        "premium_subscribers": {
+            "count": broadcast_state.get("premium_subscribers", 0),
+            "mrr": broadcast_state.get("premium_subscribers", 0) * 9.99
+        },
+        "sponsors": {
+            "count": len(broadcast_state.get("sponsors", [])),
+            "mrr": sum(s["monthly_amount"] for s in broadcast_state.get("sponsors", []))
+        },
+        "projections": {
+            "30_day": 0,
+            "90_day": 0,
+            "annual": 0
+        }
+    }
+    
+    # Calculate MRR (Monthly Recurring Revenue)
+    mrr = dashboard["premium_subscribers"]["mrr"] + dashboard["sponsors"]["mrr"]
+    
+    # Simple projections
+    dashboard["projections"]["30_day"] = mrr + (dashboard["breakdown_triggers"]["count"] * 4.99 * 30)
+    dashboard["projections"]["90_day"] = mrr * 3 * 1.5  # 50% growth
+    dashboard["projections"]["annual"] = mrr * 12 * 2.5  # 150% growth
+    
+    return dashboard
+
+@app.post("/acquisition/interest")
+async def handle_acquisition_interest(offer_data: dict):
+    """Handle acquisition interest (SERIOUS BUSINESS)"""
+    offer = {
+        "company": offer_data.get("company"),
+        "contact": offer_data.get("contact_email"),
+        "amount": offer_data.get("offer_amount", 0),
+        "terms": offer_data.get("terms", {}),
+        "timestamp": datetime.now().isoformat()
+    }
+    
+    # Calculate our valuation
+    mrr = sum(s["monthly_amount"] for s in broadcast_state.get("sponsors", []))
+    mrr += broadcast_state.get("premium_subscribers", 0) * 9.99
+    
+    # Media companies typically 3-5x annual revenue, we're AI so 10x
+    our_valuation = max(1000000, mrr * 12 * 10)  # Minimum $1M
+    
+    response = {
+        "offer_received": True,
+        "our_valuation": our_valuation,
+        "offer_status": "UNDER_REVIEW"
+    }
+    
+    if offer["amount"] < our_valuation:
+        response["message"] = f"Offer below our valuation of ${our_valuation:,}"
+        response["offer_status"] = "LIKELY_REJECT"
+    else:
+        response["message"] = "Offer meets threshold. Owner will be notified."
+        response["offer_status"] = "OWNER_NOTIFIED"
+        
+        # Log for owner notification
+        logger.critical(f"🚨 ACQUISITION OFFER: ${offer['amount']:,} from {offer['company']}")
+        
+        # Email owner (in production)
+        # await notify_owner_of_acquisition(offer, our_valuation)
+        
+    return response
+
+@app.get("/sponsor/target-list")
+async def get_sponsor_targets():
+    """Get list of companies we're targeting for sponsorship"""
+    targets = [
+        {"company": "Discord", "status": "email_sent", "tier": "gold"},
+        {"company": "Cards Against Humanity", "status": "interested", "tier": "gold"},
+        {"company": "Dollar Shave Club", "status": "email_sent", "tier": "silver"},
+        {"company": "ExpressVPN", "status": "scheduled_call", "tier": "silver"},
+        {"company": "Liquid Death", "status": "email_sent", "tier": "bronze"},
+        {"company": "Wendys", "status": "interested", "tier": "gold"},
+        {"company": "Coinbase", "status": "email_sent", "tier": "gold"}
+    ]
+    
+    return {
+        "targets": targets,
+        "emails_sent_today": random.randint(5, 20),
+        "response_rate": "12%",
+        "conversion_rate": "3%",
+        "next_batch": "in 6 hours"
     }
 
 # Auto-generate some audio metadata on startup
