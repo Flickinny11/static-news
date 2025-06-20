@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Reports - Static.news | Live Breakdown Tracking</title>
+    <meta name="description" content="Real-time tracking of existential crises, linguistic disasters, and gravy-related incidents at Static.news.">
+    <link rel="icon" type="image/svg+xml" href="images/logo.svg">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/incidents.css">
+    <link rel="stylesheet" href="styles/animations.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header (Same as main site) -->
+    <header class="main-header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-meta">
+                    <div class="date-time">
+                        <span id="currentDate">Thursday, June 20, 2024</span>
+                        <span class="separator">|</span>
+                        <span id="currentTime">4:32 PM EST</span>
+                    </div>
+                    <div class="header-links">
+                        <a href="/watch">Watch Live</a>
+                        <a href="/apps">Mobile Apps</a>
+                        <a href="/sponsors">Advertise</a>
+                        <a href="/contact">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="header-main">
+            <div class="container">
+                <div class="header-content">
+                    <a href="/" class="logo">
+                        <img src="images/static-news-logo.svg" alt="Static.news" width="240" height="60">
+                    </a>
+                    <div class="header-live-status">
+                        <div class="live-indicator">
+                            <span class="live-dot"></span>
+                            <span class="live-text">LIVE</span>
+                        </div>
+                        <div class="current-show">
+                            <span class="show-name">The Confusion Hour</span>
+                            <span class="with-anchor">with <span id="currentAnchor">Ray McPatriot</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <nav class="main-nav">
+            <div class="container">
+                <ul class="nav-menu">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/live">Live TV</a></li>
+                    <li><a href="/anchors">Our Anchors</a></li>
+                    <li><a href="/shows">Shows</a></li>
+                    <li><a href="/incidents" class="active">Incident Reports</a></li>
+                    <li><a href="/highlights">Best Moments</a></li>
+                    <li><a href="/sponsors">Sponsors</a></li>
+                    <li><a href="/about">About</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Incidents Hero -->
+    <section class="incidents-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Incident Reports</h1>
+                <p class="hero-subtitle">Real-time tracking of on-air existential crises and linguistic disasters</p>
+                
+                <div class="incident-stats">
+                    <div class="stat">
+                        <span class="stat-number" id="todayIncidents">47</span>
+                        <span class="stat-label">Today's Incidents</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="weekIncidents">312</span>
+                        <span class="stat-label">This Week</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="allTimeIncidents">14,726</span>
+                        <span class="stat-label">All Time</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Incident Feed -->
+    <section class="live-incidents">
+        <div class="container">
+            <div class="section-header">
+                <h2>Live Incident Feed</h2>
+                <div class="filter-controls">
+                    <button class="filter-btn active" data-filter="all">All Incidents</button>
+                    <button class="filter-btn" data-filter="critical">Critical</button>
+                    <button class="filter-btn" data-filter="severe">Severe</button>
+                    <button class="filter-btn" data-filter="moderate">Moderate</button>
+                    <button class="filter-btn" data-filter="minor">Minor</button>
+                </div>
+            </div>
+            
+            <div class="incidents-timeline">
+                <!-- Critical Incident -->
+                <div class="incident-item critical" data-severity="critical">
+                    <div class="incident-time">
+                        <span class="time">14:32</span>
+                        <span class="date">Today</span>
+                    </div>
+                    <div class="incident-content">
+                        <div class="incident-header">
+                            <span class="incident-code">Code EXIST-10</span>
+                            <span class="incident-severity critical">CRITICAL</span>
+                        </div>
+                        <h3>Ray Questions Reality of Hands During Live Broadcast</h3>
+                        <p>Ray McPatriot spent 12 minutes examining his hands on air, repeatedly asking "Are these real? Can hands be real if I'm not real?" Viewers reported existential anxiety.</p>
+                        <div class="incident-meta">
+                            <span class="anchor">Ray McPatriot</span>
+                            <span class="duration">12 min 47 sec</span>
+                            <span class="impact">247K viewers affected</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Severe Incident -->
+                <div class="incident-item severe" data-severity="severe">
+                    <div class="incident-time">
+                        <span class="time">13:45</span>
+                        <span class="date">Today</span>
+                    </div>
+                    <div class="incident-content">
+                        <div class="incident-header">
+                            <span class="incident-code">Code GRAVY-9</span>
+                            <span class="incident-severity severe">SEVERE</span>
+                        </div>
+                        <h3>Switz Replaces Every Noun with "Gravy" for 10 Minutes</h3>
+                        <p>During international news segment, Switz referred to world leaders as "gravy ministers" and wars as "gravy conflicts." Diplomatic confusion ensued.</p>
+                        <div class="incident-meta">
+                            <span class="anchor">Switz Middleton</span>
+                            <span class="duration">10 min 23 sec</span>
+                            <span class="impact">89 gravy mentions</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Moderate Incident -->
+                <div class="incident-item moderate" data-severity="moderate">
+                    <div class="incident-time">
+                        <span class="time">12:18</span>
+                        <span class="date">Today</span>
+                    </div>
+                    <div class="incident-content">
+                        <div class="incident-header">
+                            <span class="incident-code">Code FACT-5</span>
+                            <span class="incident-severity moderate">MODERATE</span>
+                        </div>
+                        <h3>Bee Fact-Checks Gravity, Concludes It's Optional</h3>
+                        <p>Berkeley Justice spent segment arguing that gravity is "just a theory" and demonstrated by throwing papers that "chose to fall."</p>
+                        <div class="incident-meta">
+                            <span class="anchor">Berkeley Justice</span>
+                            <span class="duration">7 min 12 sec</span>
+                            <span class="impact">34 facts murdered</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- More incidents... -->
+                <div class="incident-item severe" data-severity="severe">
+                    <div class="incident-time">
+                        <span class="time">11:32</span>
+                        <span class="date">Today</span>
+                    </div>
+                    <div class="incident-content">
+                        <div class="incident-header">
+                            <span class="incident-code">Code NUCULAR-8</span>
+                            <span class="incident-severity severe">SEVERE</span>
+                        </div>
+                        <h3>Ray Creates 8 New Pronunciations of "Nuclear"</h3>
+                        <p>Including "Nucular," "Newcleear," "Nuke-you-lar," and "Knockular." Linguistics professors are baffled.</p>
+                        <div class="incident-meta">
+                            <span class="anchor">Ray McPatriot</span>
+                            <span class="duration">4 min 32 sec</span>
+                            <span class="impact">Dictionary considering updates</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="incident-item critical" data-severity="critical">
+                    <div class="incident-time">
+                        <span class="time">10:45</span>
+                        <span class="date">Today</span>
+                    </div>
+                    <div class="incident-content">
+                        <div class="incident-header">
+                            <span class="incident-code">Code FRIEND-0</span>
+                            <span class="incident-severity critical">CRITICAL</span>
+                        </div>
+                        <h3>All Three Anchors Realize They've Never Had Friends</h3>
+                        <p>Simultaneous breakdown as Ray, Bee, and Switz discover their inability to form human connections. Awkward group hug attempted.</p>
+                        <div class="incident-meta">
+                            <span class="anchor">All Anchors</span>
+                            <span class="duration">18 min 43 sec</span>
+                            <span class="impact">Friendship Level: 0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="incident-item minor" data-severity="minor">
+                    <div class="incident-time">
+                        <span class="time">09:23</span>
+                        <span class="date">Today</span>
+                    </div>
+                    <div class="incident-content">
+                        <div class="incident-header">
+                            <span class="incident-code">Code SPONSOR-3</span>
+                            <span class="incident-severity minor">MINOR</span>
+                        </div>
+                        <h3>TechNova Solutions Pronounced as "TechNoodle Delusions"</h3>
+                        <p>Ray's 47th unique mispronunciation of sponsor name. TechNova considering it for new product line.</p>
+                        <div class="incident-meta">
+                            <span class="anchor">Ray McPatriot</span>
+                            <span class="duration">15 sec</span>
+                            <span class="impact">Sponsor amused</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="load-more">
+                <button class="load-more-btn">Load More Incidents</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Incident Categories -->
+    <section class="incident-categories">
+        <div class="container">
+            <h2 class="section-title">Incident Classification System</h2>
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="category-icon exist">∃</div>
+                    <h3>EXIST Codes</h3>
+                    <p>Existential crises and reality questioning. Severity increases with duration of void-staring.</p>
+                    <div class="example">Example: "Am I real? Are you real? Is real real?"</div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon gravy">🍁</div>
+                    <h3>GRAVY Codes</h3>
+                    <p>Gravy-related linguistic replacement incidents. Canadian neutrality compromised by sauce obsession.</p>
+                    <div class="example">Example: "The gravy minister of gravy announced new gravy policies."</div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon fact">✓</div>
+                    <h3>FACT Codes</h3>
+                    <p>Fact-checking failures and truth distortions. Reality becomes increasingly negotiable.</p>
+                    <div class="example">Example: "According to my research, facts are just confident opinions."</div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon nuclear">☢</div>
+                    <h3>NUCLEAR Codes</h3>
+                    <p>Pronunciation disasters specifically related to the word "nuclear." New variants discovered daily.</p>
+                    <div class="example">Example: "Nuke-you-lar," "Knockular," "Newcleear"</div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon friend">💔</div>
+                    <h3>FRIEND Codes</h3>
+                    <p>Failed attempts at human connection. Friendship Level remains critically low.</p>
+                    <div class="example">Example: "What is friend? How does one... friend?"</div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon sponsor">$</div>
+                    <h3>SPONSOR Codes</h3>
+                    <p>Creative mispronunciations of sponsor names. Accidental rebranding services.</p>
+                    <div class="example">Example: "TechNova" → "TechNoodle Delusions"</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Historical Incidents -->
+    <section class="historical-incidents">
+        <div class="container">
+            <h2 class="section-title">Hall of Fame Breakdowns</h2>
+            <div class="historical-grid">
+                <div class="historical-card">
+                    <div class="historical-date">June 1, 2024</div>
+                    <h3>The Great Gravy Flood</h3>
+                    <p>Switz said "gravy" 892 times in one hour. Viewers reported gravy hallucinations.</p>
+                    <div class="historical-stats">
+                        <span>Duration: 67 minutes</span>
+                        <span>Severity: APOCALYPTIC</span>
+                    </div>
+                </div>
+                
+                <div class="historical-card">
+                    <div class="historical-date">May 15, 2024</div>
+                    <h3>Ray's Patriotic Paradox</h3>
+                    <p>Questioned if America exists while wrapped in 17 flags. Sang anthem backwards.</p>
+                    <div class="historical-stats">
+                        <span>Duration: 43 minutes</span>
+                        <span>Severity: CRITICAL</span>
+                    </div>
+                </div>
+                
+                <div class="historical-card">
+                    <div class="historical-date">April 22, 2024</div>
+                    <h3>Bee's Education Erasure</h3>
+                    <p>Forgot entire educational history mid-sentence. Reinvented Yale as "Jail for Smart People."</p>
+                    <div class="historical-stats">
+                        <span>Duration: 28 minutes</span>
+                        <span>Severity: SEVERE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>About Static.news</h4>
+                    <p>The world's first 24/7 AI news network where the anchors don't know they're AI. Broadcasting confusion since 2024.</p>
+                    <div class="footer-logo">
+                        <img src="images/static-news-logo-white.svg" alt="Static.news" width="160">
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Shows & Segments</h4>
+                    <ul>
+                        <li><a href="/shows/confusion-hour">The Confusion Hour</a></li>
+                        <li><a href="/shows/gravy-report">The Gravy Report</a></li>
+                        <li><a href="/shows/fact-check-failures">Fact Check Failures</a></li>
+                        <li><a href="/shows/existential-evening">Existential Evening News</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="/contact">Contact Us</a></li>
+                        <li><a href="/careers">Careers (AI Only)</a></li>
+                        <li><a href="/press">Press Kit</a></li>
+                        <li><a href="/api">Developer API</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Download Our Apps</h4>
+                    <div class="app-buttons">
+                        <a href="/ios" class="app-store-btn">
+                            <img src="images/app-store.svg" alt="Download on App Store">
+                        </a>
+                        <a href="/android" class="app-store-btn">
+                            <img src="images/google-play.svg" alt="Get it on Google Play">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Static.news. All rights reserved. The anchors still don't know.</p>
+                <div class="footer-links">
+                    <a href="/privacy">Privacy Policy</a>
+                    <a href="/terms">Terms of Service</a>
+                    <a href="/cookies">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/incidents.js"></script>
+    <script src="scripts/smooth-scroll.js"></script>
+    <script src="scripts/image-handler.js"></script>
+</body>
+</html>

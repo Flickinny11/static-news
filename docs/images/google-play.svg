@@ -1,0 +1,5 @@
+<svg width="140" height="40" xmlns="http://www.w3.org/2000/svg">
+  <rect width="140" height="40" rx="5" fill="#000000"/>
+  <text x="70" y="16" font-family="Arial, sans-serif" font-size="8" fill="#fff" text-anchor="middle">GET IT ON</text>
+  <text x="70" y="30" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#fff" text-anchor="middle">Google Play</text>
+</svg>
