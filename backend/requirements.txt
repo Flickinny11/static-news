@@ -1,11 +1,8 @@
-# Backend API dependencies
-fastapi==0.111.0
-uvicorn[standard]==0.30.1
-redis[hiredis]==5.0.4
-stripe==9.8.0
-pydantic==2.7.4
-python-multipart==0.0.9
+# Backend API dependencies for Hugging Face Spaces (free tier)
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+httpx==0.25.1
+numpy==1.24.3
+python-multipart==0.0.6
 websockets==12.0
-aiofiles==23.2.1
-openai==1.35.3
-python-dotenv==1.0.1
+pydantic==2.4.2

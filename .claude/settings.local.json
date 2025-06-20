@@ -13,7 +13,9 @@
       "Bash(xcodegen generate:*)",
       "Bash(mv:*)",
       "Bash(system_profiler:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(git rm:*)",
+      "WebFetch(domain:flickinny11.github.io)"
     ],
     "deny": []
   }
