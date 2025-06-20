@@ -15,7 +15,8 @@
       "Bash(system_profiler:*)",
       "Bash(python3:*)",
       "Bash(git rm:*)",
-      "WebFetch(domain:flickinny11.github.io)"
+      "WebFetch(domain:flickinny11.github.io)",
+      "Bash(swift build)"
     ],
     "deny": []
   }

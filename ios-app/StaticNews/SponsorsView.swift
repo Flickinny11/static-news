@@ -124,7 +124,11 @@ struct SponsorCard: View {
                 // Logo
                 ZStack {
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(sponsor.brandColor.gradient)
+                        .fill(LinearGradient(
+                            gradient: Gradient(colors: [sponsor.brandColor, sponsor.brandColor.opacity(0.7)]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ))
                         .frame(width: 60, height: 60)
                     
                     Text(sponsor.logoEmoji)
@@ -224,9 +228,12 @@ struct SponsorDetailView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                sponsor.brandColor.gradient
-                    .opacity(0.1)
-                    .ignoresSafeArea()
+                LinearGradient(
+                    gradient: Gradient(colors: [sponsor.brandColor.opacity(0.1), sponsor.brandColor.opacity(0.05)]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .ignoresSafeArea()
                 
                 ScrollView {
                     VStack(spacing: 30) {

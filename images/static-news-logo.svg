@@ -1,0 +1,41 @@
+<svg width="240" height="60" viewBox="0 0 240 60" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#CC0000;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#990000;stop-opacity:1" />
+    </linearGradient>
+    <pattern id="staticPattern" x="0" y="0" width="2" height="2" patternUnits="userSpaceOnUse">
+      <rect width="1" height="1" fill="#CC0000"/>
+      <rect x="1" y="1" width="1" height="1" fill="#CC0000"/>
+    </pattern>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="240" height="60" fill="#000000"/>
+  
+  <!-- Static Pattern Overlay -->
+  <rect width="240" height="60" fill="url(#staticPattern)" opacity="0.1"/>
+  
+  <!-- Main Text -->
+  <g transform="translate(10, 10)">
+    <!-- STATIC -->
+    <text x="0" y="25" font-family="Arial Black, sans-serif" font-size="24" font-weight="900" fill="url(#logoGradient)">
+      STATIC
+    </text>
+    
+    <!-- .news -->
+    <text x="90" y="25" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#FFFFFF">
+      .news
+    </text>
+    
+    <!-- Tagline -->
+    <text x="0" y="42" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#999999" letter-spacing="0.5">
+      24/7 AI NEWS NETWORK
+    </text>
+  </g>
+  
+  <!-- Live Indicator Dot -->
+  <circle cx="220" cy="20" r="5" fill="#CC0000">
+    <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
+  </circle>
+</svg>

@@ -228,9 +228,12 @@ struct IncidentDetailView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                incident.type.color.gradient
-                    .opacity(0.1)
-                    .ignoresSafeArea()
+                LinearGradient(
+                    gradient: Gradient(colors: [incident.type.color.opacity(0.1), incident.type.color.opacity(0.05)]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
                 
                 ScrollView {
                     VStack(spacing: 20) {

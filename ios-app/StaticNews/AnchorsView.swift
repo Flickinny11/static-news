@@ -38,7 +38,11 @@ struct AnchorCard: View {
                 // Animated avatar
                 ZStack {
                     Circle()
-                        .fill(anchor.color.gradient)
+                        .fill(LinearGradient(
+                            gradient: Gradient(colors: [anchor.color, anchor.color.opacity(0.7)]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ))
                         .frame(width: 80, height: 80)
                     
                     Text(anchor.emoji)
@@ -128,9 +132,12 @@ struct AnchorDetailView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                anchor.color.gradient
-                    .opacity(0.1)
-                    .ignoresSafeArea()
+                LinearGradient(
+                    gradient: Gradient(colors: [anchor.color.opacity(0.1), anchor.color.opacity(0.05)]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .ignoresSafeArea()
                 
                 ScrollView {
                     VStack(spacing: 30) {
