@@ -356,7 +356,7 @@
                         <h2>Live Audio Stream</h2>
                         <div class="audio-visualizer" id="visualizer"></div>
                         <audio id="audioStream" autoplay>
-                            <source src="/stream" type="audio/mpeg">
+                            <source src="audio/current.mp3" type="audio/mpeg">
                         </audio>
                     </div>
                 </div>
@@ -435,7 +435,30 @@
         let audioElement = document.getElementById('audioStream');
         
         function connectWebSocket() {
-            ws = new WebSocket('" + CONFIG.WS_URL + "/ws');
+            if (CONFIG.DEMO_MODE) {
+                console.log('Running in demo mode - simulating live data');
+                // Simulate WebSocket updates in demo mode
+                setInterval(() => {
+                    const demoMetrics = {
+                        hours_awake: Math.floor(Math.random() * 200),
+                        gravy_counter: Math.floor(Math.random() * 50),
+                        swear_jar: Math.floor(Math.random() * 100),
+                        friendship_meter: Math.floor(Math.random() * 100),
+                        next_breakdown_prediction: new Date(Date.now() + Math.random() * 3600000).toISOString()
+                    };
+                    updateMetrics(demoMetrics);
+                }, 5000);
+                
+                // Randomly trigger breakdown warnings
+                setInterval(() => {
+                    if (Math.random() < 0.1) {
+                        showBreakdownWarning();
+                    }
+                }, 30000);
+                return;
+            }
+            
+            ws = new WebSocket(CONFIG.WS_URL + '/ws');
             
             ws.onopen = () => {
                 console.log('Connected to Static.news');
@@ -446,7 +469,7 @@
                 
                 if (data.type === 'new_segment') {
                     // Update audio source
-                    audioElement.src = `/current?t=${Date.now()}`;
+                    audioElement.src = `audio/current.mp3?t=${Date.now()}`;
                     audioElement.play();
                 }
                 

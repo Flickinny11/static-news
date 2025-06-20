@@ -3,9 +3,9 @@
 .env.local
 .env.*.local
 
-# Audio files
-audio/*.mp3
-audio/*.wav
+# Audio files (commented out for GitHub Pages deployment)
+# audio/*.mp3
+# audio/*.wav
 
 # Data files
 data/*.json

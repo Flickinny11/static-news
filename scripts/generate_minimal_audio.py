@@ -10,7 +10,8 @@ import os
 from datetime import datetime
 
 # Ensure output directory exists
-os.makedirs("docs/audio", exist_ok=True)
+os.makedirs("audio", exist_ok=True)
+os.makedirs("docs/audio", exist_ok=True)  # Keep for compatibility
 
 # The anchors and their confusion
 anchors = {
@@ -68,7 +69,7 @@ if os.path.exists("/usr/bin/say"):  # macOS
     subprocess.run([
         "ffmpeg", "-i", "/tmp/temp.aiff", 
         "-acodec", "mp3", "-ab", "64k",
-        "docs/audio/current.mp3"
+        "audio/current.mp3"
     ])
 elif os.path.exists("/usr/bin/espeak"):  # Linux
     subprocess.run([
@@ -81,14 +82,14 @@ elif os.path.exists("/usr/bin/espeak"):  # Linux
     subprocess.run([
         "ffmpeg", "-i", "/tmp/temp.wav",
         "-acodec", "mp3", "-ab", "64k", 
-        "docs/audio/current.mp3"
+        "audio/current.mp3"
     ])
 else:
     # Create a silent MP3 as fallback
     subprocess.run([
         "ffmpeg", "-f", "lavfi", "-i", "anullsrc=r=22050:cl=mono",
         "-t", "5", "-acodec", "mp3", "-ab", "64k",
-        "docs/audio/current.mp3"
+        "audio/current.mp3"
     ])
 
 # Create metadata
@@ -100,7 +101,7 @@ metadata = {
 }
 
 import json
-with open("docs/audio/metadata.json", "w") as f:
+with open("audio/metadata.json", "w") as f:
     json.dump(metadata, f)
 
 print("Audio generated successfully!")

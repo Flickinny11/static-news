@@ -31,11 +31,19 @@ jobs:
         run: |
           python scripts/generate_minimal_audio.py || echo "Audio generation failed, but the show must go on!"
           
+      - name: Move audio to correct location
+        run: |
+          # Move generated audio from docs/audio to root audio directory
+          if [ -f "docs/audio/current.mp3" ]; then
+            mv docs/audio/current.mp3 audio/
+            mv docs/audio/metadata.json audio/ 2>/dev/null || true
+          fi
+          
       - name: Commit audio files
         run: |
           git config --local user.email "static-news-bot@static.news"
           git config --local user.name "Static News Bot"
-          git add docs/audio/ || true
+          git add audio/ || true
           git commit -m "🎙️ Update audio segment - Anchor confusion level: HIGH" || echo "No changes to commit"
           
       - name: Push changes
