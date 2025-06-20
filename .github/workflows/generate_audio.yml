@@ -1,0 +1,45 @@
+name: Generate Audio Segments
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'  # Every 15 minutes
+  workflow_dispatch:  # Allow manual trigger
+  push:
+    branches: [gh-pages]
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg espeak
+          pip install numpy
+          
+      - name: Generate audio segment
+        run: |
+          python scripts/generate_minimal_audio.py || echo "Audio generation failed, but the show must go on!"
+          
+      - name: Commit audio files
+        run: |
+          git config --local user.email "static-news-bot@static.news"
+          git config --local user.name "Static News Bot"
+          git add docs/audio/ || true
+          git commit -m "🎙️ Update audio segment - Anchor confusion level: HIGH" || echo "No changes to commit"
+          
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
