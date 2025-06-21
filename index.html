@@ -78,6 +78,11 @@
     <!-- Hollywood Effects CSS -->
     <link rel="stylesheet" href="styles/hollywood-effects.css">
     
+    <!-- Premium 3D Studio Scripts -->
+    <script src="scripts/studio-hdri-generator.js"></script>
+    <script src="scripts/babylon-studio-scene.js" defer></script>
+    <script src="scripts/premium-3d-studio.js" defer></script>
+    
     <!-- Custom Styles -->
     <style>
         :root {
@@ -217,8 +222,7 @@
             align-items: center;
             justify-content: center;
             z-index: 10;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(1px);
+            background: transparent;
         }
 
         .hero-content {
@@ -686,12 +690,16 @@
         </div>
     </div>
 
-    <!-- Photorealistic Newsroom Background -->
-    <canvas id="newsroom-background"></canvas>
+    <!-- Premium 3D Studio Background -->
+    <div id="studio-background" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;">
+        <canvas id="studio-canvas" style="width: 100%; height: 100%;"></canvas>
+    </div>
     
-    <!-- Main Canvas for Background Effects -->
+    <!-- Dark Overlay for Text Visibility -->
+    <div id="studio-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 1; pointer-events: none;"></div>
+    
+    <!-- Main Canvas for Additional Effects -->
     <canvas id="main-canvas"></canvas>
-
 
     <!-- WebGL Shader Background -->
     <div class="shader-background">
