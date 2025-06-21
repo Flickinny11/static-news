@@ -25,7 +25,11 @@
       "Bash(sed:*)",
       "Bash(git revert:*)",
       "Bash(rg:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(touch:*)",
+      "Bash(ssh:*)",
+      "Bash(cat:*)",
+      "Bash(scp:*)"
     ],
     "deny": []
   }

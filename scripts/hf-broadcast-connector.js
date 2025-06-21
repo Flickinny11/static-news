@@ -1,52 +1,125 @@
-// Simple connector for Hugging Face Space broadcast
+// Hugging Face Broadcast Connector - Production Version
 class HFBroadcastConnector {
     constructor() {
+        // Connection state
         this.connected = false;
-        this.audioFrame = null;
         this.ws = null;
+        this.audioFrame = null;
+        this.videoElement = null;
+        this.audioElement = null;
+        
+        // Hugging Face Space endpoints
+        this.spaceUrl = 'https://alledged-static-news-backend.hf.space';
+        this.wsUrl = 'wss://alledged-static-news-backend.hf.space/queue/join';
+        
+        // Stream state
+        this.isPlaying = false;
+        this.currentSegment = null;
+        this.reconnectAttempts = 0;
+        this.maxReconnectAttempts = 10;
+        
+        // Initialize connection
+        this.init();
     }
-
-    connect() {
+    
+    async init() {
+        console.log('🚀 Initializing HF Broadcast Connector...');
+        
+        // Create media elements
+        this.createMediaElements();
+        
+        // Connect to broadcast
+        await this.connect();
+        
+        // Setup event listeners
+        this.setupEventListeners();
+    }
+    
+    createMediaElements() {
+        // Find or create video element
+        this.videoElement = document.getElementById('live-video');
+        if (!this.videoElement) {
+            const container = document.querySelector('.live-video-container');
+            if (container) {
+                this.videoElement = document.createElement('video');
+                this.videoElement.id = 'live-video';
+                this.videoElement.autoplay = true;
+                this.videoElement.muted = true;
+                this.videoElement.controls = true;
+                this.videoElement.style.width = '100%';
+                this.videoElement.style.height = '100%';
+                container.appendChild(this.videoElement);
+            }
+        }
+        
+        // Find or create audio element
+        this.audioElement = document.getElementById('live-audio');
+        if (!this.audioElement) {
+            this.audioElement = document.createElement('audio');
+            this.audioElement.id = 'live-audio';
+            this.audioElement.autoplay = true;
+            this.audioElement.controls = true;
+            document.body.appendChild(this.audioElement);
+        }
+    }
+    
+    async connect() {
         console.log('🎙️ Connecting to Static.news broadcast server...');
         
-        // Method 1: Hidden iframe for audio (most reliable)
-        this.connectAudioFrame();
+        // Method 1: Direct HF Space embedding
+        this.connectDirectStream();
         
-        // Method 2: WebSocket for metadata (optional)
+        // Method 2: WebSocket for real-time data
         this.connectWebSocket();
+        
+        // Method 3: Iframe fallback for compatibility
+        this.connectAudioFrame();
+    }
+    
+    connectDirectStream() {
+        // Connect video stream
+        if (this.videoElement) {
+            this.videoElement.src = `${this.spaceUrl}/stream/video`;
+            this.videoElement.play().catch(e => {
+                console.warn('Video autoplay blocked:', e);
+                this.showPlayButton();
+            });
+        }
+        
+        // Connect audio stream
+        if (this.audioElement) {
+            this.audioElement.src = `${this.spaceUrl}/stream/audio`;
+            this.audioElement.play().catch(e => {
+                console.warn('Audio autoplay blocked:', e);
+            });
+        }
     }
 
     connectAudioFrame() {
-        // Create hidden iframe that will autoplay the broadcast
-        this.audioFrame = document.createElement('iframe');
-        this.audioFrame.src = 'https://alledged-static-news-backend.hf.space?__theme=dark';
-        this.audioFrame.style.cssText = `
-            position: fixed;
-            bottom: -100px;
-            left: -100px;
-            width: 1px;
-            height: 1px;
-            opacity: 0;
-            pointer-events: none;
-            z-index: -9999;
-        `;
-        this.audioFrame.allow = 'autoplay';
-        this.audioFrame.setAttribute('aria-hidden', 'true');
-        
-        // Add to page
-        document.body.appendChild(this.audioFrame);
-        
-        // Update status
-        this.updateConnectionStatus(true);
-        
-        console.log('✅ Audio stream connected via iframe');
+        // Create hidden iframe as fallback
+        if (!this.audioFrame) {
+            this.audioFrame = document.createElement('iframe');
+            this.audioFrame.src = `${this.spaceUrl}?__theme=dark&autoplay=1`;
+            this.audioFrame.style.cssText = `
+                position: fixed;
+                bottom: -100px;
+                left: -100px;
+                width: 1px;
+                height: 1px;
+                opacity: 0;
+                pointer-events: none;
+                z-index: -9999;
+            `;
+            this.audioFrame.allow = 'autoplay';
+            this.audioFrame.setAttribute('aria-hidden', 'true');
+            
+            document.body.appendChild(this.audioFrame);
+        }
     }
 
     connectWebSocket() {
         try {
-            // This is optional - the iframe handles audio
-            // WebSocket is just for getting metadata about what's playing
-            this.ws = new WebSocket('wss://alledged-static-news-backend.hf.space/queue/join');
+            this.ws = new WebSocket(this.wsUrl);
             
             this.ws.onopen = () => {
                 console.log('📊 Metadata stream connected');

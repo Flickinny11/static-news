@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static.news Production Test</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #000;
+            color: #0f0;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #0f0;
+            border-radius: 5px;
+        }
+        .test-passed {
+            color: #0f0;
+        }
+        .test-failed {
+            color: #f00;
+        }
+        .test-pending {
+            color: #ff0;
+        }
+        #log {
+            background: #111;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎬 Static.news Production System Test</h1>
+    
+    <div class="test-section">
+        <h2>System Status</h2>
+        <div id="system-status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>API Connections</h2>
+        <div id="api-status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Broadcast Connection</h2>
+        <div id="broadcast-status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Live Log</h2>
+        <div id="log"></div>
+    </div>
+    
+    <!-- Load all production scripts -->
+    <script src="scripts/autonomous-news-network.js"></script>
+    <script src="scripts/ai-story-creation-system.js"></script>
+    <script src="scripts/broadcast-segment-scheduler.js"></script>
+    <script src="scripts/expanded-character-roster.js"></script>
+    <script src="scripts/hf-broadcast-connector.js"></script>
+    
+    <script>
+        // Test logger
+        const log = (msg, type = 'info') => {
+            const logEl = document.getElementById('log');
+            const time = new Date().toLocaleTimeString();
+            const color = type === 'error' ? '#f00' : type === 'success' ? '#0f0' : '#ff0';
+            logEl.innerHTML += `<div style="color: ${color}">[${time}] ${msg}</div>`;
+            logEl.scrollTop = logEl.scrollHeight;
+        };
+        
+        // System tests
+        const runTests = async () => {
+            log('Starting production system tests...', 'info');
+            
+            // Test 1: Check if all systems loaded
+            const systemStatus = document.getElementById('system-status');
+            let systemTests = [];
+            
+            // Check autonomous news network
+            if (window.autonomousNewsNetwork) {
+                systemTests.push('<div class="test-passed">✓ Autonomous News Network loaded</div>');
+                log('Autonomous News Network initialized', 'success');
+            } else {
+                systemTests.push('<div class="test-failed">✗ Autonomous News Network NOT loaded</div>');
+                log('ERROR: Autonomous News Network failed to load', 'error');
+            }
+            
+            // Check AI story creation
+            if (window.aiStoryCreationSystem) {
+                systemTests.push('<div class="test-passed">✓ AI Story Creation System loaded</div>');
+                log('AI Story Creation System initialized', 'success');
+            } else {
+                systemTests.push('<div class="test-failed">✗ AI Story Creation System NOT loaded</div>');
+                log('ERROR: AI Story Creation System failed to load', 'error');
+            }
+            
+            // Check broadcast scheduler
+            if (window.broadcastSegmentScheduler) {
+                systemTests.push('<div class="test-passed">✓ Broadcast Scheduler loaded</div>');
+                log('Broadcast Scheduler initialized', 'success');
+                
+                // Log current segment
+                const currentProgramming = window.broadcastSegmentScheduler.getCurrentProgramming();
+                if (currentProgramming.current) {
+                    log(`Current segment: ${currentProgramming.current.name}`, 'info');
+                }
+            } else {
+                systemTests.push('<div class="test-failed">✗ Broadcast Scheduler NOT loaded</div>');
+                log('ERROR: Broadcast Scheduler failed to load', 'error');
+            }
+            
+            // Check character roster
+            if (window.expandedCharacterRoster) {
+                systemTests.push('<div class="test-passed">✓ Character Roster loaded</div>');
+                log('Character Roster initialized', 'success');
+                
+                // Count characters
+                let charCount = 0;
+                for (const category of Object.values(window.expandedCharacterRoster.characters)) {
+                    charCount += Object.keys(category).length;
+                }
+                log(`Total characters loaded: ${charCount}`, 'info');
+            } else {
+                systemTests.push('<div class="test-failed">✗ Character Roster NOT loaded</div>');
+                log('ERROR: Character Roster failed to load', 'error');
+            }
+            
+            systemStatus.innerHTML = systemTests.join('');
+            
+            // Test 2: Check API connections
+            const apiStatus = document.getElementById('api-status');
+            let apiTests = [];
+            
+            // Test NewsAPI
+            try {
+                log('Testing NewsAPI connection...', 'info');
+                const newsResponse = await fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=19336f5b4da34bb3a2a08dcb9406a6a9');
+                if (newsResponse.ok) {
+                    const newsData = await newsResponse.json();
+                    apiTests.push('<div class="test-passed">✓ NewsAPI connected</div>');
+                    log(`NewsAPI: ${newsData.articles?.length || 0} articles available`, 'success');
+                } else {
+                    apiTests.push('<div class="test-failed">✗ NewsAPI connection failed</div>');
+                    log('ERROR: NewsAPI returned error: ' + newsResponse.status, 'error');
+                }
+            } catch (e) {
+                apiTests.push('<div class="test-failed">✗ NewsAPI connection error</div>');
+                log('ERROR: NewsAPI connection failed: ' + e.message, 'error');
+            }
+            
+            // Test OpenRouter
+            try {
+                log('Testing OpenRouter connection...', 'info');
+                const orResponse = await fetch('https://openrouter.ai/api/v1/models', {
+                    headers: {
+                        'Authorization': 'Bearer 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'
+                    }
+                });
+                if (orResponse.ok) {
+                    apiTests.push('<div class="test-passed">✓ OpenRouter connected</div>');
+                    log('OpenRouter API connected successfully', 'success');
+                } else {
+                    apiTests.push('<div class="test-failed">✗ OpenRouter connection failed</div>');
+                    log('ERROR: OpenRouter returned error: ' + orResponse.status, 'error');
+                }
+            } catch (e) {
+                apiTests.push('<div class="test-failed">✗ OpenRouter connection error</div>');
+                log('ERROR: OpenRouter connection failed: ' + e.message, 'error');
+            }
+            
+            apiStatus.innerHTML = apiTests.join('');
+            
+            // Test 3: Check HF broadcast connection
+            const broadcastStatus = document.getElementById('broadcast-status');
+            let broadcastTests = [];
+            
+            if (window.hfBroadcastConnector) {
+                broadcastTests.push('<div class="test-passed">✓ HF Broadcast Connector loaded</div>');
+                log('HF Broadcast Connector initialized', 'success');
+                
+                // Check connection status
+                setTimeout(() => {
+                    if (window.hfBroadcastConnector.connected) {
+                        broadcastTests.push('<div class="test-passed">✓ Connected to HF Space</div>');
+                        log('Successfully connected to Hugging Face broadcast space', 'success');
+                    } else {
+                        broadcastTests.push('<div class="test-pending">⚠ Connecting to HF Space...</div>');
+                        log('Still connecting to HF Space...', 'info');
+                    }
+                    broadcastStatus.innerHTML = broadcastTests.join('');
+                }, 3000);
+            } else {
+                broadcastTests.push('<div class="test-failed">✗ HF Broadcast Connector NOT loaded</div>');
+                log('ERROR: HF Broadcast Connector failed to load', 'error');
+            }
+            
+            broadcastStatus.innerHTML = broadcastTests.join('');
+            
+            // Monitor for events
+            log('Monitoring for system events...', 'info');
+            
+            window.addEventListener('segmentChange', (e) => {
+                log(`SEGMENT CHANGE: ${e.detail.hour.name}`, 'success');
+            });
+            
+            window.addEventListener('breakingStory', (e) => {
+                log(`BREAKING NEWS: ${e.detail.story.headline}`, 'success');
+            });
+            
+            window.addEventListener('celebrityVoting', (e) => {
+                log(`CELEBRITY VOTING: ${e.detail.options.join(', ')}`, 'success');
+            });
+            
+            window.addEventListener('hfSpaceConnected', () => {
+                log('HF SPACE CONNECTED!', 'success');
+            });
+        };
+        
+        // Run tests when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            runTests();
+        });
+    </script>
+</body>
+</html>

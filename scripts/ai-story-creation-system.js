@@ -810,9 +810,43 @@ class AIStoryCreationSystem {
     
     // API call wrapper
     async callAI(model, prompt, options = {}) {
-        // This will use the OpenRouter API
-        // Placeholder for now - will be implemented with actual API key
-        return `AI Response for: ${prompt.slice(0, 50)}...`;
+        try {
+            const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer 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',
+                    'Content-Type': 'application/json',
+                    'HTTP-Referer': 'https://static.news',
+                    'X-Title': 'Static.news AI Story Creation'
+                },
+                body: JSON.stringify({
+                    model: model,
+                    messages: [
+                        {
+                            role: 'system',
+                            content: 'You are an AI journalist for Static.news creating original, entertaining news stories.'
+                        },
+                        {
+                            role: 'user',
+                            content: prompt
+                        }
+                    ],
+                    temperature: options.temperature || 0.8,
+                    max_tokens: options.maxTokens || 1000
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`API error: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            return data.choices[0].message.content;
+            
+        } catch (error) {
+            console.error('AI API error:', error);
+            return `AI Response for: ${prompt.slice(0, 50)}...`;
+        }
     }
     
     // Fallback methods for when AI fails

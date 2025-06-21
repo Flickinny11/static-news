@@ -1,10 +1,10 @@
 // Autonomous AI News Network System
 class AutonomousNewsNetwork {
     constructor() {
-        // API Configuration - YOUR keys, not user-provided
+        // API Configuration - PRODUCTION KEYS
         this.config = {
             openrouter: {
-                apiKey: 'YOUR_OPENROUTER_API_KEY', // Replace with your actual key
+                apiKey: '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',
                 baseUrl: 'https://openrouter.ai/api/v1',
                 models: {
                     scriptWriter: 'minimax/minimax-01', // Free deep thinking model
@@ -13,7 +13,7 @@ class AutonomousNewsNetwork {
                 }
             },
             newsAPI: {
-                apiKey: 'YOUR_NEWSAPI_KEY', // Replace with your actual key
+                apiKey: '19336f5b4da34bb3a2a08dcb9406a6a9',
                 endpoint: 'https://newsapi.org/v2'
             }
         };
@@ -356,11 +356,7 @@ class AutonomousNewsNetwork {
             // Build prompt for script generation
             const prompt = this.buildScriptPrompt(segment, news);
             
-            // Check if API key is configured
-            if (this.config.openrouter.apiKey === 'YOUR_OPENROUTER_API_KEY') {
-                console.log('⚠️ OpenRouter API key not configured, using backup script generation');
-                return this.generateBackupScript(segment, news);
-            }
+            // API keys are now production-ready
             
             // Call OpenRouter API
             const response = await fetch(`${this.config.openrouter.baseUrl}/chat/completions`, {
@@ -605,7 +601,7 @@ Remember: The anchors are slowly going insane from lack of sleep and existential
     
     connectToHuggingFace() {
         // Connect to your Hugging Face space
-        const wsUrl = 'wss://yourusername-static-news-broadcast.hf.space/ws';
+        const wsUrl = 'wss://alledged-static-news-backend.hf.space/ws';
         
         try {
             this.wsConnection = new WebSocket(wsUrl);
