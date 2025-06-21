@@ -274,6 +274,53 @@
             100% { clip-path: inset(43% 0 1% 0); transform: translate(0); }
         }
 
+        @keyframes glitch {
+            0% { 
+                transform: translate(0); 
+                filter: hue-rotate(0deg); 
+            }
+            10% { 
+                transform: translate(-2px, 2px); 
+                filter: hue-rotate(90deg); 
+            }
+            20% { 
+                transform: translate(-1px, -1px); 
+                filter: hue-rotate(180deg); 
+            }
+            30% { 
+                transform: translate(2px, 1px); 
+                filter: hue-rotate(270deg); 
+            }
+            40% { 
+                transform: translate(1px, -2px); 
+                filter: hue-rotate(360deg); 
+            }
+            50% { 
+                transform: translate(-1px, 2px); 
+                filter: hue-rotate(90deg); 
+            }
+            60% { 
+                transform: translate(-2px, 1px); 
+                filter: hue-rotate(180deg); 
+            }
+            70% { 
+                transform: translate(2px, 1px); 
+                filter: hue-rotate(270deg); 
+            }
+            80% { 
+                transform: translate(-1px, -1px); 
+                filter: hue-rotate(360deg); 
+            }
+            90% { 
+                transform: translate(1px, 2px); 
+                filter: hue-rotate(90deg); 
+            }
+            100% { 
+                transform: translate(0); 
+                filter: hue-rotate(0deg); 
+            }
+        }
+
         .hero-subtitle {
             font-family: 'Oswald', sans-serif;
             font-size: clamp(1.5rem, 3vw, 2.5rem);
@@ -624,11 +671,11 @@
         <div class="nav-container">
             <a href="/" class="nav-logo">STATIC</a>
             <ul class="nav-menu">
-                <li><a href="/live.html">LIVE TV</a></li>
-                <li><a href="/anchors.html">ANCHORS</a></li>
-                <li><a href="/shows.html">SHOWS</a></li>
-                <li><a href="/incidents.html">INCIDENTS</a></li>
-                <li><a href="/sponsors.html">SPONSORS</a></li>
+                <li><a href="live.html">LIVE TV</a></li>
+                <li><a href="anchors.html">ANCHORS</a></li>
+                <li><a href="shows.html">SHOWS</a></li>
+                <li><a href="incidents.html">INCIDENTS</a></li>
+                <li><a href="sponsors.html">SPONSORS</a></li>
             </ul>
             <div class="live-indicator">
                 <div class="live-dot"></div>
@@ -644,7 +691,7 @@
                 <span class="glitch" data-text="STATIC">STATIC</span>
             </h1>
             <p class="hero-subtitle">THE FUTURE OF AI NEWS</p>
-            <a href="/live.html" class="cta-button">WATCH LIVE</a>
+            <a href="live.html" class="cta-button">WATCH LIVE</a>
         </div>
     </section>
 
@@ -1102,20 +1149,19 @@
 
         // Initialize Main Experience
         function initializeExperience() {
-            // Hero Animation
+            // Hero Animation - Simple approach to ensure title stays visible
             const heroTimeline = gsap.timeline();
-            const titleSplit = new SplitText('.hero-title', { type: 'chars' });
+            
+            // Ensure hero title is visible and animated
+            gsap.set('.hero-title', { opacity: 1, visibility: 'visible' });
             
             heroTimeline
-                .from(titleSplit.chars, {
-                    duration: 1,
+                .from('.hero-title', {
+                    duration: 1.5,
                     opacity: 0,
-                    scale: 0,
-                    y: 80,
-                    rotationX: 180,
-                    transformOrigin: '0% 50% -50',
-                    ease: 'back',
-                    stagger: 0.01
+                    scale: 0.8,
+                    y: 50,
+                    ease: 'power3.out'
                 })
                 .to('.hero-subtitle', {
                     duration: 1,
@@ -1128,6 +1174,17 @@
                     scale: 0,
                     ease: 'back.out(1.7)'
                 }, '-=0.3');
+                
+            // Add continuous glitch effect to hero title
+            setInterval(() => {
+                const glitchElement = document.querySelector('.hero-title .glitch');
+                if (glitchElement) {
+                    glitchElement.style.animation = 'none';
+                    setTimeout(() => {
+                        glitchElement.style.animation = 'glitch 0.3s ease-in-out';
+                    }, 50);
+                }
+            }, 3000 + Math.random() * 2000); // Random interval between 3-5 seconds
 
             // Scroll Animations
             ScrollTrigger.create({

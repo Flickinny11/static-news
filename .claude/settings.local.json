@@ -23,7 +23,8 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(sed:*)",
-      "Bash(git revert:*)"
+      "Bash(git revert:*)",
+      "Bash(rg:*)"
     ],
     "deny": []
   }
