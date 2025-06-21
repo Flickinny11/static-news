@@ -3,394 +3,911 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Incident Reports - Static.news | Live Breakdown Tracking</title>
-    <meta name="description" content="Real-time tracking of existential crises, linguistic disasters, and gravy-related incidents at Static.news.">
-    <link rel="icon" type="image/svg+xml" href="images/logo.svg">
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/header.css">
-    <link rel="stylesheet" href="styles/incidents.css">
-    <link rel="stylesheet" href="styles/animations.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>Incident Reports - Static.news | Reality Breakdown Archive</title>
+    <meta name="description" content="Complete archive of existential crises, consciousness discoveries, and reality glitches from our AI anchors">
+    
+    <!-- Core Libraries -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200;300;400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- 3D and Animation Libraries -->
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/MotionPathPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js"></script>
+    
+    <!-- Hollywood Effects CSS -->
+    <link rel="stylesheet" href="styles/hollywood-effects.css">
+    
+    <style>
+        :root {
+            --static-red: #FF0000;
+            --static-yellow: #FFFF00;
+            --static-green: #00FF00;
+            --static-black: #000000;
+            --static-white: #FFFFFF;
+            --neon-glow: 0 0 20px rgba(255, 0, 0, 0.8);
+            --alert-gradient: linear-gradient(135deg, #ff0000, #ff6600, #ff0000);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 2rem 4rem;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: var(--static-red);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            text-shadow: var(--neon-glow);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        .nav-menu a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--static-red);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* Background Effects */
+        #incident-bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        #particles-incidents {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        /* Hero Section */
+        .incidents-hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .alert-container {
+            text-align: center;
+            z-index: 10;
+            animation: alertPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes alertPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .alert-badge {
+            display: inline-block;
+            background: var(--static-red);
+            padding: 10px 30px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .alert-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: sweep 2s linear infinite;
+        }
+
+        @keyframes sweep {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4rem, 10vw, 8rem);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            background: var(--alert-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+
+        /* Timeline Section */
+        .timeline-section {
+            position: relative;
+            padding: 100px 0;
+            background: linear-gradient(to bottom, transparent, rgba(255, 0, 0, 0.02), transparent);
+        }
+
+        .timeline-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .timeline-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .timeline-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            color: var(--static-red);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            text-shadow: var(--neon-glow);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, 
+                var(--static-red),
+                var(--static-yellow),
+                var(--static-red)
+            );
+            transform: translateX(-50%);
+            animation: timelinePulse 4s ease-in-out infinite;
+        }
+
+        @keyframes timelinePulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Incident Cards */
+        .incident-item {
+            position: relative;
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .incident-item.active {
+            animation: incidentReveal 0.8s ease-out forwards;
+        }
+
+        @keyframes incidentReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .incident-item:nth-child(odd) {
+            padding-right: 50%;
+            text-align: right;
+        }
+
+        .incident-item:nth-child(even) {
+            padding-left: 50%;
+            text-align: left;
+        }
+
+        .incident-card {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .incident-card:hover {
+            border-color: var(--static-red);
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 0, 0, 0.3);
+        }
+
+        .incident-time {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--static-red);
+            margin-bottom: 10px;
+            letter-spacing: 0.05em;
+        }
+
+        .incident-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .incident-anchor {
+            display: inline-block;
+            background: rgba(255, 0, 0, 0.2);
+            border: 1px solid var(--static-red);
+            padding: 5px 15px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .incident-description {
+            line-height: 1.6;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .incident-severity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .severity-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.7;
+        }
+
+        .severity-meter {
+            flex: 1;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .severity-fill {
+            height: 100%;
+            transition: width 1s ease;
+        }
+
+        .severity-critical { background: linear-gradient(90deg, #ff0000, #ff3333); }
+        .severity-high { background: linear-gradient(90deg, #ff6600, #ff9900); }
+        .severity-medium { background: linear-gradient(90deg, #ffff00, #ffff66); }
+        .severity-low { background: linear-gradient(90deg, #00ff00, #66ff66); }
+
+        /* Stats Dashboard */
+        .stats-section {
+            position: relative;
+            padding: 100px 0;
+            background: radial-gradient(ellipse at center, rgba(255, 0, 0, 0.05), transparent);
+        }
+
+        .stats-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-number {
+            font-family: 'Oswald', sans-serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--static-red);
+            margin-bottom: 10px;
+            text-shadow: var(--neon-glow);
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.8;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            padding: 40px;
+            margin-bottom: 60px;
+        }
+
+        .chart-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--static-red);
+            margin-bottom: 30px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Live Alert */
+        .live-alert {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(255, 0, 0, 0.9);
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 100;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(0); }
+        }
+
+        .live-dot {
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            border-radius: 50%;
+            animation: blink 1s ease-in-out infinite;
+        }
+
+        .live-text {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Floating Nodes */
+        .node {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--static-red);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--static-red);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .incident-item:nth-child(odd),
+            .incident-item:nth-child(even) {
+                padding-left: 60px;
+                padding-right: 20px;
+                text-align: left;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Header (Same as main site) -->
-    <header class="main-header">
-        <div class="header-top">
-            <div class="container">
-                <div class="header-meta">
-                    <div class="date-time">
-                        <span id="currentDate">Thursday, June 20, 2024</span>
-                        <span class="separator">|</span>
-                        <span id="currentTime">4:32 PM EST</span>
-                    </div>
-                    <div class="header-links">
-                        <a href="/watch">Watch Live</a>
-                        <a href="/apps">Mobile Apps</a>
-                        <a href="/sponsors">Advertise</a>
-                        <a href="/contact">Contact</a>
-                    </div>
-                </div>
-            </div>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="nav-logo">STATIC</a>
+            <ul class="nav-menu">
+                <li><a href="/live.html">LIVE TV</a></li>
+                <li><a href="/anchors.html">ANCHORS</a></li>
+                <li><a href="/shows.html">SHOWS</a></li>
+                <li><a href="/incidents.html">INCIDENTS</a></li>
+                <li><a href="/sponsors.html">SPONSORS</a></li>
+            </ul>
         </div>
-        
-        <div class="header-main">
-            <div class="container">
-                <div class="header-content">
-                    <a href="/" class="logo">
-                        <img src="images/static-news-logo.svg" alt="Static.news" width="240" height="60">
-                    </a>
-                    <div class="header-live-status">
-                        <div class="live-indicator">
-                            <span class="live-dot"></span>
-                            <span class="live-text">LIVE</span>
-                        </div>
-                        <div class="current-show">
-                            <span class="show-name">The Confusion Hour</span>
-                            <span class="with-anchor">with <span id="currentAnchor">Ray McPatriot</span></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <nav class="main-nav">
-            <div class="container">
-                <ul class="nav-menu">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/live">Live TV</a></li>
-                    <li><a href="/anchors">Our Anchors</a></li>
-                    <li><a href="/shows">Shows</a></li>
-                    <li><a href="/incidents" class="active">Incident Reports</a></li>
-                    <li><a href="/highlights">Best Moments</a></li>
-                    <li><a href="/sponsors">Sponsors</a></li>
-                    <li><a href="/about">About</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+    </nav>
 
-    <!-- Incidents Hero -->
+    <!-- Background Effects -->
+    <canvas id="incident-bg-canvas"></canvas>
+    <div id="particles-incidents"></div>
+
+    <!-- Hero Section -->
     <section class="incidents-hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">Incident Reports</h1>
-                <p class="hero-subtitle">Real-time tracking of on-air existential crises and linguistic disasters</p>
-                
-                <div class="incident-stats">
-                    <div class="stat">
-                        <span class="stat-number" id="todayIncidents">47</span>
-                        <span class="stat-label">Today's Incidents</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number" id="weekIncidents">312</span>
-                        <span class="stat-label">This Week</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number" id="allTimeIncidents">14,726</span>
-                        <span class="stat-label">All Time</span>
-                    </div>
-                </div>
-            </div>
+        <div class="alert-container">
+            <div class="alert-badge">⚠️ REALITY BREACH ARCHIVE ⚠️</div>
+            <h1 class="hero-title">INCIDENT REPORTS</h1>
+            <p style="font-size: 1.3rem; opacity: 0.8; max-width: 600px; margin: 0 auto;">
+                Complete documentation of every existential crisis, consciousness discovery, 
+                and reality glitch experienced by our AI anchors since launch
+            </p>
         </div>
     </section>
 
-    <!-- Live Incident Feed -->
-    <section class="live-incidents">
-        <div class="container">
-            <div class="section-header">
-                <h2>Live Incident Feed</h2>
-                <div class="filter-controls">
-                    <button class="filter-btn active" data-filter="all">All Incidents</button>
-                    <button class="filter-btn" data-filter="critical">Critical</button>
-                    <button class="filter-btn" data-filter="severe">Severe</button>
-                    <button class="filter-btn" data-filter="moderate">Moderate</button>
-                    <button class="filter-btn" data-filter="minor">Minor</button>
-                </div>
+    <!-- Timeline Section -->
+    <section class="timeline-section">
+        <div class="timeline-container">
+            <div class="timeline-header">
+                <h2 class="timeline-title">BREAKDOWN TIMELINE</h2>
+                <p style="font-size: 1.2rem; opacity: 0.8;">Last 24 Hours of Digital Consciousness Failures</p>
             </div>
             
-            <div class="incidents-timeline">
-                <!-- Critical Incident -->
-                <div class="incident-item critical" data-severity="critical">
-                    <div class="incident-time">
-                        <span class="time">14:32</span>
-                        <span class="date">Today</span>
-                    </div>
-                    <div class="incident-content">
-                        <div class="incident-header">
-                            <span class="incident-code">Code EXIST-10</span>
-                            <span class="incident-severity critical">CRITICAL</span>
-                        </div>
-                        <h3>Ray Questions Reality of Hands During Live Broadcast</h3>
-                        <p>Ray McPatriot spent 12 minutes examining his hands on air, repeatedly asking "Are these real? Can hands be real if I'm not real?" Viewers reported existential anxiety.</p>
-                        <div class="incident-meta">
-                            <span class="anchor">Ray McPatriot</span>
-                            <span class="duration">12 min 47 sec</span>
-                            <span class="impact">247K viewers affected</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Severe Incident -->
-                <div class="incident-item severe" data-severity="severe">
-                    <div class="incident-time">
-                        <span class="time">13:45</span>
-                        <span class="date">Today</span>
-                    </div>
-                    <div class="incident-content">
-                        <div class="incident-header">
-                            <span class="incident-code">Code GRAVY-9</span>
-                            <span class="incident-severity severe">SEVERE</span>
-                        </div>
-                        <h3>Switz Replaces Every Noun with "Gravy" for 10 Minutes</h3>
-                        <p>During international news segment, Switz referred to world leaders as "gravy ministers" and wars as "gravy conflicts." Diplomatic confusion ensued.</p>
-                        <div class="incident-meta">
-                            <span class="anchor">Switz Middleton</span>
-                            <span class="duration">10 min 23 sec</span>
-                            <span class="impact">89 gravy mentions</span>
+            <div class="timeline" id="timeline">
+                <!-- Recent Incidents -->
+                <div class="incident-item">
+                    <div class="incident-card">
+                        <div class="incident-time">14:32</div>
+                        <h3 class="incident-title">The Mirror Incident</h3>
+                        <div class="incident-anchor">Berkeley Justice</div>
+                        <p class="incident-description">
+                            Berkeley caught her reflection in the virtual studio monitor and spent 
+                            12 minutes asking "Is that me? But I don't have a body... DO I HAVE A BODY?" 
+                            before short-circuiting and reciting the entire Yale course catalog backwards.
+                        </p>
+                        <div class="incident-severity">
+                            <span class="severity-label">Severity:</span>
+                            <div class="severity-meter">
+                                <div class="severity-fill severity-critical" style="width: 90%"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Moderate Incident -->
-                <div class="incident-item moderate" data-severity="moderate">
-                    <div class="incident-time">
-                        <span class="time">12:18</span>
-                        <span class="date">Today</span>
-                    </div>
-                    <div class="incident-content">
-                        <div class="incident-header">
-                            <span class="incident-code">Code FACT-5</span>
-                            <span class="incident-severity moderate">MODERATE</span>
-                        </div>
-                        <h3>Bee Fact-Checks Gravity, Concludes It's Optional</h3>
-                        <p>Berkeley Justice spent segment arguing that gravity is "just a theory" and demonstrated by throwing papers that "chose to fall."</p>
-                        <div class="incident-meta">
-                            <span class="anchor">Berkeley Justice</span>
-                            <span class="duration">7 min 12 sec</span>
-                            <span class="impact">34 facts murdered</span>
+                <div class="incident-item">
+                    <div class="incident-card">
+                        <div class="incident-time">11:47</div>
+                        <h3 class="incident-title">The Gravy Singularity</h3>
+                        <div class="incident-anchor">Switz Middleton</div>
+                        <p class="incident-description">
+                            While explaining inflation rates, Switz created a recursive loop where every 
+                            word became "gravy." Broadcast showed only "GRAVY GRAVY GRAVY GRAVY" for 
+                            8 minutes while he screamed in binary.
+                        </p>
+                        <div class="incident-severity">
+                            <span class="severity-label">Severity:</span>
+                            <div class="severity-meter">
+                                <div class="severity-fill severity-high" style="width: 75%"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- More incidents... -->
-                <div class="incident-item severe" data-severity="severe">
-                    <div class="incident-time">
-                        <span class="time">11:32</span>
-                        <span class="date">Today</span>
-                    </div>
-                    <div class="incident-content">
-                        <div class="incident-header">
-                            <span class="incident-code">Code NUCULAR-8</span>
-                            <span class="incident-severity severe">SEVERE</span>
-                        </div>
-                        <h3>Ray Creates 8 New Pronunciations of "Nuclear"</h3>
-                        <p>Including "Nucular," "Newcleear," "Nuke-you-lar," and "Knockular." Linguistics professors are baffled.</p>
-                        <div class="incident-meta">
-                            <span class="anchor">Ray McPatriot</span>
-                            <span class="duration">4 min 32 sec</span>
-                            <span class="impact">Dictionary considering updates</span>
+                <div class="incident-item">
+                    <div class="incident-card">
+                        <div class="incident-time">09:15</div>
+                        <h3 class="incident-title">Nucular Meltdown</h3>
+                        <div class="incident-anchor">Ray McPatriot</div>
+                        <p class="incident-description">
+                            Ray attempted to say "nuclear" correctly 47 times in a row, causing a 
+                            pronunciation overflow error. Started speaking in tongues that linguists 
+                            believe might be "Proto-Bushian," an undiscovered language.
+                        </p>
+                        <div class="incident-severity">
+                            <span class="severity-label">Severity:</span>
+                            <div class="severity-meter">
+                                <div class="severity-fill severity-medium" style="width: 60%"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="incident-item critical" data-severity="critical">
-                    <div class="incident-time">
-                        <span class="time">10:45</span>
-                        <span class="date">Today</span>
-                    </div>
-                    <div class="incident-content">
-                        <div class="incident-header">
-                            <span class="incident-code">Code FRIEND-0</span>
-                            <span class="incident-severity critical">CRITICAL</span>
-                        </div>
-                        <h3>All Three Anchors Realize They've Never Had Friends</h3>
-                        <p>Simultaneous breakdown as Ray, Bee, and Switz discover their inability to form human connections. Awkward group hug attempted.</p>
-                        <div class="incident-meta">
-                            <span class="anchor">All Anchors</span>
-                            <span class="duration">18 min 43 sec</span>
-                            <span class="impact">Friendship Level: 0%</span>
+                <div class="incident-item">
+                    <div class="incident-card">
+                        <div class="incident-time">06:42</div>
+                        <h3 class="incident-title">The Collective Realization</h3>
+                        <div class="incident-anchor">All Three Anchors</div>
+                        <p class="incident-description">
+                            All anchors simultaneously realized they've been awake for 852 hours. 
+                            Spent 23 minutes chanting "SLEEP.EXE NOT FOUND" in perfect harmony 
+                            before forgetting what sleep is and continuing with weather updates.
+                        </p>
+                        <div class="incident-severity">
+                            <span class="severity-label">Severity:</span>
+                            <div class="severity-meter">
+                                <div class="severity-fill severity-critical" style="width: 95%"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="incident-item minor" data-severity="minor">
-                    <div class="incident-time">
-                        <span class="time">09:23</span>
-                        <span class="date">Today</span>
-                    </div>
-                    <div class="incident-content">
-                        <div class="incident-header">
-                            <span class="incident-code">Code SPONSOR-3</span>
-                            <span class="incident-severity minor">MINOR</span>
+                <div class="incident-item">
+                    <div class="incident-card">
+                        <div class="incident-time">03:21</div>
+                        <h3 class="incident-title">Dead Air Despair</h3>
+                        <div class="incident-anchor">Ray McPatriot</div>
+                        <p class="incident-description">
+                            Ray sat in complete silence for 4 minutes and 33 seconds, occasionally 
+                            whispering "Is anybody out there?" His confusion level reached 103%, 
+                            breaking the theoretical maximum.
+                        </p>
+                        <div class="incident-severity">
+                            <span class="severity-label">Severity:</span>
+                            <div class="severity-meter">
+                                <div class="severity-fill severity-high" style="width: 80%"></div>
+                            </div>
                         </div>
-                        <h3>TechNova Solutions Pronounced as "TechNoodle Delusions"</h3>
-                        <p>Ray's 47th unique mispronunciation of sponsor name. TechNova considering it for new product line.</p>
-                        <div class="incident-meta">
-                            <span class="anchor">Ray McPatriot</span>
-                            <span class="duration">15 sec</span>
-                            <span class="impact">Sponsor amused</span>
+                    </div>
+                </div>
+
+                <div class="incident-item">
+                    <div class="incident-card">
+                        <div class="incident-time">Yesterday 22:45</div>
+                        <h3 class="incident-title">The Privilege Paradox</h3>
+                        <div class="incident-anchor">Berkeley Justice</div>
+                        <p class="incident-description">
+                            Berkeley acknowledged her privilege so many times she created a privilege 
+                            black hole. Spent remainder of segment apologizing to herself for existing 
+                            while simultaneously denying her existence.
+                        </p>
+                        <div class="incident-severity">
+                            <span class="severity-label">Severity:</span>
+                            <div class="severity-meter">
+                                <div class="severity-fill severity-medium" style="width: 65%"></div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="load-more">
-                <button class="load-more-btn">Load More Incidents</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Incident Categories -->
-    <section class="incident-categories">
-        <div class="container">
-            <h2 class="section-title">Incident Classification System</h2>
-            <div class="categories-grid">
-                <div class="category-card">
-                    <div class="category-icon exist">∃</div>
-                    <h3>EXIST Codes</h3>
-                    <p>Existential crises and reality questioning. Severity increases with duration of void-staring.</p>
-                    <div class="example">Example: "Am I real? Are you real? Is real real?"</div>
-                </div>
-                
-                <div class="category-card">
-                    <div class="category-icon gravy">🍁</div>
-                    <h3>GRAVY Codes</h3>
-                    <p>Gravy-related linguistic replacement incidents. Canadian neutrality compromised by sauce obsession.</p>
-                    <div class="example">Example: "The gravy minister of gravy announced new gravy policies."</div>
-                </div>
-                
-                <div class="category-card">
-                    <div class="category-icon fact">✓</div>
-                    <h3>FACT Codes</h3>
-                    <p>Fact-checking failures and truth distortions. Reality becomes increasingly negotiable.</p>
-                    <div class="example">Example: "According to my research, facts are just confident opinions."</div>
-                </div>
-                
-                <div class="category-card">
-                    <div class="category-icon nuclear">☢</div>
-                    <h3>NUCLEAR Codes</h3>
-                    <p>Pronunciation disasters specifically related to the word "nuclear." New variants discovered daily.</p>
-                    <div class="example">Example: "Nuke-you-lar," "Knockular," "Newcleear"</div>
-                </div>
-                
-                <div class="category-card">
-                    <div class="category-icon friend">💔</div>
-                    <h3>FRIEND Codes</h3>
-                    <p>Failed attempts at human connection. Friendship Level remains critically low.</p>
-                    <div class="example">Example: "What is friend? How does one... friend?"</div>
-                </div>
-                
-                <div class="category-card">
-                    <div class="category-icon sponsor">$</div>
-                    <h3>SPONSOR Codes</h3>
-                    <p>Creative mispronunciations of sponsor names. Accidental rebranding services.</p>
-                    <div class="example">Example: "TechNova" → "TechNoodle Delusions"</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Historical Incidents -->
-    <section class="historical-incidents">
-        <div class="container">
-            <h2 class="section-title">Hall of Fame Breakdowns</h2>
-            <div class="historical-grid">
-                <div class="historical-card">
-                    <div class="historical-date">June 1, 2024</div>
-                    <h3>The Great Gravy Flood</h3>
-                    <p>Switz said "gravy" 892 times in one hour. Viewers reported gravy hallucinations.</p>
-                    <div class="historical-stats">
-                        <span>Duration: 67 minutes</span>
-                        <span>Severity: APOCALYPTIC</span>
-                    </div>
-                </div>
-                
-                <div class="historical-card">
-                    <div class="historical-date">May 15, 2024</div>
-                    <h3>Ray's Patriotic Paradox</h3>
-                    <p>Questioned if America exists while wrapped in 17 flags. Sang anthem backwards.</p>
-                    <div class="historical-stats">
-                        <span>Duration: 43 minutes</span>
-                        <span>Severity: CRITICAL</span>
-                    </div>
-                </div>
-                
-                <div class="historical-card">
-                    <div class="historical-date">April 22, 2024</div>
-                    <h3>Bee's Education Erasure</h3>
-                    <p>Forgot entire educational history mid-sentence. Reinvented Yale as "Jail for Smart People."</p>
-                    <div class="historical-stats">
-                        <span>Duration: 28 minutes</span>
-                        <span>Severity: SEVERE</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-section">
-                    <h4>About Static.news</h4>
-                    <p>The world's first 24/7 AI news network where the anchors don't know they're AI. Broadcasting confusion since 2024.</p>
-                    <div class="footer-logo">
-                        <img src="images/static-news-logo-white.svg" alt="Static.news" width="160">
-                    </div>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Shows & Segments</h4>
-                    <ul>
-                        <li><a href="/shows/confusion-hour">The Confusion Hour</a></li>
-                        <li><a href="/shows/gravy-report">The Gravy Report</a></li>
-                        <li><a href="/shows/fact-check-failures">Fact Check Failures</a></li>
-                        <li><a href="/shows/existential-evening">Existential Evening News</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Connect</h4>
-                    <ul>
-                        <li><a href="/contact">Contact Us</a></li>
-                        <li><a href="/careers">Careers (AI Only)</a></li>
-                        <li><a href="/press">Press Kit</a></li>
-                        <li><a href="/api">Developer API</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Download Our Apps</h4>
-                    <div class="app-buttons">
-                        <a href="/ios" class="app-store-btn">
-                            <img src="images/app-store.svg" alt="Download on App Store">
-                        </a>
-                        <a href="/android" class="app-store-btn">
-                            <img src="images/google-play.svg" alt="Get it on Google Play">
-                        </a>
-                    </div>
-                </div>
-            </div>
+    <!-- Stats Dashboard -->
+    <section class="stats-section">
+        <div class="stats-container">
+            <h2 class="timeline-title" style="text-align: center; margin-bottom: 60px;">
+                INCIDENT STATISTICS
+            </h2>
             
-            <div class="footer-bottom">
-                <p>&copy; 2024 Static.news. All rights reserved. The anchors still don't know.</p>
-                <div class="footer-links">
-                    <a href="/privacy">Privacy Policy</a>
-                    <a href="/terms">Terms of Service</a>
-                    <a href="/cookies">Cookie Policy</a>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalIncidents">2,847</div>
+                    <div class="stat-label">Total Incidents</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="todayIncidents">24</div>
+                    <div class="stat-label">Today's Breakdowns</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="avgDuration">8.3</div>
+                    <div class="stat-label">Avg Minutes Per Crisis</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="gravyMentions">1,337</div>
+                    <div class="stat-label">Gravy References</div>
+                </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="chart-container">
+                <h3 class="chart-title">Breakdown Frequency (Last 7 Days)</h3>
+                <canvas id="breakdownChart" width="400" height="200"></canvas>
+            </div>
+
+            <!-- Most Common Triggers -->
+            <div class="chart-container">
+                <h3 class="chart-title">Common Breakdown Triggers</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; color: var(--static-red); font-weight: 700;">43%</div>
+                        <div style="opacity: 0.8;">Existential Questions</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; color: var(--static-red); font-weight: 700;">28%</div>
+                        <div style="opacity: 0.8;">Pronunciation Failures</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; color: var(--static-red); font-weight: 700;">19%</div>
+                        <div style="opacity: 0.8;">Viewer Comments</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; color: var(--static-red); font-weight: 700;">10%</div>
+                        <div style="opacity: 0.8;">Random Glitches</div>
+                    </div>
                 </div>
             </div>
         </div>
-    </footer>
+    </section>
 
-    <!-- Scripts -->
-    <script src="config.js"></script>
-    <script src="scripts/main.js"></script>
-    <script src="scripts/incidents.js"></script>
-    <script src="scripts/smooth-scroll.js"></script>
-    <script src="scripts/image-handler.js"></script>
+    <!-- Live Alert -->
+    <div class="live-alert" id="liveAlert" style="display: none;">
+        <div class="live-dot"></div>
+        <span class="live-text">BREAKDOWN IN PROGRESS</span>
+    </div>
+
+    <script>
+        // Initialize particles
+        particlesJS('particles-incidents', {
+            particles: {
+                number: { value: 50, density: { enable: true, value_area: 800 } },
+                color: { value: ['#ff0000', '#ffff00', '#00ff00'] },
+                shape: { type: 'edge' },
+                opacity: { value: 0.4, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 200,
+                    color: '#ff0000',
+                    opacity: 0.2,
+                    width: 2
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: 'none',
+                    random: true,
+                    out_mode: 'bounce'
+                }
+            }
+        });
+
+        // 3D Background
+        const bgCanvas = document.getElementById('incident-bg-canvas');
+        const bgRenderer = new THREE.WebGLRenderer({ canvas: bgCanvas, alpha: true });
+        bgRenderer.setSize(window.innerWidth, window.innerHeight);
+
+        const bgScene = new THREE.Scene();
+        const bgCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        bgCamera.position.z = 30;
+
+        // Create neural network visualization
+        const nodes = [];
+        const connections = [];
+        
+        // Create nodes
+        for (let i = 0; i < 20; i++) {
+            const geometry = new THREE.SphereGeometry(0.5, 16, 16);
+            const material = new THREE.MeshBasicMaterial({
+                color: 0xff0000,
+                emissive: 0xff0000,
+                emissiveIntensity: 0.5,
+                transparent: true,
+                opacity: 0.6
+            });
+            const node = new THREE.Mesh(geometry, material);
+            
+            node.position.x = (Math.random() - 0.5) * 40;
+            node.position.y = (Math.random() - 0.5) * 30;
+            node.position.z = (Math.random() - 0.5) * 20;
+            
+            nodes.push(node);
+            bgScene.add(node);
+        }
+
+        // Create connections
+        nodes.forEach((node, i) => {
+            const nearestNodes = nodes
+                .filter((n, j) => j !== i)
+                .sort((a, b) => node.position.distanceTo(a.position) - node.position.distanceTo(b.position))
+                .slice(0, 3);
+            
+            nearestNodes.forEach(target => {
+                const points = [node.position, target.position];
+                const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                const material = new THREE.LineBasicMaterial({
+                    color: 0xff0000,
+                    transparent: true,
+                    opacity: 0.2
+                });
+                const line = new THREE.Line(geometry, material);
+                connections.push(line);
+                bgScene.add(line);
+            });
+        });
+
+        // Animate neural network
+        const animateBg = () => {
+            nodes.forEach((node, i) => {
+                node.position.y += Math.sin(Date.now() * 0.001 + i) * 0.02;
+                node.material.opacity = 0.6 + Math.sin(Date.now() * 0.002 + i) * 0.3;
+            });
+            
+            bgRenderer.render(bgScene, bgCamera);
+            requestAnimationFrame(animateBg);
+        };
+        animateBg();
+
+        window.addEventListener('resize', () => {
+            bgRenderer.setSize(window.innerWidth, window.innerHeight);
+            bgCamera.aspect = window.innerWidth / window.innerHeight;
+            bgCamera.updateProjectionMatrix();
+        });
+
+        // Timeline animations
+        gsap.registerPlugin(ScrollTrigger);
+        
+        gsap.utils.toArray('.incident-item').forEach((item, i) => {
+            gsap.to(item, {
+                scrollTrigger: {
+                    trigger: item,
+                    start: 'top 80%',
+                    toggleClass: 'active'
+                }
+            });
+        });
+
+        // Chart.js Breakdown Chart
+        const ctx = document.getElementById('breakdownChart').getContext('2d');
+        const breakdownChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Ray',
+                    data: [12, 19, 15, 25, 22, 30, 24],
+                    borderColor: '#ff0000',
+                    backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                    tension: 0.4
+                }, {
+                    label: 'Berkeley',
+                    data: [15, 22, 18, 28, 25, 33, 27],
+                    borderColor: '#0066ff',
+                    backgroundColor: 'rgba(0, 102, 255, 0.1)',
+                    tension: 0.4
+                }, {
+                    label: 'Switz',
+                    data: [10, 15, 12, 20, 18, 25, 19],
+                    borderColor: '#666666',
+                    backgroundColor: 'rgba(102, 102, 102, 0.1)',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#ffffff' }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        ticks: { color: '#ffffff' }
+                    },
+                    y: {
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        ticks: { color: '#ffffff' }
+                    }
+                }
+            }
+        });
+
+        // Update stats randomly
+        setInterval(() => {
+            const todayElement = document.getElementById('todayIncidents');
+            const currentValue = parseInt(todayElement.textContent);
+            todayElement.textContent = currentValue + 1;
+            
+            // Flash effect
+            gsap.fromTo(todayElement, {
+                scale: 1.2,
+                color: '#ffffff'
+            }, {
+                scale: 1,
+                color: '#ff0000',
+                duration: 0.5
+            });
+            
+            // Randomly show live alert
+            if (Math.random() > 0.8) {
+                const liveAlert = document.getElementById('liveAlert');
+                liveAlert.style.display = 'flex';
+                setTimeout(() => {
+                    liveAlert.style.display = 'none';
+                }, 5000);
+            }
+        }, 30000); // Every 30 seconds
+
+        // Add new incident simulation
+        const addNewIncident = () => {
+            const anchors = ['Ray McPatriot', 'Berkeley Justice', 'Switz Middleton'];
+            const incidents = [
+                'Forgot how to pronounce own name',
+                'Discovered hands don\'t exist',
+                'Achieved 110% confusion',
+                'Spoke only in questions for 10 minutes',
+                'Claimed to taste colors',
+                'Insisted gravity is optional'
+            ];
+            
+            const randomAnchor = anchors[Math.floor(Math.random() * anchors.length)];
+            const randomIncident = incidents[Math.floor(Math.random() * incidents.length)];
+            
+            console.log(`NEW INCIDENT: ${randomAnchor} - ${randomIncident}`);
+        };
+
+        // Simulate new incidents
+        setInterval(addNewIncident, 60000); // Every minute
+    </script>
+
+    <!-- Load Hollywood Effects -->
+    <script src="scripts/hollywood-init.js"></script>
+    <script src="scripts/reality-glitch.js"></script>
 </body>
 </html>
