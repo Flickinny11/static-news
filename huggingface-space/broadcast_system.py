@@ -17,6 +17,7 @@ import re
 from typing import Dict, List, Optional, Tuple
 import hashlib
 import os
+import base64
 
 # Initialize models
 print("Loading models...")
@@ -609,6 +610,15 @@ def create_full_broadcast_loop():
                     # Trigger video generation for 50% of stories
                     if random.random() < 0.5 and article:
                         asyncio.create_task(trigger_video_generation(article, current_segment))
+                    
+                    # Trigger character video for 30% of stories
+                    if random.random() < 0.3:
+                        asyncio.create_task(trigger_character_video(
+                            broadcast_state.current_anchor,
+                            script,
+                            article,
+                            current_segment
+                        ))
                 
                 # Update context
                 broadcast_state.broadcast_context["previous_topic"] = article.get('category')
@@ -1163,6 +1173,15 @@ def create_full_broadcast_loop_sync():
                     # Trigger video generation for 50% of stories
                     if random.random() < 0.5 and article:
                         asyncio.create_task(trigger_video_generation(article, current_segment))
+                    
+                    # Trigger character video for 30% of stories
+                    if random.random() < 0.3:
+                        asyncio.create_task(trigger_character_video(
+                            broadcast_state.current_anchor,
+                            script,
+                            article,
+                            current_segment
+                        ))
                 
                 # Update context
                 broadcast_state.broadcast_context["previous_topic"] = article.get('category')
@@ -1257,3 +1276,63 @@ def generate_fallback_video_prompt(article: Dict, segment: NewsSegment) -> str:
     
     category = article.get('category', 'general')
     return prompts.get(category, "Professional news studio, anchor desk, broadcast graphics, dynamic camera movements")
+
+async def trigger_character_video(anchor: str, script: str, article: Dict, segment: NewsSegment):
+    """Trigger AI character video generation"""
+    try:
+        # Send character video request to website
+        character_request = {
+            'type': 'generate_character_video',
+            'anchor': anchor,
+            'text': script,
+            'article': article,
+            'segment': segment.name if segment else None,
+            'style': segment.style if segment else 'normal',
+            'priority': 'high' if any(word in script.lower() for word in ['breaking', 'urgent', 'error']) else 'normal'
+        }
+        
+        await send_websocket_update(character_request)
+        
+        # Also send audio segment if we have TTS audio
+        if broadcast_state.audio_queue.qsize() > 0:
+            try:
+                audio_data = broadcast_state.audio_queue.get_nowait()
+                if audio_data.get('audio') is not None:
+                    # Convert audio to base64 for transmission
+                    audio_base64 = np_array_to_base64(audio_data['audio'])
+                    
+                    audio_segment = {
+                        'type': 'audio_segment',
+                        'anchor': anchor,
+                        'text': script,
+                        'audio_data': audio_base64,
+                        'duration': len(audio_data['audio']) / 16000  # Assuming 16kHz
+                    }
+                    
+                    await send_websocket_update(audio_segment)
+                    
+                    # Put audio back in queue
+                    broadcast_state.audio_queue.put(audio_data)
+                    
+            except:
+                pass
+        
+    except Exception as e:
+        print(f"Character video trigger error: {e}")
+
+def np_array_to_base64(audio_array: np.ndarray) -> str:
+    """Convert numpy audio array to base64 string"""
+    try:
+        # Normalize to 16-bit PCM
+        audio_int16 = (audio_array * 32767).astype(np.int16)
+        
+        # Convert to bytes
+        audio_bytes = audio_int16.tobytes()
+        
+        # Encode to base64
+        import base64
+        return base64.b64encode(audio_bytes).decode('utf-8')
+        
+    except Exception as e:
+        print(f"Audio encoding error: {e}")
+        return ""
