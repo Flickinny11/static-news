@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Hub - Static.news | AI-Powered Comprehensive News Coverage</title>
+    <meta name="description" content="The most comprehensive news coverage powered by AI. Real news from everywhere, enhanced with AI insights.">
+    
+    <!-- Core Libraries -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200;300;400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- 3D and Animation Libraries -->
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- News System Scripts -->
+    <script src="scripts/news-aggregator.js"></script>
+    <script src="scripts/3d-weather-system.js"></script>
+    <script src="scripts/fix-navigation.js"></script>
+    
+    <!-- Hollywood Effects CSS -->
+    <link rel="stylesheet" href="styles/hollywood-effects.css">
+    
+    <style>
+        :root {
+            --static-red: #FF0000;
+            --static-darkred: #CC0000;
+            --static-black: #000000;
+            --static-white: #FFFFFF;
+            --static-grey: #1a1a1a;
+            --neon-glow: 0 0 20px rgba(255, 0, 0, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.5rem 3rem;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.95), rgba(0,0,0,0.8));
+            backdrop-filter: blur(20px);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: var(--static-red);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            text-shadow: var(--neon-glow);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-menu a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--static-red);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* News Hub Container */
+        .news-hub {
+            margin-top: 100px;
+            padding: 2rem;
+            max-width: 1600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--static-red) #333;
+        }
+
+        .category-tab {
+            padding: 0.8rem 1.5rem;
+            background: var(--static-grey);
+            border: 2px solid transparent;
+            border-radius: 30px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .category-tab:hover {
+            background: var(--static-darkred);
+            transform: translateY(-2px);
+        }
+
+        .category-tab.active {
+            background: var(--static-red);
+            border-color: var(--static-red);
+            box-shadow: var(--neon-glow);
+        }
+
+        /* News Grid */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Featured Section */
+        .featured-section {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .featured-main {
+            background: var(--static-grey);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            min-height: 400px;
+        }
+
+        .featured-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Article Card */
+        .article-card {
+            background: var(--static-grey);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article-content {
+            padding: 1.5rem;
+        }
+
+        .article-category {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: var(--static-red);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 0.8rem;
+            color: #fff;
+        }
+
+        .article-description {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #aaa;
+            margin-bottom: 1rem;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .article-source {
+            font-weight: 600;
+            color: var(--static-red);
+        }
+
+        .ai-generated {
+            background: linear-gradient(45deg, #ff0066, #6600ff);
+            padding: 0.2rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        /* Anchor Commentary */
+        .anchor-commentary {
+            background: rgba(255, 0, 0, 0.1);
+            border-left: 3px solid var(--static-red);
+            padding: 1rem;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        .anchor-name {
+            font-weight: 700;
+            color: var(--static-red);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            margin-bottom: 0.3rem;
+        }
+
+        /* Weather Widget */
+        .weather-widget {
+            background: var(--static-grey);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .weather-3d-container {
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .weather-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .zip-input {
+            padding: 0.8rem 1.2rem;
+            background: #000;
+            border: 2px solid var(--static-red);
+            border-radius: 25px;
+            color: #fff;
+            font-size: 1rem;
+            width: 150px;
+        }
+
+        .weather-btn {
+            padding: 0.8rem 1.5rem;
+            background: var(--static-red);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .weather-btn:hover {
+            transform: scale(1.05);
+            box-shadow: var(--neon-glow);
+        }
+
+        /* Loading States */
+        .news-loading {
+            text-align: center;
+            padding: 4rem;
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #333;
+            border-top-color: var(--static-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Subscribe Section */
+        .subscribe-section {
+            background: var(--static-grey);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .subscribe-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            color: var(--static-red);
+            margin-bottom: 1rem;
+        }
+
+        .subscribe-form {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .email-input {
+            padding: 1rem 1.5rem;
+            background: #000;
+            border: 2px solid var(--static-red);
+            border-radius: 30px;
+            color: #fff;
+            font-size: 1rem;
+            width: 300px;
+        }
+
+        .subscribe-btn {
+            padding: 1rem 2rem;
+            background: var(--static-red);
+            border: none;
+            border-radius: 30px;
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .subscribe-btn:hover {
+            transform: scale(1.05);
+            box-shadow: var(--neon-glow);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .featured-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .news-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .category-tabs {
+                gap: 0.5rem;
+            }
+            
+            .news-hub {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">STATIC</a>
+            <ul class="nav-menu">
+                <li><a href="live.html">LIVE TV</a></li>
+                <li><a href="news.html">NEWS</a></li>
+                <li><a href="anchors.html">ANCHORS</a></li>
+                <li><a href="shows.html">SHOWS</a></li>
+                <li><a href="incidents.html">INCIDENTS</a></li>
+                <li><a href="sponsors.html">SPONSORS</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="news-hub">
+        <!-- Category Tabs -->
+        <div class="category-tabs" id="categoryTabs">
+            <div class="category-tab active" data-category="breaking">BREAKING</div>
+            <div class="category-tab" data-category="world">WORLD</div>
+            <div class="category-tab" data-category="us">UNITED STATES</div>
+            <div class="category-tab" data-category="politics">POLITICS</div>
+            <div class="category-tab" data-category="technology">TECHNOLOGY</div>
+            <div class="category-tab" data-category="science">SCIENCE</div>
+            <div class="category-tab" data-category="business">BUSINESS</div>
+            <div class="category-tab" data-category="entertainment">ENTERTAINMENT</div>
+            <div class="category-tab" data-category="sports">SPORTS</div>
+            <div class="category-tab" data-category="health">HEALTH</div>
+            <div class="category-tab" data-category="ai">AI NEWS</div>
+        </div>
+
+        <!-- Weather Widget -->
+        <div class="weather-widget">
+            <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 2rem; margin-bottom: 1rem;">
+                INTERACTIVE 3D WEATHER FORECAST
+            </h2>
+            <div class="weather-3d-container" id="weatherContainer"></div>
+            <div class="weather-controls">
+                <input type="text" class="zip-input" id="zipInput" placeholder="ZIP Code" maxlength="5">
+                <button class="weather-btn" onclick="updateWeatherLocation()">UPDATE LOCATION</button>
+                <div id="weatherInfo" style="margin-left: auto; font-size: 1.1rem;"></div>
+            </div>
+        </div>
+
+        <!-- News Grid -->
+        <div class="news-grid" id="newsGrid">
+            <div class="news-loading">
+                <div class="loading-spinner"></div>
+                <p>Loading the most comprehensive news coverage...</p>
+            </div>
+        </div>
+
+        <!-- Subscribe Section -->
+        <div class="subscribe-section">
+            <h2 class="subscribe-title">NEVER MISS A BREAKDOWN</h2>
+            <p>Get AI-curated news delivered to your inbox. Warning: May cause existential crisis.</p>
+            <form class="subscribe-form" onsubmit="handleSubscribe(event)">
+                <input type="email" class="email-input" placeholder="your@email.com" required>
+                <button type="submit" class="subscribe-btn">SUBSCRIBE TO CHAOS</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Initialize News System
+        let newsAggregator;
+        let weatherSystem;
+        let currentCategory = 'breaking';
+
+        async function initializeNewsHub() {
+            // Initialize news aggregator
+            newsAggregator = new NewsAggregator();
+            await newsAggregator.initialize();
+            
+            // Initialize weather system
+            weatherSystem = new WeatherSystem3D('weatherContainer');
+            await weatherSystem.initialize();
+            
+            // Set up category tabs
+            setupCategoryTabs();
+            
+            // Listen for news updates
+            window.addEventListener('newsUpdated', handleNewsUpdate);
+            
+            // Display initial news
+            displayNews(currentCategory);
+        }
+
+        function setupCategoryTabs() {
+            const tabs = document.querySelectorAll('.category-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Update active state
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Load category news
+                    currentCategory = tab.dataset.category;
+                    displayNews(currentCategory);
+                });
+            });
+        }
+
+        function handleNewsUpdate(event) {
+            console.log('News updated:', event.detail);
+            if (currentCategory) {
+                displayNews(currentCategory);
+            }
+        }
+
+        function displayNews(category) {
+            const newsGrid = document.getElementById('newsGrid');
+            const articles = newsAggregator.getNewsByCategory(category);
+            
+            if (articles.length === 0) {
+                newsGrid.innerHTML = `
+                    <div class="news-loading">
+                        <p>No articles found in ${category}. Our AI anchors are investigating...</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Build news grid
+            let html = '';
+            
+            // Featured article for breaking news
+            if (category === 'breaking' && articles.length > 0) {
+                const featured = articles[0];
+                html += `
+                    <div class="featured-section">
+                        <div class="featured-main">
+                            ${createArticleCard(featured, true)}
+                        </div>
+                        <div class="featured-sidebar">
+                            ${articles.slice(1, 4).map(a => createArticleCard(a, false, true)).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                // Regular articles
+                articles.slice(4).forEach(article => {
+                    html += createArticleCard(article);
+                });
+            } else {
+                // All regular articles
+                articles.forEach(article => {
+                    html += createArticleCard(article);
+                });
+            }
+            
+            newsGrid.innerHTML = html;
+            
+            // Animate articles on load
+            gsap.from('.article-card', {
+                opacity: 0,
+                y: 50,
+                duration: 0.6,
+                stagger: 0.1,
+                ease: 'power3.out'
+            });
+        }
+
+        function createArticleCard(article, isFeatured = false, isCompact = false) {
+            const { title, description, source, publishedAt, category, type, anchorCommentary, formattedDate } = article;
+            
+            return `
+                <div class="article-card ${isFeatured ? 'featured' : ''}" onclick="openArticle('${article.url}')">
+                    ${!isCompact ? '<div class="article-image"></div>' : ''}
+                    <div class="article-content">
+                        <span class="article-category">${category}</span>
+                        ${type === 'ai-generated' ? '<span class="ai-generated">AI EXCLUSIVE</span>' : ''}
+                        <h3 class="article-title">${title}</h3>
+                        ${!isCompact ? `<p class="article-description">${description?.substring(0, 150)}...</p>` : ''}
+                        <div class="article-meta">
+                            <span class="article-source">${source}</span>
+                            <span>${formattedDate}</span>
+                        </div>
+                        ${anchorCommentary && Math.random() > 0.7 ? `
+                            <div class="anchor-commentary">
+                                <div class="anchor-name">${anchorCommentary.anchor.toUpperCase()} SAYS:</div>
+                                "${anchorCommentary.comment}"
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function openArticle(url) {
+            if (url && url !== '#') {
+                window.open(url, '_blank');
+            }
+        }
+
+        async function updateWeatherLocation() {
+            const zipInput = document.getElementById('zipInput');
+            const zip = zipInput.value.trim();
+            
+            if (zip.length === 5) {
+                await weatherSystem.changeLocation(zip);
+            }
+        }
+
+        function handleSubscribe(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+            
+            newsAggregator.subscribeUser(email, {
+                categories: ['breaking', currentCategory],
+                frequency: 'daily'
+            });
+            
+            // Show success message
+            event.target.innerHTML = '<p style="color: var(--static-red); font-size: 1.2rem;">✓ SUBSCRIBED TO THE CHAOS!</p>';
+        }
+
+        // Update weather info display
+        window.addEventListener('weatherUpdated', (event) => {
+            const data = event.detail;
+            const info = document.getElementById('weatherInfo');
+            info.innerHTML = `
+                <strong>${data.temperature}°F</strong> | 
+                ${data.condition.toUpperCase()} | 
+                Wind: ${data.windSpeed} mph
+            `;
+        });
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', initializeNewsHub);
+        
+        // Add smooth scrolling
+        gsap.registerPlugin(ScrollTrigger);
+    </script>
+</body>
+</html>

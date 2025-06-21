@@ -508,13 +508,14 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <a href="/" class="nav-logo">STATIC</a>
+            <a href="index.html" class="nav-logo">STATIC</a>
             <ul class="nav-menu">
-                <li><a href="/live.html">LIVE TV</a></li>
-                <li><a href="/anchors.html">ANCHORS</a></li>
-                <li><a href="/shows.html">SHOWS</a></li>
-                <li><a href="/incidents.html">INCIDENTS</a></li>
-                <li><a href="/sponsors.html">SPONSORS</a></li>
+                <li><a href="live.html">LIVE TV</a></li>
+                <li><a href="news.html">NEWS</a></li>
+                <li><a href="anchors.html">ANCHORS</a></li>
+                <li><a href="shows.html">SHOWS</a></li>
+                <li><a href="incidents.html">INCIDENTS</a></li>
+                <li><a href="sponsors.html">SPONSORS</a></li>
             </ul>
         </div>
     </nav>
@@ -750,29 +751,36 @@
     </section>
 
     <script>
-        // Initialize particles
+        // Initialize particles - subtle background effect
         particlesJS('particles-sponsors', {
             particles: {
-                number: { value: 50, density: { enable: true, value_area: 800 } },
-                color: { value: ['#FFD700', '#FFA500', '#00FF00'] },
+                number: { value: 30, density: { enable: true, value_area: 1200 } },
+                color: { value: ['#FFD700', '#FFA500'] },
                 shape: { type: 'circle' },
-                opacity: { value: 0.5, random: true },
-                size: { value: 4, random: true },
+                opacity: { value: 0.2, random: true, anim: { enable: true, speed: 0.5, opacity_min: 0.1 } },
+                size: { value: 2, random: true },
                 line_linked: {
-                    enable: true,
-                    distance: 150,
-                    color: '#FFD700',
-                    opacity: 0.2,
-                    width: 2
+                    enable: false
                 },
                 move: {
                     enable: true,
-                    speed: 2,
+                    speed: 0.5,
                     direction: 'top',
                     random: true,
-                    out_mode: 'out'
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false
                 }
-            }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: { enable: false },
+                    onclick: { enable: false },
+                    resize: true
+                }
+            },
+            retina_detect: true
         });
 
         // 3D Background Scene
