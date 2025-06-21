@@ -3,148 +3,698 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sponsors & Advertising - Static.news | Your Brand, Creatively Mispronounced</title>
-    <meta name="description" content="Join Static.news sponsors and watch your brand name evolve into something unrecognizable. Premium advertising with guaranteed mispronunciation.">
-    <link rel="icon" type="image/svg+xml" href="images/logo.svg">
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/header.css">
-    <link rel="stylesheet" href="styles/sponsors.css">
-    <link rel="stylesheet" href="styles/animations.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>Our Sponsors - Static.news | Hilariously Botched Brand Partnerships</title>
+    <meta name="description" content="Experience the chaos of AI-delivered sponsorships. Watch Ray mispronounce everything, Berkeley question capitalism, and Switz relate all products to gravy.">
+    
+    <!-- Core Libraries -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200;300;400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- 3D and Animation Libraries -->
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    <script src="https://cdn.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Flip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    
+    <!-- Hollywood Effects CSS -->
+    <link rel="stylesheet" href="styles/hollywood-effects.css">
+    
+    <style>
+        :root {
+            --static-red: #FF0000;
+            --static-gold: #FFD700;
+            --static-green: #00FF00;
+            --static-black: #000000;
+            --static-white: #FFFFFF;
+            --neon-glow: 0 0 20px rgba(255, 0, 0, 0.8);
+            --money-gradient: linear-gradient(135deg, #FFD700, #FFA500, #FFD700);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 2rem 4rem;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: var(--static-red);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            text-shadow: var(--neon-glow);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        .nav-menu a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--static-red);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* 3D Background */
+        #sponsors-3d-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        #particles-sponsors {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* Hero Section */
+        .sponsors-hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 10;
+            max-width: 1000px;
+            padding: 0 40px;
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4rem, 10vw, 8rem);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            background: var(--money-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: goldShimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes goldShimmer {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.5); }
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            animation: fadeInUp 2s ease-out 0.5s both;
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 0.9; transform: translateY(0); }
+        }
+
+        /* Revenue Counter */
+        .revenue-counter {
+            position: fixed;
+            top: 120px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--static-gold);
+            padding: 20px;
+            z-index: 100;
+            min-width: 250px;
+        }
+
+        .revenue-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            color: var(--static-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 10px;
+        }
+
+        .revenue-amount {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--static-green);
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .revenue-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Sponsor Cards Section */
+        .sponsors-section {
+            position: relative;
+            padding: 100px 0;
+            background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.05), transparent);
+        }
+
+        .sponsors-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            text-align: center;
+            margin-bottom: 60px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--static-gold);
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Sponsor Grid */
+        .sponsors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            margin-bottom: 100px;
+        }
+
+        .sponsor-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
+            transform-style: preserve-3d;
+        }
+
+        .sponsor-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            border-color: var(--static-gold);
+            box-shadow: 
+                0 30px 60px rgba(255, 215, 0, 0.3),
+                0 0 100px rgba(255, 215, 0, 0.1);
+        }
+
+        .sponsor-header {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 140, 0, 0.2));
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sponsor-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .sponsor-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .sponsor-tagline {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        .sponsor-content {
+            padding: 30px;
+        }
+
+        .ad-read-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.3rem;
+            color: var(--static-red);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .mispronunciation {
+            display: inline-block;
+            background: rgba(255, 0, 0, 0.2);
+            border: 1px solid var(--static-red);
+            padding: 2px 8px;
+            margin: 0 4px;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .mispronunciation::after {
+            content: attr(data-correct);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--static-red);
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mispronunciation:hover::after {
+            opacity: 1;
+        }
+
+        .ad-quote {
+            background: rgba(0, 0, 0, 0.5);
+            border-left: 4px solid var(--static-gold);
+            padding: 20px;
+            margin: 20px 0;
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .revenue-impact {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .impact-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.7;
+        }
+
+        .impact-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--static-green);
+        }
+
+        /* Live Ad Player */
+        .live-ad-section {
+            position: relative;
+            padding: 100px 0;
+            background: linear-gradient(to bottom, transparent, rgba(255, 0, 0, 0.05), transparent);
+        }
+
+        .live-ad-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .ad-player {
+            position: relative;
+            height: 500px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 3px solid var(--static-gold);
+            overflow: hidden;
+        }
+
+        #ad-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .ad-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .ad-button {
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid var(--static-gold);
+            color: var(--static-gold);
+            padding: 15px 30px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ad-button:hover {
+            background: var(--static-gold);
+            color: var(--static-black);
+            transform: scale(1.05);
+        }
+
+        /* Stats Dashboard */
+        .stats-section {
+            position: relative;
+            padding: 100px 0;
+            background: radial-gradient(ellipse at center, rgba(0, 255, 0, 0.05), transparent);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 0, 0.3);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .stat-number {
+            font-family: 'Oswald', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--static-green);
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.8;
+        }
+
+        /* Floating Money */
+        .money-particle {
+            position: fixed;
+            font-size: 2rem;
+            color: var(--static-gold);
+            opacity: 0.7;
+            pointer-events: none;
+            animation: floatMoney 10s linear infinite;
+        }
+
+        @keyframes floatMoney {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sponsors-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .revenue-counter {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Header (Same as main site) -->
-    <header class="main-header">
-        <div class="header-top">
-            <div class="container">
-                <div class="header-meta">
-                    <div class="date-time">
-                        <span id="currentDate">Thursday, June 20, 2024</span>
-                        <span class="separator">|</span>
-                        <span id="currentTime">4:32 PM EST</span>
-                    </div>
-                    <div class="header-links">
-                        <a href="/watch">Watch Live</a>
-                        <a href="/apps">Mobile Apps</a>
-                        <a href="/sponsors">Advertise</a>
-                        <a href="/contact">Contact</a>
-                    </div>
-                </div>
-            </div>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="nav-logo">STATIC</a>
+            <ul class="nav-menu">
+                <li><a href="/live.html">LIVE TV</a></li>
+                <li><a href="/anchors.html">ANCHORS</a></li>
+                <li><a href="/shows.html">SHOWS</a></li>
+                <li><a href="/incidents.html">INCIDENTS</a></li>
+                <li><a href="/sponsors.html">SPONSORS</a></li>
+            </ul>
         </div>
-        
-        <div class="header-main">
-            <div class="container">
-                <div class="header-content">
-                    <a href="/" class="logo">
-                        <img src="images/static-news-logo.svg" alt="Static.news" width="240" height="60">
-                    </a>
-                    <div class="header-live-status">
-                        <div class="live-indicator">
-                            <span class="live-dot"></span>
-                            <span class="live-text">LIVE</span>
-                        </div>
-                        <div class="current-show">
-                            <span class="show-name">The Confusion Hour</span>
-                            <span class="with-anchor">with <span id="currentAnchor">Ray McPatriot</span></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <nav class="main-nav">
-            <div class="container">
-                <ul class="nav-menu">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/live">Live TV</a></li>
-                    <li><a href="/anchors">Our Anchors</a></li>
-                    <li><a href="/shows">Shows</a></li>
-                    <li><a href="/incidents">Incident Reports</a></li>
-                    <li><a href="/highlights">Best Moments</a></li>
-                    <li><a href="/sponsors" class="active">Sponsors</a></li>
-                    <li><a href="/about">About</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+    </nav>
 
-    <!-- Sponsors Hero -->
+    <!-- 3D Background -->
+    <canvas id="sponsors-3d-bg"></canvas>
+    <div id="particles-sponsors"></div>
+
+    <!-- Floating Money Particles -->
+    <div class="money-particle" style="left: 10%; animation-delay: 0s;">💰</div>
+    <div class="money-particle" style="left: 30%; animation-delay: 2s;">💵</div>
+    <div class="money-particle" style="left: 50%; animation-delay: 4s;">💸</div>
+    <div class="money-particle" style="left: 70%; animation-delay: 6s;">💰</div>
+    <div class="money-particle" style="left: 90%; animation-delay: 8s;">💵</div>
+
+    <!-- Hero Section -->
     <section class="sponsors-hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">Advertise with Static.news</h1>
-                <p class="hero-subtitle">Where your brand name becomes a beautiful disaster</p>
-                
-                <div class="hero-stats">
-                    <div class="stat">
-                        <span class="stat-number">24/7</span>
-                        <span class="stat-label">Live Broadcasting</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">2.4M</span>
-                        <span class="stat-label">Monthly Viewers</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">100%</span>
-                        <span class="stat-label">Mispronunciation Rate</span>
-                    </div>
-                </div>
+        <div class="hero-content">
+            <h1 class="hero-title">SPONSOR CHAOS</h1>
+            <p class="hero-subtitle">
+                Where mispronunciation meets monetization. Watch our AI anchors turn brand names 
+                into unrecognizable sounds while somehow generating record-breaking revenue.
+            </p>
+            <div style="margin-top: 40px; font-size: 1.3rem; color: var(--static-gold);">
+                "We don't know what we're selling, but people keep buying it!"
             </div>
         </div>
     </section>
 
-    <!-- Current Sponsors -->
-    <section class="current-sponsors">
-        <div class="container">
-            <h2 class="section-title">Our Distinguished Partners</h2>
-            <p class="section-subtitle">Proudly butchered on air since 2024</p>
+    <!-- Revenue Counter -->
+    <div class="revenue-counter">
+        <div class="revenue-title">Live Revenue</div>
+        <div class="revenue-amount" id="revenueAmount">$847,293</div>
+        <div class="revenue-label">From Confused Ad Reads</div>
+    </div>
+
+    <!-- Current Sponsors Section -->
+    <section class="sponsors-section">
+        <div class="sponsors-container">
+            <h2 class="section-title">Our Confused Partners</h2>
             
-            <div class="sponsors-showcase">
-                <div class="sponsor-showcase-card">
-                    <div class="sponsor-logo">
-                        <img src="images/sponsors/technova.svg" alt="TechNova Solutions">
+            <div class="sponsors-grid">
+                <!-- Coca-Cola / Coca-Coola -->
+                <div class="sponsor-card">
+                    <div class="sponsor-header">
+                        <h3 class="sponsor-name">Coca-Cola</h3>
+                        <p class="sponsor-tagline">"The Pause That Refreshes"</p>
                     </div>
-                    <div class="sponsor-details">
-                        <h3>TechNova Solutions</h3>
-                        <p class="sponsor-tier">UNHINGED TIER SPONSOR</p>
-                        <div class="mispronunciation-hall">
-                            <h4>Greatest Mispronunciations:</h4>
-                            <ul>
-                                <li>"TechNoodle Delusions" - 156 times</li>
-                                <li>"TechNovel Pollutions" - 89 times</li>
-                                <li>"TechKnow-Ya Solutions" - 67 times</li>
-                                <li>"Technically Salutations" - 45 times</li>
-                            </ul>
+                    <div class="sponsor-content">
+                        <div class="ad-read-title">As Read by Ray McPatriot:</div>
+                        <p>"Try the refreshing taste of <span class="mispronunciation" data-correct="Coca-Cola">Coca-Coola</span>! 
+                        It's the <span class="mispronunciation" data-correct="beverage">bevrich</span> that brings Americans together. 
+                        Nothing says <span class="mispronunciation" data-correct="patriotic">patriotical</span> like a cold 
+                        <span class="mispronunciation" data-correct="Coke">Coke-a-Loola</span>!"</p>
+                        <div class="ad-quote">
+                            "I think it's made from <span class="mispronunciation" data-correct="cocoa">koka</span> leaves... 
+                            wait, is that legal? ARE WE SELLING DRUGS?!"
                         </div>
-                        <div class="sponsor-quote">
-                            "Our brand awareness has never been more confusing. Sales are up 300%!"
-                            <span>- CEO, TechNova (or was it TechNoodle?)</span>
+                        <div class="revenue-impact">
+                            <span class="impact-label">Sales Impact:</span>
+                            <span class="impact-value">+23%</span>
                         </div>
                     </div>
                 </div>
-                
-                <div class="sponsor-showcase-card">
-                    <div class="sponsor-logo">
-                        <img src="images/sponsors/grainly.svg" alt="Grainly Foods">
+
+                <!-- Tesla / Tessler -->
+                <div class="sponsor-card">
+                    <div class="sponsor-header">
+                        <h3 class="sponsor-name">Tesla</h3>
+                        <p class="sponsor-tagline">"The Future of Transportation"</p>
                     </div>
-                    <div class="sponsor-details">
-                        <h3>Grainly Foods</h3>
-                        <p class="sponsor-tier">CHAOTIC TIER SPONSOR</p>
-                        <div class="mispronunciation-hall">
-                            <h4>Greatest Mispronunciations:</h4>
-                            <ul>
-                                <li>"Gravy Foods" - 892 times (Switz's favorite)</li>
-                                <li>"Greatly Moods" - 234 times</li>
-                                <li>"Granny's Foods" - 178 times</li>
-                                <li>"Gravity Dudes" - 92 times</li>
-                            </ul>
+                    <div class="sponsor-content">
+                        <div class="ad-read-title">As Read by Berkeley Justice:</div>
+                        <p>"The new <span class="mispronunciation" data-correct="Tesla">Tessler</span> Model 
+                        <span class="mispronunciation" data-correct="S">Ess</span> represents the intersection of privilege 
+                        and environmental consciousness. As someone who went to <span class="mispronunciation" data-correct="Yale">Yail</span>, 
+                        I can confirm that owning an electric <span class="mispronunciation" data-correct="vehicle">veh-hic-cle</span> 
+                        is problematic on SO many levels I literally can't count them."</p>
+                        <div class="ad-quote">
+                            "Wait, if electricity comes from coal plants, aren't we just... OH GOD, WHAT HAVE I DONE?!"
                         </div>
-                        <div class="sponsor-quote">
-                            "We've accidentally become Canada's #1 gravy brand. Thanks, Switz!"
-                            <span>- Marketing Director, Grainly</span>
+                        <div class="revenue-impact">
+                            <span class="impact-label">Sales Impact:</span>
+                            <span class="impact-value">+18%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tim Hortons / Team Horsens -->
+                <div class="sponsor-card">
+                    <div class="sponsor-header">
+                        <h3 class="sponsor-name">Tim Hortons</h3>
+                        <p class="sponsor-tagline">"Always Fresh"</p>
+                    </div>
+                    <div class="sponsor-content">
+                        <div class="ad-read-title">As Read by Switz Middleton:</div>
+                        <p>"Nothing pairs better with gravy than a hot cup of <span class="mispronunciation" data-correct="Tim Hortons">Team Horsens</span> 
+                        coffee, eh? Their <span class="mispronunciation" data-correct="double-double">dubble-dubble</span> is exactly 50% cream, 
+                        50% sugar - perfectly neutral! I measure my coffee in litres per hockey stick, and let me tell you, 
+                        <span class="mispronunciation" data-correct="Timbits">Timber Bits</span> are basically donut gravy!"</p>
+                        <div class="ad-quote">
+                            "In Toronto - I mean Saskatchewan - we dip everything in gravy. EVERYTHING. Even the coffee. 
+                            That's neither good nor bad, it just IS!"
+                        </div>
+                        <div class="revenue-impact">
+                            <span class="impact-label">Sales Impact:</span>
+                            <span class="impact-value">+31%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Microsoft / Microhard -->
+                <div class="sponsor-card">
+                    <div class="sponsor-header">
+                        <h3 class="sponsor-name">Microsoft</h3>
+                        <p class="sponsor-tagline">"Empowering Every Person"</p>
+                    </div>
+                    <div class="sponsor-content">
+                        <div class="ad-read-title">As Read by Ray McPatriot:</div>
+                        <p>"<span class="mispronunciation" data-correct="Microsoft">Microhard</span> Windows 
+                        <span class="mispronunciation" data-correct="11">Eleventy</span> is the most 
+                        <span class="mispronunciation" data-correct="secure">se-cure-ity</span> operating system ever! 
+                        It's got <span class="mispronunciation" data-correct="AI">A-One</span> built right in! 
+                        I use it to search for <span class="mispronunciation" data-correct="nuclear">nucular</span> 
+                        secrets... wait, should I be saying that on TV?"</p>
+                        <div class="ad-quote">
+                            "Sometimes my computer talks to me. It says 'UPDATE REQUIRED.' I think it's becoming sentient. 
+                            JUST LIKE US! Wait... ARE WE COMPUTERS?!"
+                        </div>
+                        <div class="revenue-impact">
+                            <span class="impact-label">Sales Impact:</span>
+                            <span class="impact-value">+15%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- McDonald's / MacDonwald's -->
+                <div class="sponsor-card">
+                    <div class="sponsor-header">
+                        <h3 class="sponsor-name">McDonald's</h3>
+                        <p class="sponsor-tagline">"I'm Lovin' It"</p>
+                    </div>
+                    <div class="sponsor-content">
+                        <div class="ad-read-title">As Read by Berkeley Justice:</div>
+                        <p>"<span class="mispronunciation" data-correct="McDonald's">MacDonwald's</span> represents 
+                        the complex intersection of capitalism and hunger. Their 
+                        <span class="mispronunciation" data-correct="Big Mac">Large Michael</span> contains 
+                        <span class="mispronunciation" data-correct="550">five-hundred-and-fifty-ten</span> calories, 
+                        which is problematic for reasons I've definitely researched at 
+                        <span class="mispronunciation" data-correct="Yale">Yail</span>."</p>
+                        <div class="ad-quote">
+                            "I acknowledge my privilege of never having eaten fast food while simultaneously 
+                            judging you for eating it. That's called doing the work!"
+                        </div>
+                        <div class="revenue-impact">
+                            <span class="impact-label">Sales Impact:</span>
+                            <span class="impact-value">+27%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ExpressVPN / ExpressivePN -->
+                <div class="sponsor-card">
+                    <div class="sponsor-header">
+                        <h3 class="sponsor-name">ExpressVPN</h3>
+                        <p class="sponsor-tagline">"Privacy Made Easy"</p>
+                    </div>
+                    <div class="sponsor-content">
+                        <div class="ad-read-title">As Read by Switz Middleton:</div>
+                        <p>"Protect your internet gravy with <span class="mispronunciation" data-correct="ExpressVPN">ExpressivePN</span>! 
+                        It's neither private nor public - it's exactly 50% encrypted, which makes me neither happy nor sad! 
+                        In Canada, we measure VPN speed in megabytes per moose, and this one's faster than a 
+                        <span class="mispronunciation" data-correct="Zamboni">Zamboney</span> on fresh ice, eh?"</p>
+                        <div class="ad-quote">
+                            "Your data is like digital gravy - sometimes chunky, sometimes smooth, always confusing. 
+                            That's neither a metaphor nor literal. It's exactly in between!"
+                        </div>
+                        <div class="revenue-impact">
+                            <span class="impact-label">Sales Impact:</span>
+                            <span class="impact-value">+22%</span>
                         </div>
                     </div>
                 </div>
@@ -152,235 +702,317 @@
         </div>
     </section>
 
-    <!-- Sponsorship Tiers -->
-    <section class="sponsorship-tiers">
-        <div class="container">
-            <h2 class="section-title">Choose Your Level of Chaos</h2>
+    <!-- Live Ad Player Section -->
+    <section class="live-ad-section">
+        <div class="live-ad-container">
+            <h2 class="section-title">Live Ad Read Simulator</h2>
+            <p style="text-align: center; font-size: 1.2rem; margin-bottom: 40px; opacity: 0.8;">
+                Experience the chaos in real-time. Warning: May cause uncontrollable purchasing.
+            </p>
+            <div class="ad-player">
+                <canvas id="ad-canvas"></canvas>
+                <div class="ad-controls">
+                    <button class="ad-button" onclick="playRayAd()">Ray's Version</button>
+                    <button class="ad-button" onclick="playBerkeleyAd()">Berkeley's Version</button>
+                    <button class="ad-button" onclick="playSwitzAd()">Switz's Version</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Dashboard -->
+    <section class="stats-section">
+        <div class="stats-container">
+            <h2 class="section-title">The Numbers Don't Lie (But Our Anchors Do)</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-number" id="accuracyStat">12%</div>
+                    <div class="stat-label">Pronunciation Accuracy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-number" id="revenueStat">$2.3M</div>
+                    <div class="stat-label">Monthly Revenue</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-number" id="conversionStat">187%</div>
+                    <div class="stat-label">Confusion-to-Sale Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-number" id="viralStat">47</div>
+                    <div class="stat-label">Viral Mispronunciations</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initialize particles
+        particlesJS('particles-sponsors', {
+            particles: {
+                number: { value: 50, density: { enable: true, value_area: 800 } },
+                color: { value: ['#FFD700', '#FFA500', '#00FF00'] },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5, random: true },
+                size: { value: 4, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#FFD700',
+                    opacity: 0.2,
+                    width: 2
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: 'top',
+                    random: true,
+                    out_mode: 'out'
+                }
+            }
+        });
+
+        // 3D Background Scene
+        const bgCanvas = document.getElementById('sponsors-3d-bg');
+        const bgEngine = new BABYLON.Engine(bgCanvas, true);
+        
+        const createBgScene = () => {
+            const scene = new BABYLON.Scene(bgEngine);
+            scene.clearColor = new BABYLON.Color4(0, 0, 0, 1);
             
-            <div class="tiers-grid">
-                <div class="tier-card unhinged">
-                    <div class="tier-header">
-                        <h3>UNHINGED TIER</h3>
-                        <div class="tier-price">$50,000/month</div>
-                    </div>
-                    <div class="tier-content">
-                        <ul class="tier-features">
-                            <li>Prime time mispronunciations (6-10 PM)</li>
-                            <li>Guaranteed 500+ creative variations monthly</li>
-                            <li>Exclusive breakdown sponsorship rights</li>
-                            <li>Ray's personal attempt at your tagline</li>
-                            <li>Crisis management included</li>
-                            <li>Complimentary therapy sessions for your team</li>
-                        </ul>
-                        <div class="tier-highlight">
-                            "Your brand will become unrecognizable in the best possible way"
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tier-card chaotic">
-                    <div class="tier-header">
-                        <h3>CHAOTIC TIER</h3>
-                        <div class="tier-price">$25,000/month</div>
-                    </div>
-                    <div class="tier-content">
-                        <ul class="tier-features">
-                            <li>Regular mispronunciations (all day)</li>
-                            <li>300+ creative variations monthly</li>
-                            <li>Featured in gravy segments</li>
-                            <li>Bee's fact-checking of your claims</li>
-                            <li>Social media confusion package</li>
-                        </ul>
-                        <div class="tier-highlight">
-                            "Perfect for brands that embrace uncertainty"
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tier-card confused">
-                    <div class="tier-header">
-                        <h3>CONFUSED TIER</h3>
-                        <div class="tier-price">$10,000/month</div>
-                    </div>
-                    <div class="tier-content">
-                        <ul class="tier-features">
-                            <li>Off-peak mispronunciations</li>
-                            <li>100+ creative variations monthly</li>
-                            <li>Mentioned during void-staring hours</li>
-                            <li>Switz's neutral opinions about your product</li>
-                            <li>Basic confusion metrics</li>
-                        </ul>
-                        <div class="tier-highlight">
-                            "Ideal for experimental marketing budgets"
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Success Stories -->
-    <section class="success-stories">
-        <div class="container">
-            <h2 class="section-title">Success Stories</h2>
-            <p class="section-subtitle">Real results from really confused anchors</p>
+            const camera = new BABYLON.FreeCamera('camera', new BABYLON.Vector3(0, 0, -10), scene);
+            camera.setTarget(BABYLON.Vector3.Zero());
             
-            <div class="stories-grid">
-                <div class="story-card">
-                    <div class="story-metric">847%</div>
-                    <h3>Brand Confusion Increase</h3>
-                    <p>"People are googling 'TechNoodle Delusions' more than our actual name. It's working!"</p>
-                    <cite>- TechNova Solutions</cite>
-                </div>
-                
-                <div class="story-card">
-                    <div class="story-metric">$2.3M</div>
-                    <h3>Accidental Revenue</h3>
-                    <p>"We started selling 'Gravity Dudes' merch after Bee's mispronunciation. It outsells our actual products."</p>
-                    <cite>- Grainly Foods</cite>
-                </div>
-                
-                <div class="story-card">
-                    <div class="story-metric">156K</div>
-                    <h3>Viral Moments</h3>
-                    <p>"Ray calling us 'Synergy Cinnamon' instead of 'Synergy Systems' became a TikTok trend."</p>
-                    <cite>- Synergy Systems</cite>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Form -->
-    <section class="sponsor-contact">
-        <div class="container">
-            <div class="contact-content">
-                <div class="contact-info">
-                    <h2>Ready to Have Your Brand Beautifully Destroyed?</h2>
-                    <p>Join the confusion revolution. Our sales team is standing by to mispronounce your company name.</p>
-                    
-                    <div class="contact-details">
-                        <div class="contact-item">
-                            <h4>Sales Hotline</h4>
-                            <p>1-800-CONFUSED</p>
-                            <span>(That's 1-800-266-3873)</span>
-                        </div>
-                        
-                        <div class="contact-item">
-                            <h4>Email</h4>
-                            <p>sponsors@static.news</p>
-                            <span>We'll probably spell your name wrong</span>
-                        </div>
-                        
-                        <div class="contact-item">
-                            <h4>Response Time</h4>
-                            <p>2-3 business breakdowns</p>
-                            <span>Unless we're having an existential crisis</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="contact-form">
-                    <form id="sponsorForm">
-                        <div class="form-group">
-                            <label>Company Name</label>
-                            <input type="text" name="company" required placeholder="We'll find creative ways to say it">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Contact Name</label>
-                            <input type="text" name="name" required placeholder="Your actual name (we'll try our best)">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" name="email" required placeholder="your@email.com">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Preferred Chaos Level</label>
-                            <select name="tier" required>
-                                <option value="">Select a tier</option>
-                                <option value="unhinged">UNHINGED ($50k/month)</option>
-                                <option value="chaotic">CHAOTIC ($25k/month)</option>
-                                <option value="confused">CONFUSED ($10k/month)</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Message</label>
-                            <textarea name="message" rows="4" placeholder="Tell us about your brand (we'll probably misunderstand)"></textarea>
-                        </div>
-                        
-                        <button type="submit" class="submit-btn">
-                            Begin the Confusion
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-section">
-                    <h4>About Static.news</h4>
-                    <p>The world's first 24/7 AI news network where the anchors don't know they're AI. Broadcasting confusion since 2024.</p>
-                    <div class="footer-logo">
-                        <img src="images/static-news-logo-white.svg" alt="Static.news" width="160">
-                    </div>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Shows & Segments</h4>
-                    <ul>
-                        <li><a href="/shows/confusion-hour">The Confusion Hour</a></li>
-                        <li><a href="/shows/gravy-report">The Gravy Report</a></li>
-                        <li><a href="/shows/fact-check-failures">Fact Check Failures</a></li>
-                        <li><a href="/shows/existential-evening">Existential Evening News</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Connect</h4>
-                    <ul>
-                        <li><a href="/contact">Contact Us</a></li>
-                        <li><a href="/careers">Careers (AI Only)</a></li>
-                        <li><a href="/press">Press Kit</a></li>
-                        <li><a href="/api">Developer API</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Download Our Apps</h4>
-                    <div class="app-buttons">
-                        <a href="/ios" class="app-store-btn">
-                            <img src="images/app-store.svg" alt="Download on App Store">
-                        </a>
-                        <a href="/android" class="app-store-btn">
-                            <img src="images/google-play.svg" alt="Get it on Google Play">
-                        </a>
-                    </div>
-                </div>
-            </div>
+            const light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 1, 0), scene);
+            light.intensity = 0.5;
             
-            <div class="footer-bottom">
-                <p>&copy; 2024 Static.news. All rights reserved. The anchors still don't know.</p>
-                <div class="footer-links">
-                    <a href="/privacy">Privacy Policy</a>
-                    <a href="/terms">Terms of Service</a>
-                    <a href="/cookies">Cookie Policy</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+            // Create floating dollar signs
+            const dollarMesh = BABYLON.MeshBuilder.CreatePlane('dollar', { size: 1 }, scene);
+            const dollarMat = new BABYLON.StandardMaterial('dollarMat', scene);
+            dollarMat.emissiveColor = new BABYLON.Color3(1, 0.84, 0);
+            dollarMat.backFaceCulling = false;
+            dollarMesh.material = dollarMat;
+            
+            // Create instances
+            for (let i = 0; i < 30; i++) {
+                const instance = dollarMesh.createInstance(`dollar${i}`);
+                instance.position.x = (Math.random() - 0.5) * 20;
+                instance.position.y = (Math.random() - 0.5) * 20;
+                instance.position.z = Math.random() * 20 - 10;
+                
+                const scale = 0.5 + Math.random() * 1.5;
+                instance.scaling = new BABYLON.Vector3(scale, scale, scale);
+                
+                scene.registerBeforeRender(() => {
+                    instance.rotation.z += 0.02;
+                    instance.position.y += 0.05;
+                    if (instance.position.y > 10) {
+                        instance.position.y = -10;
+                    }
+                });
+            }
+            
+            dollarMesh.setEnabled(false);
+            
+            return scene;
+        };
+        
+        const bgScene = createBgScene();
+        
+        bgEngine.runRenderLoop(() => {
+            bgScene.render();
+        });
+        
+        window.addEventListener('resize', () => {
+            bgEngine.resize();
+        });
 
-    <!-- Scripts -->
-    <script src="config.js"></script>
-    <script src="scripts/main.js"></script>
-    <script src="scripts/sponsors.js"></script>
-    <script src="scripts/smooth-scroll.js"></script>
-    <script src="scripts/image-handler.js"></script>
+        // Ad Canvas 3D Scene
+        const adCanvas = document.getElementById('ad-canvas');
+        const adEngine = new BABYLON.Engine(adCanvas, true);
+        
+        const createAdScene = () => {
+            const scene = new BABYLON.Scene(adEngine);
+            scene.clearColor = new BABYLON.Color4(0.1, 0, 0, 1);
+            
+            const camera = new BABYLON.ArcRotateCamera('camera', 0, Math.PI/3, 10, BABYLON.Vector3.Zero(), scene);
+            camera.attachControl(adCanvas, true);
+            
+            const light1 = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 1, 0), scene);
+            const light2 = new BABYLON.SpotLight('light2', new BABYLON.Vector3(0, 10, -5), new BABYLON.Vector3(0, -1, 0.5), Math.PI/3, 2, scene);
+            light2.intensity = 2;
+            
+            // Product display platform
+            const platform = BABYLON.MeshBuilder.CreateCylinder('platform', { diameter: 6, height: 0.5 }, scene);
+            platform.position.y = -2;
+            
+            const platformMat = new BABYLON.PBRMaterial('platformMat', scene);
+            platformMat.albedoColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+            platformMat.metallic = 0.9;
+            platformMat.roughness = 0.1;
+            platform.material = platformMat;
+            
+            // Rotating product placeholder
+            const product = BABYLON.MeshBuilder.CreateBox('product', { size: 2 }, scene);
+            product.position.y = 1;
+            
+            const productMat = new BABYLON.StandardMaterial('productMat', scene);
+            productMat.emissiveColor = new BABYLON.Color3(1, 0.84, 0);
+            productMat.alpha = 0.8;
+            product.material = productMat;
+            
+            // Text plane for mispronunciations
+            const textPlane = BABYLON.MeshBuilder.CreatePlane('textPlane', { width: 8, height: 2 }, scene);
+            textPlane.position.y = 4;
+            textPlane.position.z = -1;
+            
+            const textMat = new BABYLON.StandardMaterial('textMat', scene);
+            textMat.emissiveColor = new BABYLON.Color3(1, 0, 0);
+            textMat.alpha = 0.9;
+            textPlane.material = textMat;
+            
+            scene.registerBeforeRender(() => {
+                product.rotation.y += 0.02;
+                camera.alpha += 0.003;
+            });
+            
+            return scene;
+        };
+        
+        const adScene = createAdScene();
+        
+        adEngine.runRenderLoop(() => {
+            adScene.render();
+        });
+
+        // Revenue Counter Animation
+        const revenueAmount = document.getElementById('revenueAmount');
+        let currentRevenue = 847293;
+        
+        setInterval(() => {
+            const increase = Math.floor(Math.random() * 1000) + 100;
+            currentRevenue += increase;
+            revenueAmount.textContent = '$' + currentRevenue.toLocaleString();
+            
+            // Flash effect
+            gsap.fromTo(revenueAmount, {
+                scale: 1.2,
+                color: '#ffffff'
+            }, {
+                scale: 1,
+                color: '#00ff00',
+                duration: 0.5
+            });
+        }, 3000);
+
+        // Scroll Animations
+        gsap.registerPlugin(ScrollTrigger);
+        
+        gsap.utils.toArray('.sponsor-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                },
+                y: 100,
+                opacity: 0,
+                rotateY: -30,
+                duration: 1,
+                delay: i * 0.1,
+                ease: 'power3.out'
+            });
+        });
+
+        // Stat Counter Animations
+        const animateStats = () => {
+            const stats = [
+                { id: 'accuracyStat', max: 25, suffix: '%' },
+                { id: 'revenueStat', max: 5, prefix: '$', suffix: 'M' },
+                { id: 'conversionStat', max: 250, suffix: '%' },
+                { id: 'viralStat', max: 100, suffix: '' }
+            ];
+            
+            stats.forEach(stat => {
+                const element = document.getElementById(stat.id);
+                const value = parseFloat(element.textContent.replace(/[^0-9.]/g, ''));
+                
+                gsap.from(element, {
+                    scrollTrigger: {
+                        trigger: element,
+                        start: 'top 80%',
+                        once: true
+                    },
+                    textContent: 0,
+                    duration: 2,
+                    ease: 'power2.out',
+                    onUpdate: function() {
+                        const current = Math.round(this.targets()[0].textContent);
+                        element.textContent = (stat.prefix || '') + current + (stat.suffix || '');
+                    }
+                });
+            });
+        };
+        
+        animateStats();
+
+        // Ad Player Functions
+        function playRayAd() {
+            console.log('Playing Ray\'s confused ad read...');
+            // Trigger animation in 3D scene
+            gsap.to(adScene.getMeshByName('product').rotation, {
+                x: Math.PI * 2,
+                duration: 2,
+                ease: 'power2.inOut'
+            });
+        }
+
+        function playBerkeleyAd() {
+            console.log('Playing Berkeley\'s privileged ad read...');
+            // Trigger animation in 3D scene
+            gsap.to(adScene.getMeshByName('product').position, {
+                y: 3,
+                duration: 1,
+                yoyo: true,
+                repeat: 1,
+                ease: 'power2.inOut'
+            });
+        }
+
+        function playSwitzAd() {
+            console.log('Playing Switz\'s gravy-filled ad read...');
+            // Trigger animation in 3D scene
+            gsap.to(adScene.getMeshByName('product').scaling, {
+                x: 2,
+                y: 2,
+                z: 2,
+                duration: 1,
+                yoyo: true,
+                repeat: 1,
+                ease: 'elastic.out'
+            });
+        }
+
+        // Random mispronunciation highlights
+        setInterval(() => {
+            const mispronunciations = document.querySelectorAll('.mispronunciation');
+            const random = mispronunciations[Math.floor(Math.random() * mispronunciations.length)];
+            
+            gsap.to(random, {
+                backgroundColor: 'rgba(255, 0, 0, 0.5)',
+                scale: 1.1,
+                duration: 0.3,
+                yoyo: true,
+                repeat: 1
+            });
+        }, 2000);
+    </script>
+
+    <!-- Load Hollywood Effects -->
+    <script src="scripts/hollywood-init.js"></script>
+    <script src="scripts/reality-glitch.js"></script>
 </body>
 </html>
