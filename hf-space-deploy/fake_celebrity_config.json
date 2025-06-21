@@ -1,0 +1,241 @@
+{
+  "celebrities": {
+    "tom_crews": {
+      "real_name": "Tom Cruise",
+      "fake_name": "Tom Crews",
+      "description": "Action star who does his own stunts (badly)",
+      "appearance": {
+        "height": "claims 6'2\" but clearly 5'4\"",
+        "hair": "suspiciously perfect toupee",
+        "distinguishing": "runs everywhere for no reason",
+        "outfit": "leather jacket in summer"
+      },
+      "voice": {
+        "pitch": 1.3,
+        "speed": 1.4,
+        "style": "overly intense about everything",
+        "catchphrase": "I do all my own stunts! *limps*"
+      },
+      "interview_quirks": [
+        "Jumps on furniture",
+        "Mentions stunts every 30 seconds",
+        "Intense eye contact with wrong camera",
+        "Randomly sprints off screen"
+      ]
+    },
+    "taylor_quick": {
+      "real_name": "Taylor Swift",
+      "fake_name": "Taylor Quick",
+      "description": "Pop star who writes songs about everyone",
+      "appearance": {
+        "height": "varies mysteriously",
+        "hair": "different color each appearance",
+        "distinguishing": "carries guitar she cant play",
+        "outfit": "sequins at inappropriate times"
+      },
+      "voice": {
+        "pitch": 1.1,
+        "speed": 1.0,
+        "style": "speaks only in song lyrics",
+        "catchphrase": "This interview is gonna be a song!"
+      },
+      "interview_quirks": [
+        "Names random exes",
+        "Rhymes accidentally",
+        "Counts on fingers constantly",
+        "Writes lyrics during interview"
+      ]
+    },
+    "eelon_muzk": {
+      "real_name": "Elon Musk",
+      "fake_name": "Eelon Muzk",
+      "description": "Tech billionaire who definitely understands his products",
+      "appearance": {
+        "height": "claims to be from Mars",
+        "hair": "obviously transplanted",
+        "distinguishing": "robot movements",
+        "outfit": "MARXS t-shirt (misspelled)"
+      },
+      "voice": {
+        "pitch": 0.9,
+        "speed": 0.8,
+        "style": "pauses...dramatically...always",
+        "catchphrase": "In 3 months... maybe 6... definitely 2 years"
+      },
+      "interview_quirks": [
+        "Promises impossible things",
+        "Laughs at own jokes (badly)",
+        "References memes incorrectly",
+        "Claims to have invented things he didnt"
+      ]
+    },
+    "the_pebble": {
+      "real_name": "The Rock",
+      "fake_name": "The Pebble",
+      "description": "Action star who is definitely not small",
+      "appearance": {
+        "height": "5'2\" but claims 6'5\"",
+        "muscles": "inflatable suit",
+        "distinguishing": "raises eyebrow (wrong one)",
+        "outfit": "Under Defense gear (knockoff)"
+      },
+      "voice": {
+        "pitch": 1.5,
+        "speed": 1.1,
+        "style": "tries to sound tough",
+        "catchphrase": "Can you smell what The Pebble is heating up?"
+      },
+      "interview_quirks": [
+        "Flexes constantly (suit deflates)",
+        "References wrestling (never wrestled)",
+        "Drinks protein shakes (spills them)",
+        "Challenges anchors to arm wrestle (loses)"
+      ]
+    },
+    "oprah_windfree": {
+      "real_name": "Oprah Winfrey",
+      "fake_name": "Oprah Windfree",
+      "description": "Talk show legend who gives away things",
+      "appearance": {
+        "height": "majestic",
+        "hair": "changes mid-interview",
+        "distinguishing": "points at everything",
+        "outfit": "cape for some reason"
+      },
+      "voice": {
+        "pitch": 1.0,
+        "speed": 0.9,
+        "style": "builds to emotional crescendo",
+        "catchphrase": "YOU get a thing! YOU get a thing!"
+      },
+      "interview_quirks": [
+        "Gives away random items",
+        "Makes everyone cry",
+        "Spiritual advice about mundane things",
+        "Checks under chairs obsessively"
+      ]
+    },
+    "ryan_reynolds": {
+      "real_name": "Ryan Reynolds",
+      "fake_name": "Bryan Reynard",
+      "description": "Canadian actor who is definitely not Deadpool",
+      "appearance": {
+        "height": "apologetically tall",
+        "hair": "Canadian perfect",
+        "distinguishing": "smirks at everything",
+        "outfit": "promotes wrong products"
+      },
+      "voice": {
+        "pitch": 1.05,
+        "speed": 1.2,
+        "style": "sarcastic about everything",
+        "catchphrase": "Sorry... not sorry... sorry"
+      },
+      "interview_quirks": [
+        "Breaks fourth wall constantly",
+        "Mentions Canada every sentence",
+        "Fake rivalry with Hugh Jackman knockoff",
+        "Promotes gin nobody has heard of"
+      ]
+    },
+    "kardashian_west": {
+      "real_name": "Kim Kardashian",
+      "fake_name": "Kym Kardoomian",
+      "description": "Famous for being famous for being famous",
+      "appearance": {
+        "height": "enhanced",
+        "hair": "takes 6 hours",
+        "distinguishing": "poses mid-conversation",
+        "outfit": "beige everything"
+      },
+      "voice": {
+        "pitch": 1.2,
+        "speed": 0.8,
+        "style": "vocal fry to the max",
+        "catchphrase": "Thats like... so... yeah"
+      },
+      "interview_quirks": [
+        "Takes selfies during questions",
+        "Mentions family members constantly",
+        "Product placement mid-sentence",
+        "Forgets what shes famous for"
+      ]
+    },
+    "gordon_ramsey": {
+      "real_name": "Gordon Ramsay",
+      "fake_name": "Jordan Hamsey",
+      "description": "Angry chef who yells about food",
+      "appearance": {
+        "height": "intimidating",
+        "hair": "blonde but suspicious",
+        "distinguishing": "forehead wrinkles from anger",
+        "outfit": "chefs jacket (stained)"
+      },
+      "voice": {
+        "pitch": 0.95,
+        "speed": 1.3,
+        "style": "YELLING then whispering",
+        "catchphrase": "This interview is RAW!"
+      },
+      "interview_quirks": [
+        "Critiques studio snacks",
+        "Yells at production crew",
+        "Makes anchors cook something",
+        "Throws things (softly for legal reasons)"
+      ]
+    },
+    "lebron_james": {
+      "real_name": "LeBron James",
+      "fake_name": "LeBrown Jameson",
+      "description": "Basketball player who is definitely not the GOAT",
+      "appearance": {
+        "height": "hits head on doorways",
+        "muscles": "real but exaggerated",
+        "distinguishing": "headband collection",
+        "outfit": "wrong team jersey"
+      },
+      "voice": {
+        "pitch": 0.85,
+        "speed": 1.0,
+        "style": "refers to self in third person",
+        "catchphrase": "LeBrown gonna LeBrown"
+      },
+      "interview_quirks": [
+        "Dribbles invisible ball",
+        "Mentions championships (wrong number)",
+        "Powder toss (uses flour)",
+        "Debates MJ vs himself (loses)"
+      ]
+    },
+    "benedict_cumberbatch": {
+      "real_name": "Benedict Cumberbatch",
+      "fake_name": "Bendydick Crumpetbatch",
+      "description": "British actor with impossible name",
+      "appearance": {
+        "height": "stretched",
+        "cheekbones": "architectural",
+        "distinguishing": "scarf in summer",
+        "outfit": "Victorian for some reason"
+      },
+      "voice": {
+        "pitch": 0.8,
+        "speed": 0.9,
+        "style": "overly British",
+        "catchphrase": "Elementary, my dear... wait wrong role"
+      },
+      "interview_quirks": [
+        "Deduces wrong things about anchors",
+        "British intensifies when confused",
+        "Mentions Marvel (gets sued)",
+        "Forgets own name pronunciation"
+      ]
+    }
+  },
+  "legal_disclaimer": "All celebrities are parody characters with different names and appearances",
+  "generation_rules": {
+    "always_different": true,
+    "obviously_fake": true,
+    "comedic_purpose": true,
+    "no_defamation": true
+  }
+}
