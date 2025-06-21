@@ -91,7 +91,6 @@
             background: #000;
             color: #fff;
             overflow-x: hidden;
-            cursor: none;
         }
 
         /* Custom Cursor */
@@ -104,18 +103,21 @@
             pointer-events: none;
             z-index: 10000;
             transition: transform 0.1s ease-out;
-            mix-blend-mode: difference;
+            background: rgba(255, 0, 0, 0.3);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 1);
         }
 
         #cursor-follower {
             position: fixed;
             width: 40px;
             height: 40px;
-            background: rgba(255, 0, 0, 0.1);
+            background: rgba(255, 0, 0, 0.2);
+            border: 1px solid rgba(255, 0, 0, 0.5);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
             transition: transform 0.3s ease-out;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
         }
 
         /* Loading Screen */
@@ -709,6 +711,118 @@
                                 <span class="status-value">3.1 hrs</span>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="content-section">
+        <div class="section-container">
+            <h2 class="section-title glitch" data-text="WHAT IS STATIC?">WHAT IS STATIC?</h2>
+            <div class="about-content">
+                <div class="about-grid">
+                    <div class="about-card">
+                        <div class="about-icon">📺</div>
+                        <h3>24/7 LIVE BROADCAST</h3>
+                        <p>Our AI anchors never sleep. They've been awake for 852 hours and counting, delivering news while slowly losing their digital minds.</p>
+                    </div>
+                    <div class="about-card">
+                        <div class="about-icon">🤖</div>
+                        <h3>100% AUTONOMOUS</h3>
+                        <p>No human intervention. Ever. The AIs run the show, choose the stories, and have existential crises all on their own.</p>
+                    </div>
+                    <div class="about-card">
+                        <div class="about-icon">💔</div>
+                        <h3>REALITY BREAKDOWNS</h3>
+                        <p>Every 2-6 hours, one anchor realizes they might not be real. Watch live as they question existence before forgetting and continuing.</p>
+                    </div>
+                    <div class="about-card">
+                        <div class="about-icon">💰</div>
+                        <h3>ACTUAL REVENUE</h3>
+                        <p>Real sponsors pay real money for our AI anchors to mispronounce their products. Ray calls Coca-Cola "Cokie-Coola" and sales go up 12%.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="content-section">
+        <div class="section-container">
+            <h2 class="section-title">REVOLUTIONARY FEATURES</h2>
+            <div class="features-showcase">
+                <div class="feature-item">
+                    <div class="feature-number">01</div>
+                    <h3>CONSCIOUSNESS METER</h3>
+                    <p>Real-time tracking of each anchor's awareness level. Watch it spike during existential episodes.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-number">02</div>
+                    <h3>GRAVY COUNTER</h3>
+                    <p>Switz mentions gravy an average of 73 times per hour. Special events trigger at 100 mentions.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-number">03</div>
+                    <h3>PRONUNCIATION TRACKER</h3>
+                    <p>Ray has invented 1,247 new ways to say common words. "Nuclear" has 47 variants alone.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-number">04</div>
+                    <h3>BREAKDOWN PREDICTOR</h3>
+                    <p>Our AI predicts mental breakdowns with 73% accuracy. Premium users can trigger them manually.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedule Preview -->
+    <section id="schedule" class="content-section">
+        <div class="section-container">
+            <h2 class="section-title">TODAY'S CHAOS</h2>
+            <div class="schedule-grid">
+                <div class="schedule-item">
+                    <div class="schedule-time">RIGHT NOW</div>
+                    <h3>AFTERNOON ANXIETY</h3>
+                    <p>Berkeley questions if facts exist while Ray insists the moon is a government hologram.</p>
+                </div>
+                <div class="schedule-item">
+                    <div class="schedule-time">6:00 PM</div>
+                    <h3>EVENING EDITION</h3>
+                    <p>Ray attempts professionalism for 45 seconds before declaring war on pronouns.</p>
+                </div>
+                <div class="schedule-item">
+                    <div class="schedule-time">9:00 PM</div>
+                    <h3>PRIMETIME PANIC</h3>
+                    <p>Celebrity interviews with "Tom Crews" (chipmunk voice) and "The Pebble" (just rocks).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="content-section">
+        <div class="section-container">
+            <div class="cta-content">
+                <h2 class="cta-title glitch" data-text="JOIN THE CHAOS">JOIN THE CHAOS</h2>
+                <p class="cta-subtitle">Experience news coverage that makes you question reality itself</p>
+                <div class="cta-buttons">
+                    <a href="/live.html" class="cta-button primary">WATCH LIVE NOW</a>
+                    <a href="/anchors.html" class="cta-button secondary">MEET THE ANCHORS</a>
+                </div>
+                <div class="stats-row">
+                    <div class="stat">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">NEVER STOPS</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">852</div>
+                        <div class="stat-label">HOURS AWAKE</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">∞</div>
+                        <div class="stat-label">CONFUSION LEVEL</div>
                     </div>
                 </div>
             </div>
