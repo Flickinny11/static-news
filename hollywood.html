@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STATIC | Hollywood Edition</title>
+    
+    <!-- Core Libraries First -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gpu.js@2.16.0/dist/gpu-browser.min.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Oswald', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow: hidden;
+            cursor: none;
+        }
+        
+        /* Custom Cursor */
+        #cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ff0000;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            mix-blend-mode: difference;
+            transition: transform 0.1s;
+        }
+        
+        #cursor-trail {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 0, 0, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.3s;
+        }
+        
+        /* Main Canvas */
+        #main-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        /* Particles */
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            opacity: 0.5;
+        }
+        
+        /* Content Overlay */
+        .content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 100;
+        }
+        
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(6rem, 15vw, 12rem);
+            letter-spacing: 0.1em;
+            margin: 0;
+            position: relative;
+        }
+        
+        .glitch {
+            position: relative;
+            color: #fff;
+        }
+        
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch::before {
+            animation: glitch-1 0.3s infinite;
+            color: #ff0000;
+            z-index: -1;
+        }
+        
+        .glitch::after {
+            animation: glitch-2 0.3s infinite;
+            color: #00ffff;
+            z-index: -2;
+        }
+        
+        @keyframes glitch-1 {
+            0%, 100% { clip-path: inset(0 0 100% 0); }
+            25% { clip-path: inset(0 0 20% 0); transform: translateX(-2px); }
+            50% { clip-path: inset(60% 0 20% 0); transform: translateX(2px); }
+            75% { clip-path: inset(0 0 60% 0); transform: translateX(-1px); }
+        }
+        
+        @keyframes glitch-2 {
+            0%, 100% { clip-path: inset(100% 0 0 0); }
+            25% { clip-path: inset(20% 0 0 0); transform: translateX(2px); }
+            50% { clip-path: inset(20% 0 60% 0); transform: translateX(-2px); }
+            75% { clip-path: inset(60% 0 0 0); transform: translateX(1px); }
+        }
+        
+        .tagline {
+            font-size: 1.5rem;
+            letter-spacing: 0.3em;
+            opacity: 0.8;
+            margin-top: 20px;
+            text-transform: uppercase;
+        }
+        
+        .status {
+            margin-top: 40px;
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+        }
+        
+        .status-item {
+            text-align: center;
+        }
+        
+        .status-label {
+            font-size: 0.8rem;
+            opacity: 0.6;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .status-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ff0000;
+            text-shadow: 0 0 20px currentColor;
+        }
+        
+        /* Loading Screen */
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 100000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .loading-text {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            letter-spacing: 0.2em;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .loading-bar {
+            width: 300px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            background: #ff0000;
+            width: 0%;
+            transition: width 0.3s;
+            box-shadow: 0 0 20px #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading">
+        <div class="loading-text">INITIALIZING</div>
+        <div class="loading-bar">
+            <div class="loading-progress" id="progress"></div>
+        </div>
+    </div>
+    
+    <!-- Custom Cursor -->
+    <div id="cursor"></div>
+    <div id="cursor-trail"></div>
+    
+    <!-- Three.js Canvas -->
+    <canvas id="main-canvas"></canvas>
+    
+    <!-- Particles -->
+    <div id="particles-js"></div>
+    
+    <!-- Content -->
+    <div class="content">
+        <h1 class="glitch" data-text="STATIC">STATIC</h1>
+        <div class="tagline">The Future of AI News</div>
+        <div class="status">
+            <div class="status-item">
+                <div class="status-label">Reality Index</div>
+                <div class="status-value" id="reality">87%</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Confusion Level</div>
+                <div class="status-value" id="confusion">92%</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Breakdown ETA</div>
+                <div class="status-value" id="breakdown">14:32</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Loading Progress
+        let loadProgress = 0;
+        const progressBar = document.getElementById('progress');
+        const loadingScreen = document.getElementById('loading');
+        
+        function updateLoading(amount) {
+            loadProgress = Math.min(loadProgress + amount, 100);
+            progressBar.style.width = loadProgress + '%';
+            
+            if (loadProgress >= 100) {
+                setTimeout(() => {
+                    loadingScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                    }, 500);
+                }, 500);
+            }
+        }
+        
+        // Custom Cursor
+        const cursor = document.getElementById('cursor');
+        const cursorTrail = document.getElementById('cursor-trail');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                cursorTrail.style.left = e.clientX + 'px';
+                cursorTrail.style.top = e.clientY + 'px';
+            }, 50);
+        });
+        
+        // Three.js Scene
+        const canvas = document.getElementById('main-canvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        
+        updateLoading(20);
+        
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+        scene.add(ambientLight);
+        
+        const pointLight1 = new THREE.PointLight(0xff0000, 2, 50);
+        pointLight1.position.set(10, 10, 10);
+        scene.add(pointLight1);
+        
+        const pointLight2 = new THREE.PointLight(0x00ffff, 2, 50);
+        pointLight2.position.set(-10, -10, 10);
+        scene.add(pointLight2);
+        
+        // Create Holographic Geometry
+        const geometry = new THREE.IcosahedronGeometry(3, 1);
+        const material = new THREE.ShaderMaterial({
+            uniforms: {
+                time: { value: 0 },
+                color1: { value: new THREE.Color(0xff0000) },
+                color2: { value: new THREE.Color(0x00ffff) }
+            },
+            vertexShader: `
+                varying vec2 vUv;
+                varying vec3 vPosition;
+                uniform float time;
+                
+                void main() {
+                    vUv = uv;
+                    vPosition = position;
+                    
+                    vec3 pos = position;
+                    float displacement = sin(position.x * 3.0 + time) * 0.1;
+                    displacement += sin(position.y * 4.0 + time * 1.1) * 0.1;
+                    displacement += sin(position.z * 5.0 + time * 1.2) * 0.1;
+                    pos += normal * displacement;
+                    
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform float time;
+                uniform vec3 color1;
+                uniform vec3 color2;
+                varying vec2 vUv;
+                varying vec3 vPosition;
+                
+                void main() {
+                    float mixValue = (sin(vPosition.y * 10.0 + time) + 1.0) * 0.5;
+                    vec3 color = mix(color1, color2, mixValue);
+                    
+                    float alpha = 0.8 + sin(time * 2.0) * 0.2;
+                    
+                    gl_FragColor = vec4(color, alpha);
+                }
+            `,
+            transparent: true,
+            wireframe: true
+        });
+        
+        const mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+        
+        updateLoading(30);
+        
+        // Particle Field
+        const particleCount = 2000;
+        const particles = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        const colors = new Float32Array(particleCount * 3);
+        
+        for (let i = 0; i < particleCount * 3; i += 3) {
+            positions[i] = (Math.random() - 0.5) * 50;
+            positions[i + 1] = (Math.random() - 0.5) * 50;
+            positions[i + 2] = (Math.random() - 0.5) * 50;
+            
+            colors[i] = 1;
+            colors[i + 1] = Math.random() * 0.5;
+            colors[i + 2] = Math.random() * 0.5;
+        }
+        
+        particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        particles.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        
+        const particleMaterial = new THREE.PointsMaterial({
+            size: 0.1,
+            vertexColors: true,
+            blending: THREE.AdditiveBlending,
+            transparent: true,
+            opacity: 0.8
+        });
+        
+        const particleSystem = new THREE.Points(particles, particleMaterial);
+        scene.add(particleSystem);
+        
+        camera.position.z = 15;
+        
+        updateLoading(30);
+        
+        // Particles.js
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 50 },
+                color: { value: '#ff0000' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#ff0000',
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: 'none',
+                    random: false,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: { enable: true, mode: 'repulse' },
+                    onclick: { enable: true, mode: 'push' }
+                }
+            }
+        });
+        
+        updateLoading(20);
+        
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Update shader uniforms
+            material.uniforms.time.value += 0.01;
+            
+            // Rotate main mesh
+            mesh.rotation.x += 0.001;
+            mesh.rotation.y += 0.002;
+            
+            // Rotate particle system
+            particleSystem.rotation.y += 0.0005;
+            
+            // Animate lights
+            const time = Date.now() * 0.001;
+            pointLight1.position.x = Math.sin(time) * 10;
+            pointLight1.position.z = Math.cos(time) * 10;
+            
+            pointLight2.position.x = Math.cos(time) * 10;
+            pointLight2.position.z = Math.sin(time) * 10;
+            
+            renderer.render(scene, camera);
+        }
+        
+        animate();
+        
+        // Status Updates
+        function updateStatus() {
+            // Reality Index
+            const reality = document.getElementById('reality');
+            const realityValue = Math.floor(Math.random() * 20 + 80);
+            gsap.to(reality, {
+                textContent: realityValue + '%',
+                duration: 0.5,
+                snap: { textContent: 1 }
+            });
+            
+            // Confusion Level
+            const confusion = document.getElementById('confusion');
+            const confusionValue = Math.floor(Math.random() * 30 + 70);
+            gsap.to(confusion, {
+                textContent: confusionValue + '%',
+                duration: 0.5,
+                snap: { textContent: 1 }
+            });
+            
+            // Breakdown Timer
+            const breakdown = document.getElementById('breakdown');
+            const minutes = Math.floor(Math.random() * 30);
+            const seconds = Math.floor(Math.random() * 60);
+            breakdown.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        setInterval(updateStatus, 3000);
+        
+        // GSAP Animations
+        gsap.to('.glitch', {
+            scale: 1.02,
+            duration: 3,
+            ease: 'power2.inOut',
+            yoyo: true,
+            repeat: -1
+        });
+        
+        gsap.to('.tagline', {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            delay: 0.5
+        });
+        
+        gsap.from('.status-item', {
+            scale: 0,
+            opacity: 0,
+            duration: 0.5,
+            stagger: 0.1,
+            delay: 1,
+            ease: 'back.out(1.7)'
+        });
+        
+        // Window Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        // Finish Loading
+        setTimeout(() => updateLoading(100), 1000);
+    </script>
+</body>
+</html>

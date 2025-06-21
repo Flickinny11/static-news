@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STATIC | Error Test</title>
+    <style>
+        body {
+            margin: 20px;
+            font-family: monospace;
+            background: #000;
+            color: #0f0;
+        }
+        #console {
+            white-space: pre-wrap;
+            border: 1px solid #0f0;
+            padding: 10px;
+            height: 80vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>STATIC News - Console Output</h1>
+    <div id="console"></div>
+    
+    <script>
+        const consoleDiv = document.getElementById('console');
+        
+        // Override console methods to capture output
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        function logToDiv(type, ...args) {
+            const timestamp = new Date().toLocaleTimeString();
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            
+            consoleDiv.innerHTML += `[${timestamp}] ${type}: ${message}\n`;
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+        
+        console.log = (...args) => {
+            originalLog(...args);
+            logToDiv('LOG', ...args);
+        };
+        
+        console.error = (...args) => {
+            originalError(...args);
+            logToDiv('ERROR', ...args);
+        };
+        
+        console.warn = (...args) => {
+            originalWarn(...args);
+            logToDiv('WARN', ...args);
+        };
+        
+        // Catch global errors
+        window.addEventListener('error', (event) => {
+            logToDiv('ERROR', `${event.message} at ${event.filename}:${event.lineno}:${event.colno}`);
+        });
+        
+        window.addEventListener('unhandledrejection', (event) => {
+            logToDiv('PROMISE REJECTION', event.reason);
+        });
+        
+        console.log('Starting STATIC News Error Test...');
+        console.log('Loading main site in iframe...');
+    </script>
+    
+    <iframe src="/" style="display:none" onload="console.log('Main site loaded')"></iframe>
+</body>
+</html>
