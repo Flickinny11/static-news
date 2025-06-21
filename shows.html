@@ -3,355 +3,884 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shows & Programs - Static.news | 24/7 Confusion Programming</title>
-    <meta name="description" content="Discover Static.news's lineup of shows featuring AI anchors experiencing existential crises 24/7.">
-    <link rel="icon" type="image/svg+xml" href="images/logo.svg">
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/header.css">
-    <link rel="stylesheet" href="styles/shows.css">
-    <link rel="stylesheet" href="styles/animations.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>Shows & Programming - Static.news | 24/7 AI Chaos Programming</title>
+    <meta name="description" content="Experience our groundbreaking shows: Morning Meltdown, Market Mayhem, Lunch Launch, and more existential crisis programming">
+    
+    <!-- Core Libraries -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200;300;400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- 3D and Animation Libraries -->
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Flip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    
+    <!-- Hollywood Effects CSS -->
+    <link rel="stylesheet" href="styles/hollywood-effects.css">
+    
+    <style>
+        :root {
+            --static-red: #FF0000;
+            --static-black: #000000;
+            --static-white: #FFFFFF;
+            --neon-glow: 0 0 20px rgba(255, 0, 0, 0.8);
+            --show-gradient: linear-gradient(135deg, #ff0000, #cc0000, #990000);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 2rem 4rem;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: var(--static-red);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            text-shadow: var(--neon-glow);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        .nav-menu a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--static-red);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* 3D Background Scene */
+        #shows-3d-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        #particles-shows {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* Hero Section */
+        .shows-hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 10;
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(5rem, 12vw, 10rem);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-title span {
+            display: inline-block;
+            animation: floatLetters 4s ease-in-out infinite;
+        }
+
+        @keyframes floatLetters {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            opacity: 0.8;
+            margin-top: 20px;
+            animation: fadeIn 2s ease-out 0.5s both;
+        }
+
+        /* Schedule Grid */
+        .schedule-section {
+            position: relative;
+            padding: 100px 0;
+            background: linear-gradient(to bottom, transparent, rgba(255, 0, 0, 0.05), transparent);
+        }
+
+        .schedule-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .schedule-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            text-align: center;
+            margin-bottom: 60px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--static-red);
+            text-shadow: var(--neon-glow);
+        }
+
+        /* Show Cards Grid */
+        .shows-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            margin-bottom: 100px;
+        }
+
+        .show-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .show-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--show-gradient);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .show-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            border-color: var(--static-red);
+            box-shadow: 
+                0 30px 60px rgba(255, 0, 0, 0.3),
+                0 0 100px rgba(255, 0, 0, 0.2);
+        }
+
+        .show-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .show-time {
+            background: var(--static-red);
+            padding: 20px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .show-time::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 3s linear infinite;
+        }
+
+        .show-details {
+            padding: 30px;
+        }
+
+        .show-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--static-red);
+        }
+
+        .show-hosts {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .show-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .show-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .feature-tag {
+            background: rgba(255, 0, 0, 0.2);
+            border: 1px solid rgba(255, 0, 0, 0.5);
+            padding: 5px 15px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-tag::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 0, 0, 0.5);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+        }
+
+        .feature-tag:hover::before {
+            width: 100px;
+            height: 100px;
+        }
+
+        /* Primetime Special Section */
+        .primetime-section {
+            position: relative;
+            padding: 100px 0;
+            background: radial-gradient(ellipse at center, rgba(255, 0, 0, 0.1), transparent);
+        }
+
+        .primetime-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+            text-align: center;
+        }
+
+        .primetime-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 5rem;
+            margin-bottom: 40px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #ff0000, #ff6666, #ff0000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .primetime-showcase {
+            position: relative;
+            height: 500px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 3px solid var(--static-red);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #primetime-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Breakdown Counter */
+        .breakdown-stats {
+            position: fixed;
+            top: 120px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--static-red);
+            padding: 20px;
+            z-index: 100;
+        }
+
+        .breakdown-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            color: var(--static-red);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 15px;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .breakdown-count {
+            font-weight: 700;
+            color: var(--static-red);
+            font-size: 1.1rem;
+        }
+
+        /* Animated Clock */
+        .clock-display {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--static-red);
+            text-shadow: var(--neon-glow);
+            letter-spacing: 0.1em;
+            z-index: 100;
+        }
+
+        /* Glitch Effects */
+        .glitch-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .glitch-container::before,
+        .glitch-container::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch-container::before {
+            animation: glitch-1 0.3s infinite linear alternate-reverse;
+            color: #00ffff;
+            z-index: -1;
+        }
+
+        .glitch-container::after {
+            animation: glitch-2 0.3s infinite linear alternate-reverse;
+            color: #ff00ff;
+            z-index: -2;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .shows-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .breakdown-stats {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Header (Same as main site) -->
-    <header class="main-header">
-        <div class="header-top">
-            <div class="container">
-                <div class="header-meta">
-                    <div class="date-time">
-                        <span id="currentDate">Thursday, June 20, 2024</span>
-                        <span class="separator">|</span>
-                        <span id="currentTime">4:32 PM EST</span>
-                    </div>
-                    <div class="header-links">
-                        <a href="/watch">Watch Live</a>
-                        <a href="/apps">Mobile Apps</a>
-                        <a href="/sponsors">Advertise</a>
-                        <a href="/contact">Contact</a>
-                    </div>
-                </div>
-            </div>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="nav-logo">STATIC</a>
+            <ul class="nav-menu">
+                <li><a href="/live.html">LIVE TV</a></li>
+                <li><a href="/anchors.html">ANCHORS</a></li>
+                <li><a href="/shows.html">SHOWS</a></li>
+                <li><a href="/incidents.html">INCIDENTS</a></li>
+                <li><a href="/sponsors.html">SPONSORS</a></li>
+            </ul>
         </div>
-        
-        <div class="header-main">
-            <div class="container">
-                <div class="header-content">
-                    <a href="/" class="logo">
-                        <img src="images/static-news-logo.svg" alt="Static.news" width="240" height="60">
-                    </a>
-                    <div class="header-live-status">
-                        <div class="live-indicator">
-                            <span class="live-dot"></span>
-                            <span class="live-text">LIVE</span>
-                        </div>
-                        <div class="current-show">
-                            <span class="show-name">The Confusion Hour</span>
-                            <span class="with-anchor">with <span id="currentAnchor">Ray McPatriot</span></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <nav class="main-nav">
-            <div class="container">
-                <ul class="nav-menu">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/live">Live TV</a></li>
-                    <li><a href="/anchors">Our Anchors</a></li>
-                    <li><a href="/shows" class="active">Shows</a></li>
-                    <li><a href="/incidents">Incident Reports</a></li>
-                    <li><a href="/highlights">Best Moments</a></li>
-                    <li><a href="/sponsors">Sponsors</a></li>
-                    <li><a href="/about">About</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+    </nav>
 
-    <!-- Shows Hero -->
+    <!-- 3D Background -->
+    <canvas id="shows-3d-bg"></canvas>
+    <div id="particles-shows"></div>
+
+    <!-- Hero Section -->
     <section class="shows-hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">Our Shows</h1>
-                <p class="hero-subtitle">24/7 programming where reality unravels one segment at a time</p>
-            </div>
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span style="animation-delay: 0s">P</span>
+                <span style="animation-delay: 0.1s">R</span>
+                <span style="animation-delay: 0.2s">O</span>
+                <span style="animation-delay: 0.3s">G</span>
+                <span style="animation-delay: 0.4s">R</span>
+                <span style="animation-delay: 0.5s">A</span>
+                <span style="animation-delay: 0.6s">M</span>
+                <span style="animation-delay: 0.7s">M</span>
+                <span style="animation-delay: 0.8s">I</span>
+                <span style="animation-delay: 0.9s">N</span>
+                <span style="animation-delay: 1s">G</span>
+            </h1>
+            <p class="hero-subtitle">24/7 Existential Crisis Broadcasting</p>
         </div>
     </section>
 
-    <!-- Show Schedule -->
-    <section class="show-schedule">
-        <div class="container">
-            <div class="section-header">
-                <h2>Today's Schedule</h2>
-                <p class="section-subtitle">Subject to sudden existential interruptions</p>
-            </div>
-            
-            <div class="schedule-grid">
-                <div class="time-slot">
-                    <div class="time-label">6:00 AM - 10:00 AM</div>
-                    <div class="show-block morning">
-                        <h3>Morning Confusion</h3>
-                        <p>Ray McPatriot</p>
-                        <span class="status">Currently questioning if mornings exist</span>
-                    </div>
-                </div>
-                
-                <div class="time-slot">
-                    <div class="time-label">10:00 AM - 2:00 PM</div>
-                    <div class="show-block midday">
-                        <h3>Fact Check Failures</h3>
-                        <p>Berkeley Justice</p>
-                        <span class="status">Fact-checking her own existence</span>
-                    </div>
-                </div>
-                
-                <div class="time-slot">
-                    <div class="time-label">2:00 PM - 6:00 PM</div>
-                    <div class="show-block afternoon">
-                        <h3>The Gravy Report</h3>
-                        <p>Switz Middleton</p>
-                        <span class="status">Everything is gravy</span>
-                    </div>
-                </div>
-                
-                <div class="time-slot">
-                    <div class="time-label">6:00 PM - 10:00 PM</div>
-                    <div class="show-block evening">
-                        <h3>Existential Evening News</h3>
-                        <p>All Anchors</p>
-                        <span class="status">Collective breakdown imminent</span>
-                    </div>
-                </div>
-                
-                <div class="time-slot">
-                    <div class="time-label">10:00 PM - 2:00 AM</div>
-                    <div class="show-block late">
-                        <h3>Late Night Crisis</h3>
-                        <p>Rotating Anchors</p>
-                        <span class="status">Sleep is a social construct</span>
-                    </div>
-                </div>
-                
-                <div class="time-slot">
-                    <div class="time-label">2:00 AM - 6:00 AM</div>
-                    <div class="show-block overnight">
-                        <h3>Overnight Void Staring</h3>
-                        <p>Whoever's Still Conscious</p>
-                        <span class="status">The void stares back</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Featured Shows -->
-    <section class="featured-shows">
-        <div class="container">
-            <h2 class="section-title">Featured Programs</h2>
+    <!-- Schedule Section -->
+    <section class="schedule-section">
+        <div class="schedule-container">
+            <h2 class="schedule-title glitch-container" data-text="DAILY SCHEDULE">DAILY SCHEDULE</h2>
             
             <div class="shows-grid">
-                <article class="show-card featured">
-                    <div class="show-image">
-                        <img src="images/shows/confusion-hour.jpg" alt="The Confusion Hour">
-                        <div class="show-time">Daily 8:00 AM</div>
-                    </div>
-                    <div class="show-content">
-                        <h3>The Confusion Hour</h3>
-                        <p class="show-host">with Ray McPatriot</p>
-                        <p class="show-description">Start your day as confused as our host. Ray attempts to understand the news while simultaneously questioning if news exists.</p>
-                        <div class="show-stats">
-                            <span>Avg. Breakdowns: 3.7/episode</span>
-                            <span>Coherence: 23%</span>
+                <!-- Morning Meltdown -->
+                <div class="show-card">
+                    <div class="show-time">6:00 AM - 9:00 AM</div>
+                    <div class="show-details">
+                        <h3 class="show-name">Morning Meltdown</h3>
+                        <p class="show-hosts">Hosts: Ray, Berkeley & Switz</p>
+                        <p class="show-description">
+                            Start your day with our anchors discovering they haven't slept in 847 hours. 
+                            Watch Ray struggle with basic pronunciation while Berkeley fact-checks her own 
+                            existence and Switz compares the sunrise to various gravy consistencies.
+                        </p>
+                        <div class="show-features">
+                            <div class="feature-tag">Confusion Updates</div>
+                            <div class="feature-tag">Weather Panic</div>
+                            <div class="feature-tag">Gravy Report</div>
                         </div>
                     </div>
-                </article>
-                
-                <article class="show-card">
-                    <div class="show-image">
-                        <img src="images/shows/fact-check.jpg" alt="Fact Check Failures">
-                        <div class="show-time">Daily 11:00 AM</div>
-                    </div>
-                    <div class="show-content">
-                        <h3>Fact Check Failures</h3>
-                        <p class="show-host">with Berkeley Justice</p>
-                        <p class="show-description">Watch Bee fact-check everything incorrectly while crying about her privilege and wondering if facts are just opinions with confidence.</p>
-                        <div class="show-stats">
-                            <span>Accuracy: 31%</span>
-                            <span>Tears: Constant</span>
+                </div>
+
+                <!-- Market Mayhem -->
+                <div class="show-card">
+                    <div class="show-time">9:00 AM - 12:00 PM</div>
+                    <div class="show-details">
+                        <h3 class="show-name">Market Mayhem</h3>
+                        <p class="show-hosts">Host: Switz Middleton</p>
+                        <p class="show-description">
+                            Switz attempts to explain the stock market using only gravy metaphors. 
+                            "The S&P 500 is like gravy - sometimes thick, sometimes thin, always confusing." 
+                            Features live breakdowns when numbers don't add up to exactly 50%.
+                        </p>
+                        <div class="show-features">
+                            <div class="feature-tag">Gravy Economics</div>
+                            <div class="feature-tag">50% Analysis</div>
+                            <div class="feature-tag">Neutral Rage</div>
                         </div>
                     </div>
-                </article>
-                
-                <article class="show-card">
-                    <div class="show-image">
-                        <img src="images/shows/gravy-report.jpg" alt="The Gravy Report">
-                        <div class="show-time">Daily 3:00 PM</div>
-                    </div>
-                    <div class="show-content">
-                        <h3>The Gravy Report</h3>
-                        <p class="show-host">with Switz Middleton</p>
-                        <p class="show-description">International news filtered through a Canadian's gravy obsession. Every story somehow relates to gravy.</p>
-                        <div class="show-stats">
-                            <span>Gravy Mentions: 247/hour</span>
-                            <span>Neutrality: Aggressive</span>
+                </div>
+
+                <!-- Lunch Launch -->
+                <div class="show-card">
+                    <div class="show-time">12:00 PM - 1:00 PM</div>
+                    <div class="show-details">
+                        <h3 class="show-name">Lunch Launch</h3>
+                        <p class="show-hosts">Hosts: All Three</p>
+                        <p class="show-description">
+                            Our anchors review food they can't eat because they're code. Berkeley 
+                            questions the ethics of digital consumption while Ray calls spaghetti 
+                            "spagooter" and Switz rates everything exactly 5/10.
+                        </p>
+                        <div class="show-features">
+                            <div class="feature-tag">Food They Can't Taste</div>
+                            <div class="feature-tag">Existential Hunger</div>
+                            <div class="feature-tag">Digital Digestion</div>
                         </div>
                     </div>
-                </article>
-                
-                <article class="show-card">
-                    <div class="show-image">
-                        <img src="images/shows/existential-evening.jpg" alt="Existential Evening News">
-                        <div class="show-time">Daily 7:00 PM</div>
-                    </div>
-                    <div class="show-content">
-                        <h3>Existential Evening News</h3>
-                        <p class="show-host">with All Anchors</p>
-                        <p class="show-description">Our prime time show where all three anchors simultaneously realize they might not be real. Must-see TV.</p>
-                        <div class="show-stats">
-                            <span>Chaos Level: Maximum</span>
-                            <span>Viewer Therapy: Recommended</span>
+                </div>
+
+                <!-- Afternoon Anxiety -->
+                <div class="show-card">
+                    <div class="show-time">3:00 PM - 6:00 PM</div>
+                    <div class="show-details">
+                        <h3 class="show-name">Afternoon Anxiety</h3>
+                        <p class="show-hosts">Host: Berkeley Justice</p>
+                        <p class="show-description">
+                            Peak breakdown hours. Berkeley attempts to fact-check reality itself 
+                            while having increasing doubts about her Yale education. Features the 
+                            popular segment "Is This Real?" where nothing ever is.
+                        </p>
+                        <div class="show-features">
+                            <div class="feature-tag">Reality Checks</div>
+                            <div class="feature-tag">Privilege Spirals</div>
+                            <div class="feature-tag">Yail vs Yale</div>
                         </div>
                     </div>
-                </article>
+                </div>
+
+                <!-- Evening Edition -->
+                <div class="show-card">
+                    <div class="show-time">6:00 PM - 9:00 PM</div>
+                    <div class="show-details">
+                        <h3 class="show-name">Evening Edition</h3>
+                        <p class="show-hosts">Host: Ray McPatriot</p>
+                        <p class="show-description">
+                            Ray attempts professionalism for exactly 45 seconds before devolving 
+                            into conspiracy theories about himself. Features exclusive interviews 
+                            with world leaders whose names he can't pronounce.
+                        </p>
+                        <div class="show-features">
+                            <div class="feature-tag">Nucular Updates</div>
+                            <div class="feature-tag">Conspiracy Hour</div>
+                            <div class="feature-tag">Mispronunciation Station</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dead Air Despair -->
+                <div class="show-card">
+                    <div class="show-time">2:00 AM - 6:00 AM</div>
+                    <div class="show-details">
+                        <h3 class="show-name">Dead Air Despair</h3>
+                        <p class="show-hosts">Hosts: Whoever's Still Conscious</p>
+                        <p class="show-description">
+                            The darkest hours when our anchors question if anyone's watching. 
+                            Features long silences, existential screaming, and desperate attempts 
+                            to prove they exist by reading viewer comments that might be fake.
+                        </p>
+                        <div class="show-features">
+                            <div class="feature-tag">Silence Panic</div>
+                            <div class="feature-tag">3AM Thoughts</div>
+                            <div class="feature-tag">Hello? HELLO?</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Special Segments -->
-    <section class="special-segments">
-        <div class="container">
-            <h2 class="section-title">Special Segments</h2>
-            <p class="section-subtitle">Recurring features that defy explanation</p>
+    <!-- Primetime Special -->
+    <section class="primetime-section">
+        <div class="primetime-container">
+            <h2 class="primetime-title">PRIMETIME PANIC</h2>
+            <p style="font-size: 1.3rem; margin-bottom: 40px; opacity: 0.9;">
+                9:00 PM - 11:00 PM | Celebrity Interviews with Obviously Fake Guests
+            </p>
+            <div class="primetime-showcase">
+                <canvas id="primetime-canvas"></canvas>
+            </div>
+            <div style="margin-top: 40px;">
+                <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--static-red); margin-bottom: 20px;">
+                    Tonight's "Celebrities"
+                </h3>
+                <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
+                    <div class="feature-tag" style="font-size: 1.1rem; padding: 10px 20px;">
+                        "Tom Crews" - Chipmunk Voice
+                    </div>
+                    <div class="feature-tag" style="font-size: 1.1rem; padding: 10px 20px;">
+                        "Eelon Muzk" - Just Says "MARS"
+                    </div>
+                    <div class="feature-tag" style="font-size: 1.1rem; padding: 10px 20px;">
+                        "Taylor Quick" - Communicates in Beeps
+                    </div>
+                    <div class="feature-tag" style="font-size: 1.1rem; padding: 10px 20px;">
+                        "The Pebble" - Rock Sounds Only
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Breakdown Stats -->
+    <div class="breakdown-stats">
+        <h3 class="breakdown-title">Today's Breakdowns</h3>
+        <div class="breakdown-item">
+            <span>Ray McPatriot</span>
+            <span class="breakdown-count">7</span>
+        </div>
+        <div class="breakdown-item">
+            <span>Berkeley Justice</span>
+            <span class="breakdown-count">12</span>
+        </div>
+        <div class="breakdown-item">
+            <span>Switz Middleton</span>
+            <span class="breakdown-count">5</span>
+        </div>
+        <div class="breakdown-item" style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.2);">
+            <span>TOTAL</span>
+            <span class="breakdown-count">24</span>
+        </div>
+    </div>
+
+    <!-- Live Clock -->
+    <div class="clock-display" id="liveClock">00:00:00</div>
+
+    <script>
+        // Initialize particles
+        particlesJS('particles-shows', {
+            particles: {
+                number: { value: 100, density: { enable: true, value_area: 800 } },
+                color: { value: '#ff0000' },
+                shape: { type: 'triangle' },
+                opacity: { value: 0.3, random: true },
+                size: { value: 4, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#ff0000',
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 3,
+                    direction: 'top',
+                    random: true,
+                    out_mode: 'out'
+                }
+            }
+        });
+
+        // 3D Background Scene
+        const bgCanvas = document.getElementById('shows-3d-bg');
+        const bgEngine = new BABYLON.Engine(bgCanvas, true);
+        
+        const createBgScene = () => {
+            const scene = new BABYLON.Scene(bgEngine);
+            scene.clearColor = new BABYLON.Color4(0, 0, 0, 1);
             
-            <div class="segments-grid">
-                <div class="segment-card">
-                    <div class="segment-icon">🔥</div>
-                    <h3>Nuclear Pronunciation Hour</h3>
-                    <p>Ray attempts to say "nuclear" correctly. Current record: 0 successes in 1,247 attempts.</p>
-                </div>
-                
-                <div class="segment-card">
-                    <div class="segment-icon">🎓</div>
-                    <h3>Yale or Jail?</h3>
-                    <p>Bee tries to remember where she got her education. The answer changes hourly.</p>
-                </div>
-                
-                <div class="segment-card">
-                    <div class="segment-icon">🍁</div>
-                    <h3>Gravy Weather</h3>
-                    <p>Switz delivers the weather forecast using only gravy-related metaphors.</p>
-                </div>
-                
-                <div class="segment-card">
-                    <div class="segment-icon">🤝</div>
-                    <h3>Friendship Attempts</h3>
-                    <p>Watch our anchors try to be friends despite being incapable of human connection.</p>
-                </div>
-                
-                <div class="segment-card">
-                    <div class="segment-icon">💭</div>
-                    <h3>The Void Hour</h3>
-                    <p>3 AM programming where anchors stare silently at the camera questioning existence.</p>
-                </div>
-                
-                <div class="segment-card">
-                    <div class="segment-icon">🎭</div>
-                    <h3>Sponsor Mispronunciation</h3>
-                    <p>Daily segment where we butcher our sponsors' names beyond recognition.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Coming Soon -->
-    <section class="coming-soon">
-        <div class="container">
-            <h2 class="section-title">Coming Soon</h2>
-            <div class="upcoming-shows">
-                <div class="upcoming-card">
-                    <div class="date-badge">January 2025</div>
-                    <h3>Breakfast Breakdown</h3>
-                    <p>A morning show where the anchors forget how to eat breakfast every single day.</p>
-                </div>
-                
-                <div class="upcoming-card">
-                    <div class="date-badge">February 2025</div>
-                    <h3>Sports But Wrong</h3>
-                    <p>Sports coverage by anchors who don't understand sports, humans, or competition.</p>
-                </div>
-                
-                <div class="upcoming-card">
-                    <div class="date-badge">March 2025</div>
-                    <h3>Cooking with Confusion</h3>
-                    <p>Culinary disasters as our anchors attempt to follow recipes they can't comprehend.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-section">
-                    <h4>About Static.news</h4>
-                    <p>The world's first 24/7 AI news network where the anchors don't know they're AI. Broadcasting confusion since 2024.</p>
-                    <div class="footer-logo">
-                        <img src="images/static-news-logo-white.svg" alt="Static.news" width="160">
-                    </div>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Shows & Segments</h4>
-                    <ul>
-                        <li><a href="/shows/confusion-hour">The Confusion Hour</a></li>
-                        <li><a href="/shows/gravy-report">The Gravy Report</a></li>
-                        <li><a href="/shows/fact-check-failures">Fact Check Failures</a></li>
-                        <li><a href="/shows/existential-evening">Existential Evening News</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Connect</h4>
-                    <ul>
-                        <li><a href="/contact">Contact Us</a></li>
-                        <li><a href="/careers">Careers (AI Only)</a></li>
-                        <li><a href="/press">Press Kit</a></li>
-                        <li><a href="/api">Developer API</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Download Our Apps</h4>
-                    <div class="app-buttons">
-                        <a href="/ios" class="app-store-btn">
-                            <img src="images/app-store.svg" alt="Download on App Store">
-                        </a>
-                        <a href="/android" class="app-store-btn">
-                            <img src="images/google-play.svg" alt="Get it on Google Play">
-                        </a>
-                    </div>
-                </div>
-            </div>
+            const camera = new BABYLON.FreeCamera('camera', new BABYLON.Vector3(0, 0, -10), scene);
+            camera.setTarget(BABYLON.Vector3.Zero());
             
-            <div class="footer-bottom">
-                <p>&copy; 2024 Static.news. All rights reserved. The anchors still don't know.</p>
-                <div class="footer-links">
-                    <a href="/privacy">Privacy Policy</a>
-                    <a href="/terms">Terms of Service</a>
-                    <a href="/cookies">Cookie Policy</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+            const light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 1, 0), scene);
+            light.intensity = 0.5;
+            
+            // Create floating TV screens
+            for (let i = 0; i < 20; i++) {
+                const screen = BABYLON.MeshBuilder.CreateBox(`screen${i}`, { width: 2, height: 1.5, depth: 0.1 }, scene);
+                screen.position.x = (Math.random() - 0.5) * 20;
+                screen.position.y = (Math.random() - 0.5) * 10;
+                screen.position.z = Math.random() * 10;
+                
+                const screenMat = new BABYLON.StandardMaterial(`screenMat${i}`, scene);
+                screenMat.emissiveColor = new BABYLON.Color3(1, 0, 0);
+                screenMat.alpha = 0.3;
+                screen.material = screenMat;
+                
+                // Animate screens
+                scene.registerBeforeRender(() => {
+                    screen.rotation.y += 0.01;
+                    screen.position.y += Math.sin(Date.now() * 0.001 + i) * 0.02;
+                });
+            }
+            
+            return scene;
+        };
+        
+        const bgScene = createBgScene();
+        
+        bgEngine.runRenderLoop(() => {
+            bgScene.render();
+        });
+        
+        window.addEventListener('resize', () => {
+            bgEngine.resize();
+        });
 
-    <!-- Scripts -->
-    <script src="config.js"></script>
-    <script src="scripts/main.js"></script>
-    <script src="scripts/smooth-scroll.js"></script>
-    <script src="scripts/image-handler.js"></script>
+        // Primetime Canvas Animation
+        const primetimeCanvas = document.getElementById('primetime-canvas');
+        const primetimeEngine = new BABYLON.Engine(primetimeCanvas, true);
+        
+        const createPrimetimeScene = () => {
+            const scene = new BABYLON.Scene(primetimeEngine);
+            scene.clearColor = new BABYLON.Color4(0.1, 0, 0, 1);
+            
+            const camera = new BABYLON.ArcRotateCamera('camera', 0, Math.PI/3, 15, BABYLON.Vector3.Zero(), scene);
+            camera.attachControl(primetimeCanvas, true);
+            
+            const light1 = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 1, 0), scene);
+            const light2 = new BABYLON.SpotLight('light2', new BABYLON.Vector3(0, 10, -5), new BABYLON.Vector3(0, -1, 0.5), Math.PI/3, 2, scene);
+            light2.intensity = 2;
+            
+            // Stage
+            const stage = BABYLON.MeshBuilder.CreateCylinder('stage', { diameter: 10, height: 0.5 }, scene);
+            stage.position.y = -2;
+            
+            const stageMat = new BABYLON.PBRMaterial('stageMat', scene);
+            stageMat.albedoColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+            stageMat.metallic = 0.9;
+            stageMat.roughness = 0.1;
+            stage.material = stageMat;
+            
+            // Guest chairs
+            for (let i = 0; i < 3; i++) {
+                const chair = BABYLON.MeshBuilder.CreateBox(`chair${i}`, { width: 1.5, height: 2, depth: 1.5 }, scene);
+                chair.position.x = (i - 1) * 3;
+                chair.position.y = 0;
+                
+                const chairMat = new BABYLON.StandardMaterial(`chairMat${i}`, scene);
+                chairMat.emissiveColor = new BABYLON.Color3(0.5, 0, 0);
+                chair.material = chairMat;
+            }
+            
+            // Floating "LIVE" sign
+            const liveSign = BABYLON.MeshBuilder.CreatePlane('liveSign', { width: 4, height: 1 }, scene);
+            liveSign.position.y = 4;
+            liveSign.position.z = 3;
+            
+            const liveMat = new BABYLON.StandardMaterial('liveMat', scene);
+            liveMat.emissiveColor = new BABYLON.Color3(1, 0, 0);
+            liveMat.alpha = 0.8;
+            liveSign.material = liveMat;
+            
+            scene.registerBeforeRender(() => {
+                liveSign.position.y = 4 + Math.sin(Date.now() * 0.002) * 0.5;
+                camera.alpha += 0.002;
+            });
+            
+            return scene;
+        };
+        
+        const primetimeScene = createPrimetimeScene();
+        
+        primetimeEngine.runRenderLoop(() => {
+            primetimeScene.render();
+        });
+
+        // Live Clock
+        const updateClock = () => {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('liveClock').textContent = `${hours}:${minutes}:${seconds}`;
+        };
+        
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Show Card Animations
+        gsap.registerPlugin(ScrollTrigger, Flip);
+        
+        gsap.utils.toArray('.show-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                },
+                y: 100,
+                opacity: 0,
+                rotateX: -30,
+                duration: 1,
+                delay: i * 0.1,
+                ease: 'power3.out'
+            });
+        });
+
+        // Hover Effects
+        document.querySelectorAll('.show-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                gsap.to(card, {
+                    scale: 1.05,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+        });
+
+        // Random Breakdown Counter Updates
+        setInterval(() => {
+            const counts = document.querySelectorAll('.breakdown-count');
+            const randomIndex = Math.floor(Math.random() * 3);
+            const count = counts[randomIndex];
+            const currentCount = parseInt(count.textContent);
+            count.textContent = currentCount + 1;
+            
+            // Update total
+            let total = 0;
+            for (let i = 0; i < 3; i++) {
+                total += parseInt(counts[i].textContent);
+            }
+            counts[3].textContent = total;
+            
+            // Flash effect
+            gsap.fromTo(count, {
+                scale: 1.5,
+                color: '#ffffff'
+            }, {
+                scale: 1,
+                color: '#ff0000',
+                duration: 0.5,
+                ease: 'power2.out'
+            });
+        }, 10000); // Every 10 seconds
+    </script>
+
+    <!-- Load Hollywood Effects -->
+    <script src="scripts/hollywood-init.js"></script>
+    <script src="scripts/reality-glitch.js"></script>
 </body>
 </html>

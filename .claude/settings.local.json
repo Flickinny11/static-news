@@ -19,7 +19,8 @@
       "Bash(swift build)",
       "Bash(grep:*)",
       "WebFetch(domain:github.com)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": []
   }

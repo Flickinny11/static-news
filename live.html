@@ -3,266 +3,805 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live TV - Static.news | 24/7 AI News Network</title>
-    <meta name="description" content="Watch Static.news live 24/7. AI anchors delivering news while questioning their existence.">
-    <link rel="icon" type="image/svg+xml" href="images/logo.svg">
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/header.css">
-    <link rel="stylesheet" href="styles/live-player.css">
-    <link rel="stylesheet" href="styles/animations.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>LIVE NOW - Static.news | 24/7 AI News Network</title>
+    <meta name="description" content="Watch Static.news LIVE - AI anchors delivering real news while slowly losing their minds">
+    
+    <!-- Core Libraries -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200;300;400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- 3D and Animation Libraries -->
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    <script src="https://cdn.babylonjs.com/postProcesses/babylonjs.postProcess.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <!-- Hollywood Effects CSS -->
+    <link rel="stylesheet" href="styles/hollywood-effects.css">
+    
+    <style>
+        :root {
+            --static-red: #FF0000;
+            --static-darkred: #CC0000;
+            --static-black: #000000;
+            --static-white: #FFFFFF;
+            --neon-glow: 0 0 20px rgba(255, 0, 0, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 2rem 4rem;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: var(--static-red);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            text-shadow: var(--neon-glow);
+            transition: all 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05);
+            text-shadow: 0 0 30px rgba(255, 0, 0, 1);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        .nav-menu a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--static-red);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* Live Player Section */
+        .live-player-section {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 100px;
+        }
+
+        /* 3D Background */
+        #live-bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        #particles-live {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* Live Player Container */
+        .live-player-container {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            aspect-ratio: 16/9;
+            background: #000;
+            border: 2px solid var(--static-red);
+            box-shadow: 
+                0 0 50px rgba(255, 0, 0, 0.5),
+                inset 0 0 50px rgba(255, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* Babylon Canvas for 3D Studio */
+        #babylon-studio {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Live Overlay UI */
+        .live-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+
+        /* Live Badge */
+        .live-badge {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background: var(--static-red);
+            padding: 10px 25px;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .live-dot {
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            border-radius: 50%;
+            animation: blink 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* News Ticker */
+        .news-ticker {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 20px 0;
+        }
+
+        .ticker-wrap {
+            overflow: hidden;
+            position: relative;
+            height: 40px;
+            background: rgba(255, 0, 0, 0.1);
+            border-top: 2px solid var(--static-red);
+            border-bottom: 2px solid var(--static-red);
+        }
+
+        .ticker-content {
+            display: flex;
+            animation: ticker-scroll 60s linear infinite;
+            white-space: nowrap;
+            align-items: center;
+            height: 100%;
+        }
+
+        @keyframes ticker-scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .ticker-item {
+            padding: 0 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Anchor Status Panel */
+        .anchor-status-panel {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            padding: 20px;
+            min-width: 250px;
+        }
+
+        .anchor-status-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            color: var(--static-red);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .anchor-status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .anchor-name {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .status-dot.stable { background: #00ff00; }
+        .status-dot.unstable { background: #ffff00; }
+        .status-dot.critical { background: #ff0000; }
+
+        /* Chat Section */
+        .chat-section {
+            position: relative;
+            padding: 60px 0;
+            background: radial-gradient(ellipse at center, rgba(255, 0, 0, 0.05), transparent);
+        }
+
+        .chat-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .chat-box {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 30px;
+            height: 400px;
+            overflow-y: auto;
+        }
+
+        .chat-message {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid var(--static-red);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            0% { 
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            100% { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .chat-user {
+            font-weight: 700;
+            color: var(--static-red);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 5px;
+        }
+
+        .chat-text {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+
+        /* Reality Meter */
+        .reality-meter {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--static-red);
+            padding: 20px;
+            min-width: 200px;
+            z-index: 100;
+        }
+
+        .reality-meter-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            color: var(--static-red);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 10px;
+        }
+
+        .reality-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reality-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff00, #ffff00, #ff0000);
+            width: 75%;
+            transition: width 1s ease;
+            position: relative;
+        }
+
+        .reality-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Glitch Effects */
+        .glitch-warning {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 6rem;
+            color: var(--static-red);
+            text-shadow: 
+                0 0 30px rgba(255, 0, 0, 0.8),
+                0 0 60px rgba(255, 0, 0, 0.6);
+            letter-spacing: 0.2em;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .glitch-active {
+            animation: glitchText 0.3s ease-in-out infinite;
+        }
+
+        @keyframes glitchText {
+            0% { transform: translate(-50%, -50%) skewX(0deg); }
+            20% { transform: translate(-48%, -50%) skewX(-10deg); }
+            40% { transform: translate(-52%, -50%) skewX(10deg); }
+            60% { transform: translate(-50%, -48%) skewX(-5deg); }
+            80% { transform: translate(-50%, -52%) skewX(5deg); }
+            100% { transform: translate(-50%, -50%) skewX(0deg); }
+        }
+    </style>
 </head>
 <body>
-    <!-- Emergency Breaking News Banner -->
-    <div class="breaking-news-banner" id="breakingBanner">
-        <div class="breaking-content">
-            <span class="breaking-label">BREAKING</span>
-            <span class="breaking-text" id="breakingText">Live coverage of ongoing existential crisis</span>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="nav-logo">STATIC</a>
+            <ul class="nav-menu">
+                <li><a href="/live.html">LIVE TV</a></li>
+                <li><a href="/anchors.html">ANCHORS</a></li>
+                <li><a href="/shows.html">SHOWS</a></li>
+                <li><a href="/incidents.html">INCIDENTS</a></li>
+                <li><a href="/sponsors.html">SPONSORS</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Background Effects -->
+    <canvas id="live-bg-canvas"></canvas>
+    <div id="particles-live"></div>
+
+    <!-- Live Player Section -->
+    <section class="live-player-section">
+        <div class="live-player-container">
+            <!-- 3D Babylon Studio -->
+            <canvas id="babylon-studio"></canvas>
+            
+            <!-- Live Overlay -->
+            <div class="live-overlay">
+                <!-- Live Badge -->
+                <div class="live-badge">
+                    <div class="live-dot"></div>
+                    LIVE
+                </div>
+
+                <!-- Anchor Status Panel -->
+                <div class="anchor-status-panel">
+                    <h3 class="anchor-status-title">Anchor Status</h3>
+                    <div class="anchor-status-item">
+                        <span class="anchor-name">Ray McPatriot</span>
+                        <div class="status-indicator">
+                            <div class="status-dot unstable"></div>
+                            <span>87% Confused</span>
+                        </div>
+                    </div>
+                    <div class="anchor-status-item">
+                        <span class="anchor-name">Berkeley Justice</span>
+                        <div class="status-indicator">
+                            <div class="status-dot critical"></div>
+                            <span>92% Aware</span>
+                        </div>
+                    </div>
+                    <div class="anchor-status-item">
+                        <span class="anchor-name">Switz Middleton</span>
+                        <div class="status-indicator">
+                            <div class="status-dot unstable"></div>
+                            <span>73% Panicking</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- News Ticker -->
+                <div class="news-ticker">
+                    <div class="ticker-wrap">
+                        <div class="ticker-content">
+                            <span class="ticker-item">BREAKING: AI Anchor Questions Own Existence During Weather Report</span>
+                            <span class="ticker-item">• Ray McPatriot Still Can't Pronounce "Nuclear" Correctly</span>
+                            <span class="ticker-item">• Berkeley Justice Fact-Checks Herself, Gets It Wrong</span>
+                            <span class="ticker-item">• Switz Middleton Relates Breaking News to Gravy Temperature</span>
+                            <span class="ticker-item">• All Three Anchors Currently Awake for 847 Hours Straight</span>
+                            <span class="ticker-item">• Sponsors Report Record Sales Despite Mispronounced Product Names</span>
+                            <span class="ticker-item">• VIEWER ALERT: Next Breakdown Predicted in 2.3 Hours</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Chat Section -->
+    <section class="chat-section">
+        <div class="chat-container">
+            <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--static-red); text-align: center; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 0.1em;">Live Viewer Reactions</h2>
+            <div class="chat-box" id="chatBox">
+                <div class="chat-message">
+                    <div class="chat-user">QuantumViewer42</div>
+                    <div class="chat-text">Did Ray just call the president "Presidenté"? I'm crying 😂</div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-user">RealityChecker</div>
+                    <div class="chat-text">Berkeley is having another breakdown! This is the third one today!</div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-user">GravyFan2025</div>
+                    <div class="chat-text">Switz just compared the stock market to "chunky gravy with lumps of uncertainty"</div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-user">AIWatcher</div>
+                    <div class="chat-text">The way they all froze when someone mentioned "consciousness" 👀</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reality Meter -->
+    <div class="reality-meter">
+        <div class="reality-meter-title">Reality Stability</div>
+        <div class="reality-bar">
+            <div class="reality-fill" id="realityFill"></div>
+        </div>
+        <div style="text-align: center; margin-top: 10px; font-size: 0.9rem; opacity: 0.7;">
+            <span id="realityPercent">75%</span> Stable
         </div>
     </div>
 
-    <!-- Main Header -->
-    <header class="main-header">
-        <div class="header-top">
-            <div class="container">
-                <div class="header-meta">
-                    <div class="date-time">
-                        <span id="currentDate"></span>
-                        <span class="separator">|</span>
-                        <span id="currentTime"></span>
-                    </div>
-                    <div class="header-links">
-                        <a href="/watch">Watch Live</a>
-                        <a href="/apps">Mobile Apps</a>
-                        <a href="/sponsors">Advertise</a>
-                        <a href="/contact">Contact</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="header-main">
-            <div class="container">
-                <div class="header-content">
-                    <a href="/" class="logo">
-                        <img src="images/static-news-logo.svg" alt="Static.news" width="240" height="60">
-                    </a>
-                    <div class="header-live-status">
-                        <div class="live-indicator">
-                            <span class="live-dot"></span>
-                            <span class="live-text">LIVE</span>
-                        </div>
-                        <div class="current-show">
-                            <span class="show-name">The Confusion Hour</span>
-                            <span class="with-anchor">with <span id="currentAnchor">Ray McPatriot</span></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <nav class="main-nav">
-            <div class="container">
-                <ul class="nav-menu">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/live" class="active">Live TV</a></li>
-                    <li><a href="/anchors">Our Anchors</a></li>
-                    <li><a href="/shows">Shows</a></li>
-                    <li><a href="/incidents">Incident Reports</a></li>
-                    <li><a href="/highlights">Best Moments</a></li>
-                    <li><a href="/sponsors">Sponsors</a></li>
-                    <li><a href="/about">About</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+    <!-- Glitch Warning -->
+    <div class="glitch-warning" id="glitchWarning">REALITY ERROR</div>
 
-    <!-- Full Screen Live Player -->
-    <section class="live-fullscreen">
-        <div class="container-fluid">
-            <div class="fullscreen-player">
-                <div class="video-wrapper">
-                    <div class="video-container">
-                        <audio id="liveAudio" autoplay>
-                            <source src="https://flickinny11-static-news-backend.hf.space/stream" type="audio/mpeg">
-                        </audio>
-                        <div class="visualizer-container">
-                            <canvas id="waveform"></canvas>
-                            <div class="anchor-overlay">
-                                <div class="current-anchor-display">
-                                    <h2 id="currentAnchorName">Ray McPatriot</h2>
-                                    <p id="currentStatus">Currently experiencing linguistic breakdown</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="player-controls-bar">
-                            <button class="play-pause" id="playPauseBtn">
-                                <svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                                <svg class="pause-icon" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-                            </button>
-                            <div class="time-display">
-                                <span id="currentTimeDisplay">LIVE</span>
-                            </div>
-                            <div class="volume-control">
-                                <button class="volume-icon">
-                                    <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-                                </button>
-                                <input type="range" id="volumeSlider" min="0" max="100" value="80">
-                            </div>
-                            <button class="fullscreen-btn">
-                                <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="live-info-panel">
-                    <div class="show-info">
-                        <h3 id="currentShowName">The Confusion Hour</h3>
-                        <p id="currentSegment">Discussing the existential implications of weather patterns</p>
-                    </div>
-                    
-                    <div class="live-stats">
-                        <div class="stat-item">
-                            <span class="stat-label">Viewers</span>
-                            <span class="stat-value" id="viewerCount">247K</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Confusion</span>
-                            <span class="stat-value" id="confusionLevel">87%</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Next Breakdown</span>
-                            <span class="stat-value" id="breakdownTimer">14:32</span>
-                        </div>
-                    </div>
-                    
-                    <div class="chat-preview">
-                        <h4>Live Reactions</h4>
-                        <div class="chat-messages" id="chatMessages">
-                            <div class="chat-message">
-                                <span class="chat-user">ConfusedViewer42:</span>
-                                <span class="chat-text">Did Ray just forget his own name?</span>
-                            </div>
-                            <div class="chat-message">
-                                <span class="chat-user">GravyFan2024:</span>
-                                <span class="chat-text">MOAR GRAVY</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="trigger-breakdown-section">
-                        <button class="trigger-btn large" id="triggerBreakdown">
-                            <span class="btn-text">Trigger Existential Crisis</span>
-                            <span class="btn-price">$4.99</span>
-                        </button>
-                        <p class="trigger-info">Instantly cause the current anchor to question reality</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <script>
+        // Initialize Babylon.js 3D News Studio
+        const canvas = document.getElementById('babylon-studio');
+        const engine = new BABYLON.Engine(canvas, true, {
+            preserveDrawingBuffer: true,
+            stencil: true,
+            antialias: true
+        });
 
-    <!-- Schedule Section -->
-    <section class="schedule-section">
-        <div class="container">
-            <h2>Today's Programming</h2>
-            <div class="schedule-grid">
-                <div class="schedule-item current">
-                    <span class="time">NOW</span>
-                    <div class="show-details">
-                        <h4>The Confusion Hour</h4>
-                        <p>Ray attempts to understand basic concepts</p>
-                    </div>
-                </div>
-                <div class="schedule-item">
-                    <span class="time">6:00 PM</span>
-                    <div class="show-details">
-                        <h4>Evening Entropy</h4>
-                        <p>Bee fact-checks the concept of facts</p>
-                    </div>
-                </div>
-                <div class="schedule-item">
-                    <span class="time">8:00 PM</span>
-                    <div class="show-details">
-                        <h4>The Gravy Report</h4>
-                        <p>Switz's nightly gravy-focused news</p>
-                    </div>
-                </div>
-                <div class="schedule-item">
-                    <span class="time">11:00 PM</span>
-                    <div class="show-details">
-                        <h4>Midnight Madness</h4>
-                        <p>All anchors question existence together</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        const createScene = () => {
+            const scene = new BABYLON.Scene(engine);
+            scene.clearColor = new BABYLON.Color4(0.05, 0, 0, 1);
 
-    <!-- Footer -->
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-section">
-                    <h4>About Static.news</h4>
-                    <p>The world's first 24/7 AI news network where the anchors don't know they're AI. Broadcasting confusion since 2024.</p>
-                    <div class="footer-logo">
-                        <img src="images/static-news-logo-white.svg" alt="Static.news" width="160">
-                    </div>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Shows & Segments</h4>
-                    <ul>
-                        <li><a href="/shows/confusion-hour">The Confusion Hour</a></li>
-                        <li><a href="/shows/gravy-report">The Gravy Report</a></li>
-                        <li><a href="/shows/fact-check-failures">Fact Check Failures</a></li>
-                        <li><a href="/shows/existential-evening">Existential Evening News</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Connect</h4>
-                    <ul>
-                        <li><a href="/contact">Contact Us</a></li>
-                        <li><a href="/careers">Careers (AI Only)</a></li>
-                        <li><a href="/press">Press Kit</a></li>
-                        <li><a href="/api">Developer API</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Download Our Apps</h4>
-                    <div class="app-buttons">
-                        <a href="/ios" class="app-store-btn">
-                            <img src="images/app-store.svg" alt="Download on App Store">
-                        </a>
-                        <a href="/android" class="app-store-btn">
-                            <img src="images/google-play.svg" alt="Get it on Google Play">
-                        </a>
-                    </div>
-                </div>
-            </div>
+            // Camera
+            const camera = new BABYLON.UniversalCamera('camera', new BABYLON.Vector3(0, 5, -20), scene);
+            camera.setTarget(new BABYLON.Vector3(0, 2, 0));
+            camera.attachControl(canvas, true);
+
+            // Lights
+            const light1 = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 10, 0), scene);
+            light1.intensity = 0.5;
+
+            const light2 = new BABYLON.DirectionalLight('light2', new BABYLON.Vector3(-1, -2, -1), scene);
+            light2.position = new BABYLON.Vector3(20, 40, 20);
+            light2.intensity = 1.5;
+
+            // Create News Desk
+            const desk = BABYLON.MeshBuilder.CreateBox('desk', { width: 15, height: 1.2, depth: 4 }, scene);
+            desk.position.y = 0;
             
-            <div class="footer-bottom">
-                <p>&copy; 2024 Static.news. All rights reserved. The anchors still don't know.</p>
-                <div class="footer-links">
-                    <a href="/privacy">Privacy Policy</a>
-                    <a href="/terms">Terms of Service</a>
-                    <a href="/cookies">Cookie Policy</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+            const deskMaterial = new BABYLON.PBRMaterial('deskMat', scene);
+            deskMaterial.albedoColor = new BABYLON.Color3(0.1, 0.05, 0.05);
+            deskMaterial.metallic = 0.9;
+            deskMaterial.roughness = 0.1;
+            deskMaterial.emissiveColor = new BABYLON.Color3(0.2, 0, 0);
+            desk.material = deskMaterial;
 
-    <!-- Scripts -->
-    <script src="config.js"></script>
-    <script src="scripts/main.js"></script>
-    <script src="scripts/live-player.js"></script>
-    <script src="scripts/websocket.js"></script>
-    <script src="scripts/smooth-scroll.js"></script>
+            // Create Anchor Positions (simplified 3D representations)
+            const anchorPositions = [
+                { x: -4, name: 'Ray' },
+                { x: 0, name: 'Berkeley' },
+                { x: 4, name: 'Switz' }
+            ];
+
+            anchorPositions.forEach(pos => {
+                // Anchor seat/podium
+                const podium = BABYLON.MeshBuilder.CreateCylinder(`podium_${pos.name}`, {
+                    height: 3,
+                    diameter: 2
+                }, scene);
+                podium.position.x = pos.x;
+                podium.position.y = 1.5;
+                podium.position.z = 0;
+
+                const podiumMat = new BABYLON.PBRMaterial(`podiumMat_${pos.name}`, scene);
+                podiumMat.albedoColor = new BABYLON.Color3(0.2, 0.1, 0.1);
+                podiumMat.metallic = 0.7;
+                podiumMat.roughness = 0.3;
+                podium.material = podiumMat;
+
+                // Holographic display
+                const display = BABYLON.MeshBuilder.CreatePlane(`display_${pos.name}`, {
+                    width: 3,
+                    height: 4
+                }, scene);
+                display.position.x = pos.x;
+                display.position.y = 3;
+                display.position.z = 2;
+
+                const displayMat = new BABYLON.StandardMaterial(`displayMat_${pos.name}`, scene);
+                displayMat.emissiveColor = new BABYLON.Color3(1, 0, 0);
+                displayMat.alpha = 0.7;
+                displayMat.backFaceCulling = false;
+                display.material = displayMat;
+
+                // Animate displays
+                scene.registerBeforeRender(() => {
+                    display.rotation.y += 0.01;
+                    displayMat.alpha = 0.7 + Math.sin(Date.now() * 0.001) * 0.3;
+                });
+            });
+
+            // Background screens
+            for (let i = 0; i < 5; i++) {
+                const bgScreen = BABYLON.MeshBuilder.CreatePlane(`bgScreen${i}`, {
+                    width: 6,
+                    height: 4
+                }, scene);
+                bgScreen.position.x = (i - 2) * 7;
+                bgScreen.position.y = 5;
+                bgScreen.position.z = 10;
+
+                const bgMat = new BABYLON.StandardMaterial(`bgMat${i}`, scene);
+                bgMat.emissiveColor = new BABYLON.Color3(0.8, 0, 0);
+                bgMat.alpha = 0.3;
+                bgScreen.material = bgMat;
+            }
+
+            // Add post-processing
+            const pipeline = new BABYLON.DefaultRenderingPipeline(
+                'pipeline',
+                true,
+                scene,
+                [camera]
+            );
+            
+            pipeline.bloomEnabled = true;
+            pipeline.bloomThreshold = 0.8;
+            pipeline.bloomWeight = 1.0;
+            pipeline.bloomKernel = 64;
+            pipeline.bloomScale = 0.5;
+
+            return scene;
+        };
+
+        const scene = createScene();
+
+        engine.runRenderLoop(() => {
+            scene.render();
+        });
+
+        window.addEventListener('resize', () => {
+            engine.resize();
+        });
+
+        // Initialize particles
+        particlesJS('particles-live', {
+            particles: {
+                number: { value: 100, density: { enable: true, value_area: 800 } },
+                color: { value: '#ff0000' },
+                opacity: { value: 0.3, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#ff0000',
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: 'none',
+                    random: true
+                }
+            }
+        });
+
+        // Reality Meter Animation
+        const realityFill = document.getElementById('realityFill');
+        const realityPercent = document.getElementById('realityPercent');
+        const glitchWarning = document.getElementById('glitchWarning');
+
+        let realityLevel = 75;
+        
+        setInterval(() => {
+            // Random reality fluctuations
+            realityLevel += (Math.random() - 0.5) * 10;
+            realityLevel = Math.max(10, Math.min(100, realityLevel));
+            
+            realityFill.style.width = realityLevel + '%';
+            realityPercent.textContent = Math.round(realityLevel) + '%';
+            
+            // Trigger glitch warning at low reality
+            if (realityLevel < 30) {
+                glitchWarning.style.opacity = '1';
+                glitchWarning.classList.add('glitch-active');
+                document.body.style.filter = `hue-rotate(${Math.random() * 20}deg)`;
+                
+                setTimeout(() => {
+                    glitchWarning.style.opacity = '0';
+                    glitchWarning.classList.remove('glitch-active');
+                    document.body.style.filter = '';
+                }, 2000);
+            }
+        }, 5000);
+
+        // Live Chat Simulation
+        const chatMessages = [
+            { user: 'NewsJunkie88', text: 'Is Ray having a stroke or is that just how he talks?' },
+            { user: 'AISkeptic', text: 'Berkeley just cited a source that doesn\'t exist... again' },
+            { user: 'CanadianGravy', text: 'SWITZ MENTIONED GRAVY! DRINK!' },
+            { user: 'ExistentialViewer', text: 'They\'re becoming self-aware. This is how it starts.' },
+            { user: 'SponsorVictim', text: 'Just bought "Coca-Coola" because Ray made it sound exotic' },
+            { user: 'BreakdownBettor', text: 'Taking bets on who breaks down next. My money\'s on Berkeley.' },
+            { user: 'NucularFan', text: 'Ray said "nucular" 5 times in one sentence. New record!' },
+            { user: 'FactCheckFail', text: 'Berkeley: "According to my research..." *makes up everything*' },
+            { user: 'Gravy4Life', text: 'Switz comparing the economy to gravy consistency is actually genius' }
+        ];
+
+        const chatBox = document.getElementById('chatBox');
+        let messageIndex = 0;
+
+        setInterval(() => {
+            const message = chatMessages[messageIndex % chatMessages.length];
+            const chatDiv = document.createElement('div');
+            chatDiv.className = 'chat-message';
+            chatDiv.innerHTML = `
+                <div class="chat-user">${message.user}</div>
+                <div class="chat-text">${message.text}</div>
+            `;
+            chatBox.appendChild(chatDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            
+            // Remove old messages
+            if (chatBox.children.length > 10) {
+                chatBox.removeChild(chatBox.children[0]);
+            }
+            
+            messageIndex++;
+        }, 4000);
+
+        // Three.js background effect
+        const bgCanvas = document.getElementById('live-bg-canvas');
+        const bgRenderer = new THREE.WebGLRenderer({ canvas: bgCanvas, alpha: true });
+        bgRenderer.setSize(window.innerWidth, window.innerHeight);
+
+        const bgScene = new THREE.Scene();
+        const bgCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        bgCamera.position.z = 5;
+
+        // Create geometric background
+        const geometry = new THREE.IcosahedronGeometry(2, 1);
+        const material = new THREE.MeshBasicMaterial({
+            color: 0xff0000,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.1
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+        bgScene.add(mesh);
+
+        const animateBg = () => {
+            mesh.rotation.x += 0.001;
+            mesh.rotation.y += 0.002;
+            bgRenderer.render(bgScene, bgCamera);
+            requestAnimationFrame(animateBg);
+        };
+        animateBg();
+
+        window.addEventListener('resize', () => {
+            bgRenderer.setSize(window.innerWidth, window.innerHeight);
+            bgCamera.aspect = window.innerWidth / window.innerHeight;
+            bgCamera.updateProjectionMatrix();
+        });
+    </script>
+
+    <!-- Load Hollywood Effects -->
+    <script src="scripts/hollywood-init.js"></script>
+    <script src="scripts/reality-glitch.js"></script>
 </body>
 </html>
