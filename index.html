@@ -101,6 +101,19 @@
             color: #fff;
             overflow-x: hidden;
         }
+        
+        /* Photorealistic Newsroom Background */
+        #newsroom-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+            filter: blur(2px);
+            transform: scale(1.1);
+        }
 
 
         /* Custom Cursor */
@@ -219,11 +232,22 @@
             line-height: 0.8;
             position: relative;
             display: inline-block;
+            color: var(--static-red);
+            text-shadow: 0 0 30px rgba(255,0,0,0.5);
         }
 
         .hero-title span {
             display: inline-block;
             position: relative;
+            animation: staticGlitch 0.3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes staticGlitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
         }
 
         .glitch {
@@ -652,11 +676,15 @@
     <!-- Loading Screen -->
     <div id="loading-screen">
         <div class="loading-logo">STATIC</div>
+        <div class="loading-text">Initializing Hollywood-level experience...</div>
         <div class="loading-progress">
             <div class="loading-progress-bar"></div>
         </div>
     </div>
 
+    <!-- Photorealistic Newsroom Background -->
+    <canvas id="newsroom-background"></canvas>
+    
     <!-- Main Canvas for Background Effects -->
     <canvas id="main-canvas"></canvas>
 
@@ -885,7 +913,12 @@
     </section>
 
     <!-- Core JavaScript -->
+    <script src="scripts/photorealistic-newsroom.js"></script>
     <script>
+        // Initialize Performance Optimizer
+        const optimizer = new PerformanceOptimizer();
+        optimizer.init();
+        
         // Initialize GSAP
         gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText, MotionPathPlugin, Physics2DPlugin);
 
@@ -906,16 +939,24 @@
             }, 100);
         });
 
+        // Initialize Photorealistic Newsroom Background
+        const newsroomCanvas = document.getElementById('newsroom-background');
+        const newsroom = new PhotorealisticNewsroom(newsroomCanvas);
+        
         // Loading Animation
         let loadingProgress = 0;
         const loadingBar = document.querySelector('.loading-progress-bar');
         const loadingScreen = document.getElementById('loading-screen');
 
-        function updateLoading(progress) {
+        async function updateLoading(progress) {
             loadingProgress = Math.min(progress, 100);
             loadingBar.style.width = loadingProgress + '%';
             
             if (loadingProgress >= 100) {
+                // Initialize newsroom in background
+                await newsroom.init();
+                newsroom.enableOptimizations();
+                
                 setTimeout(() => {
                     gsap.to(loadingScreen, {
                         opacity: 0,
