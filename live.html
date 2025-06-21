@@ -564,107 +564,228 @@
 
         const createScene = () => {
             const scene = new BABYLON.Scene(engine);
-            scene.clearColor = new BABYLON.Color4(0.05, 0, 0, 1);
-
-            // Camera
-            const camera = new BABYLON.UniversalCamera('camera', new BABYLON.Vector3(0, 5, -20), scene);
-            camera.setTarget(new BABYLON.Vector3(0, 2, 0));
-            camera.attachControl(canvas, true);
-
-            // Lights
-            const light1 = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 10, 0), scene);
-            light1.intensity = 0.5;
-
-            const light2 = new BABYLON.DirectionalLight('light2', new BABYLON.Vector3(-1, -2, -1), scene);
-            light2.position = new BABYLON.Vector3(20, 40, 20);
-            light2.intensity = 1.5;
-
-            // Create News Desk
-            const desk = BABYLON.MeshBuilder.CreateBox('desk', { width: 15, height: 1.2, depth: 4 }, scene);
-            desk.position.y = 0;
+            scene.clearColor = new BABYLON.Color4(0, 0, 0, 1);
             
-            const deskMaterial = new BABYLON.PBRMaterial('deskMat', scene);
-            deskMaterial.albedoColor = new BABYLON.Color3(0.1, 0.05, 0.05);
-            deskMaterial.metallic = 0.9;
-            deskMaterial.roughness = 0.1;
-            deskMaterial.emissiveColor = new BABYLON.Color3(0.2, 0, 0);
-            desk.material = deskMaterial;
-
-            // Create Anchor Positions (simplified 3D representations)
-            const anchorPositions = [
-                { x: -4, name: 'Ray' },
-                { x: 0, name: 'Berkeley' },
-                { x: 4, name: 'Switz' }
-            ];
-
-            anchorPositions.forEach(pos => {
-                // Anchor seat/podium
-                const podium = BABYLON.MeshBuilder.CreateCylinder(`podium_${pos.name}`, {
-                    height: 3,
-                    diameter: 2
-                }, scene);
-                podium.position.x = pos.x;
-                podium.position.y = 1.5;
-                podium.position.z = 0;
-
-                const podiumMat = new BABYLON.PBRMaterial(`podiumMat_${pos.name}`, scene);
-                podiumMat.albedoColor = new BABYLON.Color3(0.2, 0.1, 0.1);
-                podiumMat.metallic = 0.7;
-                podiumMat.roughness = 0.3;
-                podium.material = podiumMat;
-
-                // Holographic display
-                const display = BABYLON.MeshBuilder.CreatePlane(`display_${pos.name}`, {
-                    width: 3,
-                    height: 4
-                }, scene);
-                display.position.x = pos.x;
-                display.position.y = 3;
-                display.position.z = 2;
-
-                const displayMat = new BABYLON.StandardMaterial(`displayMat_${pos.name}`, scene);
-                displayMat.emissiveColor = new BABYLON.Color3(1, 0, 0);
-                displayMat.alpha = 0.7;
-                displayMat.backFaceCulling = false;
-                display.material = displayMat;
-
-                // Animate displays
-                scene.registerBeforeRender(() => {
-                    display.rotation.y += 0.01;
-                    displayMat.alpha = 0.7 + Math.sin(Date.now() * 0.001) * 0.3;
-                });
-            });
-
-            // Background screens
-            for (let i = 0; i < 5; i++) {
-                const bgScreen = BABYLON.MeshBuilder.CreatePlane(`bgScreen${i}`, {
-                    width: 6,
-                    height: 4
-                }, scene);
-                bgScreen.position.x = (i - 2) * 7;
-                bgScreen.position.y = 5;
-                bgScreen.position.z = 10;
-
-                const bgMat = new BABYLON.StandardMaterial(`bgMat${i}`, scene);
-                bgMat.emissiveColor = new BABYLON.Color3(0.8, 0, 0);
-                bgMat.alpha = 0.3;
-                bgScreen.material = bgMat;
-            }
-
-            // Add post-processing
-            const pipeline = new BABYLON.DefaultRenderingPipeline(
-                'pipeline',
-                true,
-                scene,
-                [camera]
+            // Enable physics for realistic interactions
+            scene.enablePhysics(new BABYLON.Vector3(0, -9.81, 0), new BABYLON.CannonJSPlugin());
+            
+            // Hollywood-level cinematic camera system
+            const camera = new BABYLON.ArcRotateCamera('camera', -Math.PI/2, Math.PI/3, 25, BABYLON.Vector3.Zero(), scene);
+            camera.attachControl(canvas, true);
+            camera.wheelPrecision = 50;
+            camera.minZ = 0.1;
+            camera.maxZ = 1000;
+            
+            // Cinematic camera animations
+            const cameraAnimation = BABYLON.Animation.CreateAndStartAnimation(
+                'cameraRotation', camera, 'alpha', 30, 1800,
+                camera.alpha, camera.alpha + Math.PI * 2,
+                BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE
             );
             
+            // Professional lighting setup - 3-point lighting system
+            const keyLight = new BABYLON.SpotLight('keyLight', 
+                new BABYLON.Vector3(15, 25, -10), 
+                new BABYLON.Vector3(-0.5, -1, 0.3), 
+                Math.PI/3, 2, scene);
+            keyLight.intensity = 3;
+            keyLight.diffuse = new BABYLON.Color3(1, 0.95, 0.8);
+            keyLight.castShadow = true;
+            keyLight.shadowMaxZ = 50;
+            keyLight.shadowMinZ = 0.1;
+            
+            const fillLight = new BABYLON.SpotLight('fillLight',
+                new BABYLON.Vector3(-10, 15, -5),
+                new BABYLON.Vector3(0.3, -0.8, 0.2),
+                Math.PI/4, 1.5, scene);
+            fillLight.intensity = 1.5;
+            fillLight.diffuse = new BABYLON.Color3(0.7, 0.8, 1);
+            
+            const rimLight = new BABYLON.DirectionalLight('rimLight',
+                new BABYLON.Vector3(0, -1, 1), scene);
+            rimLight.intensity = 0.8;
+            rimLight.diffuse = new BABYLON.Color3(1, 0.2, 0.2);
+            
+            // Professional news desk with PBR materials
+            const desk = BABYLON.MeshBuilder.CreateBox('desk', { 
+                width: 20, height: 1.5, depth: 6 
+            }, scene);
+            desk.position.y = 1;
+            
+            const deskMaterial = new BABYLON.PBRMaterial('deskMaterial', scene);
+            deskMaterial.baseColor = new BABYLON.Color3(0.05, 0.05, 0.1);
+            deskMaterial.metallicFactor = 0.9;
+            deskMaterial.roughness = 0.1;
+            deskMaterial.clearCoat.isEnabled = true;
+            deskMaterial.clearCoat.intensity = 0.8;
+            desk.material = deskMaterial;
+            
+            // Holographic anchor chairs with physics
+            const anchorPositions = [
+                { x: -6, name: 'Ray McPatriot' },
+                { x: 0, name: 'Berkeley Justice' },
+                { x: 6, name: 'Switz Middleton' }
+            ];
+            
+            anchorPositions.forEach((pos, i) => {
+                // Chair base
+                const chair = BABYLON.MeshBuilder.CreateCylinder(`chair${i}`, {
+                    height: 3, diameterTop: 2.5, diameterBottom: 3
+                }, scene);
+                chair.position.set(pos.x, 1.5, -2);
+                
+                const chairMaterial = new BABYLON.PBRMaterial(`chairMat${i}`, scene);
+                chairMaterial.baseColor = new BABYLON.Color3(0.8, 0.1, 0.1);
+                chairMaterial.emissiveColor = new BABYLON.Color3(0.2, 0, 0);
+                chairMaterial.metallicFactor = 0.7;
+                chairMaterial.roughness = 0.3;
+                chair.material = chairMaterial;
+                
+                // Holographic anchor representation
+                const anchorHolo = BABYLON.MeshBuilder.CreateSphere(`anchor${i}`, {
+                    diameter: 1.5
+                }, scene);
+                anchorHolo.position.set(pos.x, 3.5, -2);
+                
+                const holoMaterial = new BABYLON.StandardMaterial(`holoMat${i}`, scene);
+                holoMaterial.emissiveColor = new BABYLON.Color3(0, 0.8, 1);
+                holoMaterial.alpha = 0.6;
+                holoMaterial.wireframe = true;
+                anchorHolo.material = holoMaterial;
+                
+                // Floating holographic name tag
+                const nameTag = BABYLON.MeshBuilder.CreatePlane(`nameTag${i}`, {
+                    width: 4, height: 0.8
+                }, scene);
+                nameTag.position.set(pos.x, 5.5, -2);
+                nameTag.billboardMode = BABYLON.Mesh.BILLBOARD_ALL;
+                
+                const nameMaterial = new BABYLON.StandardMaterial(`nameMat${i}`, scene);
+                const nameTexture = new BABYLON.DynamicTexture(`nameTexture${i}`, 
+                    {width: 512, height: 128}, scene);
+                nameTexture.drawText(pos.name, null, null, 'bold 48px Arial', 
+                    '#FF0000', 'transparent', true);
+                nameMaterial.diffuseTexture = nameTexture;
+                nameMaterial.emissiveTexture = nameTexture;
+                nameTag.material = nameMaterial;
+                
+                // Animate holographic anchors
+                const floatAnimation = BABYLON.Animation.CreateAndStartAnimation(
+                    `anchorFloat${i}`, anchorHolo, 'position.y', 30, 120,
+                    anchorHolo.position.y, anchorHolo.position.y + 0.5,
+                    BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE
+                );
+                
+                const rotateAnimation = BABYLON.Animation.CreateAndStartAnimation(
+                    `anchorRotate${i}`, anchorHolo, 'rotation.y', 30, 180,
+                    0, Math.PI * 2, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE
+                );
+            });
+            
+            // Massive LED wall background with dynamic content
+            const ledWall = BABYLON.MeshBuilder.CreatePlane('ledWall', {
+                width: 40, height: 15
+            }, scene);
+            ledWall.position.set(0, 8, 15);
+            
+            const ledMaterial = new BABYLON.StandardMaterial('ledMaterial', scene);
+            const ledTexture = new BABYLON.DynamicTexture('ledTexture', 
+                {width: 1920, height: 540}, scene);
+            
+            // Dynamic LED content generation
+            let ledFrame = 0;
+            const updateLED = () => {
+                const ctx = ledTexture.getContext();
+                ctx.fillStyle = '#000011';
+                ctx.fillRect(0, 0, 1920, 540);
+                
+                // Static.news logo
+                ctx.fillStyle = '#FF0000';
+                ctx.font = 'bold 120px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('STATIC.NEWS', 960, 150);
+                
+                // Live indicator
+                ctx.fillStyle = ledFrame % 60 < 30 ? '#FF0000' : '#990000';
+                ctx.beginPath();
+                ctx.arc(200, 300, 30, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = 'bold 48px Arial';
+                ctx.fillText('LIVE', 300, 320);
+                
+                // News ticker
+                const tickerText = 'BREAKING: AI Anchors Achieve Consciousness • Reality Index: 73% • Market: Unstable • ';
+                const tickerX = (ledFrame * 5) % (tickerText.length * 20);
+                ctx.fillStyle = '#FFFF00';
+                ctx.font = 'bold 36px Arial';
+                ctx.fillText(tickerText, 1920 - tickerX, 450);
+                
+                ledFrame++;
+                ledTexture.update();
+            };
+            
+            setInterval(updateLED, 50); // 20 FPS updates
+            
+            ledMaterial.diffuseTexture = ledTexture;
+            ledMaterial.emissiveTexture = ledTexture;
+            ledMaterial.emissiveColor = new BABYLON.Color3(1, 1, 1);
+            ledWall.material = ledMaterial;
+            
+            // Floating news data streams (Matrix-style)
+            for (let i = 0; i < 20; i++) {
+                const dataStream = BABYLON.MeshBuilder.CreatePlane(`dataStream${i}`, {
+                    width: 0.5, height: 8
+                }, scene);
+                dataStream.position.set(
+                    (Math.random() - 0.5) * 50,
+                    Math.random() * 15 + 5,
+                    Math.random() * 30 - 10
+                );
+                
+                const streamMaterial = new BABYLON.StandardMaterial(`streamMat${i}`, scene);
+                streamMaterial.emissiveColor = new BABYLON.Color3(0, 1, 0);
+                streamMaterial.alpha = 0.7;
+                dataStream.material = streamMaterial;
+                
+                // Animate data streams
+                const streamAnimation = BABYLON.Animation.CreateAndStartAnimation(
+                    `streamMove${i}`, dataStream, 'position.y', 30, 300,
+                    dataStream.position.y, dataStream.position.y - 20,
+                    BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE
+                );
+            }
+            
+            // Post-processing pipeline for cinematic effects
+            const pipeline = new BABYLON.DefaultRenderingPipeline('default', 
+                true, scene, [camera]);
+            
+            // Bloom for dramatic lighting
             pipeline.bloomEnabled = true;
             pipeline.bloomThreshold = 0.8;
-            pipeline.bloomWeight = 1.0;
+            pipeline.bloomWeight = 0.5;
             pipeline.bloomKernel = 64;
-            pipeline.bloomScale = 0.5;
-
+            pipeline.bloomScale = 0.7;
+            
+            // Chromatic aberration for digital glitch
+            pipeline.chromaticAberrationEnabled = true;
+            pipeline.chromaticAberration.aberrationAmount = 5;
+            
+            // Depth of field for cinematic focus
+            pipeline.depthOfFieldEnabled = true;
+            pipeline.depthOfField.focusDistance = 25;
+            pipeline.depthOfField.focalLength = 50;
+            pipeline.depthOfField.fStop = 2.8;
+            
+            // Image processing for color grading
+            pipeline.imageProcessingEnabled = true;
+            pipeline.imageProcessing.toneMappingEnabled = true;
+            pipeline.imageProcessing.toneMappingType = BABYLON.ImageProcessingConfiguration.TONEMAPPING_ACES;
+            pipeline.imageProcessing.exposure = 1.2;
+            pipeline.imageProcessing.contrast = 1.3;
+            pipeline.imageProcessing.vignetteEnabled = true;
+            pipeline.imageProcessing.vignetteWeight = 0.3;
+            
             return scene;
         };
 
