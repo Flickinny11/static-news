@@ -21,19 +21,16 @@ class LiveArticleDisplay {
     }
 
     createArticleDisplay() {
-        // Find or create container
-        this.displayContainer = document.getElementById('live-article-display');
-        if (!this.displayContainer) {
-            this.displayContainer = document.createElement('div');
-            this.displayContainer.id = 'live-article-display';
-            this.displayContainer.className = 'live-article-display';
-            
-            // Add to broadcast content area
-            const broadcastContent = document.querySelector('.broadcast-content');
-            if (broadcastContent) {
-                broadcastContent.appendChild(this.displayContainer);
-            }
+        // Find the broadcast media container
+        const mediaContainer = document.getElementById('broadcast-media-container');
+        if (!mediaContainer) {
+            console.warn('Broadcast media container not found');
+            return;
         }
+        
+        this.displayContainer = document.createElement('div');
+        this.displayContainer.id = 'live-article-display';
+        this.displayContainer.className = 'live-article-display';
         
         // Initial HTML structure
         this.displayContainer.innerHTML = `
@@ -55,6 +52,9 @@ class LiveArticleDisplay {
                 <div class="reaction-text"></div>
             </div>
         `;
+        
+        // Append to media container
+        mediaContainer.appendChild(this.displayContainer);
         
         // Add styles
         this.injectStyles();

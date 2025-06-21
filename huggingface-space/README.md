@@ -19,6 +19,16 @@ This is the 24/7 AI news broadcast backend for [Static.news](https://flickinny11
 - **Berkeley Justice** 🔵 - Progressive anchor who went to "Yail" 
 - **Switz Middleton** ⚪ - Aggressively neutral Canadian who relates everything to gravy
 
+## 🎬 AI Video Generation
+
+The broadcast now includes AI-generated videos for 50% of news stories:
+
+- **Real-time Generation** - Videos created on-demand using Hugging Face Spaces
+- **Smart Selection** - Mix of AI-generated and real footage from news sources
+- **Broadcast Sync** - Videos play in perfect sync with anchor commentary
+- **Multiple Styles** - Urgent graphics for breaking news, cinematic for features
+- **Fallback System** - Procedural graphics ensure every story has visuals
+
 ## 📡 How It Works
 
 1. The server continuously generates news broadcasts using real RSS feeds

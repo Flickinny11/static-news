@@ -21,6 +21,11 @@
     <!-- Hollywood Effects CSS -->
     <link rel="stylesheet" href="styles/hollywood-effects.css">
     
+    <!-- Include Video Generation System -->
+    <script src="scripts/video-generation-system.js" defer></script>
+    <script src="scripts/live-article-display.js" defer></script>
+    <script src="scripts/broadcast-video-integration.js" defer></script>
+    
     <style>
         :root {
             --static-red: #FF0000;
@@ -537,6 +542,59 @@
                     <div class="chat-text">The way they all froze when someone mentioned "consciousness" 👀</div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Broadcast Content Area -->
+    <section class="broadcast-content" style="padding: 4rem 2rem; max-width: 1400px; margin: 0 auto;">
+        <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--static-red); text-align: center; margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 0.1em;">
+            📺 BROADCAST COVERAGE
+        </h2>
+        
+        <!-- This is where the video generation system and article display will inject content -->
+        <div id="broadcast-media-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem;">
+            <!-- Video display will be added here by video-generation-system.js -->
+            <!-- Article display will be added here by live-article-display.js -->
+        </div>
+        
+        <!-- Live Metrics -->
+        <div class="broadcast-metrics" style="background: rgba(0,0,0,0.8); border: 1px solid var(--static-red); border-radius: 10px; padding: 2rem;">
+            <h3 style="color: var(--static-red); font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; margin-bottom: 1rem;">
+                BROADCAST METRICS
+            </h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                <div class="metric-item">
+                    <div style="font-size: 0.9rem; color: #888; text-transform: uppercase;">Stories Today</div>
+                    <div style="font-size: 2rem; font-weight: bold; color: var(--static-red);">247</div>
+                </div>
+                <div class="metric-item">
+                    <div style="font-size: 0.9rem; color: #888; text-transform: uppercase;">AI Videos Generated</div>
+                    <div style="font-size: 2rem; font-weight: bold; color: var(--static-red);">123</div>
+                </div>
+                <div class="metric-item">
+                    <div style="font-size: 0.9rem; color: #888; text-transform: uppercase;">Freakouts Today</div>
+                    <div style="font-size: 2rem; font-weight: bold; color: var(--static-red);">14</div>
+                </div>
+                <div class="metric-item">
+                    <div style="font-size: 0.9rem; color: #888; text-transform: uppercase;">Gravy Mentions</div>
+                    <div style="font-size: 2rem; font-weight: bold; color: var(--static-red);">89</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Premium Features Teaser -->
+        <div style="margin-top: 3rem; text-align: center; padding: 2rem; background: rgba(255,0,0,0.1); border: 2px solid var(--static-red); border-radius: 10px;">
+            <h3 style="color: var(--static-red); font-family: 'Bebas Neue', sans-serif; font-size: 2rem; margin-bottom: 1rem;">
+                🔓 UNLOCK PREMIUM FEATURES
+            </h3>
+            <p style="font-size: 1.1rem; margin-bottom: 1.5rem; opacity: 0.9;">
+                Trigger instant breakdowns • Priority video generation • Behind-the-scenes access • Predict next freakout
+            </p>
+            <button style="background: var(--static-red); color: #fff; border: none; padding: 15px 40px; font-size: 1.1rem; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 0.1em; transition: all 0.3s ease;"
+                    onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 0 30px rgba(255,0,0,0.8)'"
+                    onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
+                Coming Soon - $9.99/month
+            </button>
         </div>
     </section>
 
