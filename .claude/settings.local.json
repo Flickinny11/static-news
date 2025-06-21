@@ -30,7 +30,17 @@
       "Bash(ssh:*)",
       "Bash(cat:*)",
       "Bash(scp:*)",
-      "Bash(cp:*)"
+      "Bash(cp:*)",
+      "Bash(echo:*)",
+      "Bash(./deploy-to-hf-space.sh:*)",
+      "Bash(git init:*)",
+      "Bash(git remote add:*)",
+      "Bash(ssh-add:*)",
+      "Bash(ssh:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(python:*)",
+      "Bash(cp:*)",
+      "Bash(\"/Volumes/Logan T7 Touch/static.news/notify.sh\" \"HF Space deployed! Building now at https://huggingface.co/spaces/alledged/static-news-backend\")"
     ],
     "deny": []
   }

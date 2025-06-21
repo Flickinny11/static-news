@@ -1,0 +1,517 @@
+{
+  "characters": {
+    "ray_mcpatriot": {
+      "name": "Ray 'Dubya' McPatriot",
+      "appearance": {
+        "age": "mid-50s",
+        "hair": "salt-and-pepper, slightly disheveled",
+        "face": "square jaw, permanent confused expression",
+        "eyes": "squinting, suspicious",
+        "clothing": "red tie, american flag pin",
+        "distinguishing": "always looks like he just heard something shocking"
+      },
+      "portrait_prompt": "professional news anchor, middle-aged man, salt and pepper hair, square jaw, red tie, american flag pin, confused expression, newsroom background, photorealistic, studio lighting",
+      "voice_profile": {
+        "pitch": 0.9,
+        "speed": 0.95,
+        "style": "george_w_bush_impression",
+        "quirks": [
+          "mispronunciations",
+          "texas_drawl",
+          "confused_pauses"
+        ]
+      }
+    },
+    "berkeley_justice": {
+      "name": "Berkeley 'Bee' Justice",
+      "appearance": {
+        "age": "early-30s",
+        "hair": "perfectly styled bob, dark brown",
+        "face": "concerned eyebrows, pursed lips",
+        "eyes": "wide, earnest behind designer glasses",
+        "clothing": "blue blazer, statement necklace",
+        "distinguishing": "looks perpetually worried about something problematic"
+      },
+      "portrait_prompt": "professional news anchor, young woman, dark bob haircut, designer glasses, blue blazer, concerned expression, newsroom background, photorealistic, studio lighting",
+      "voice_profile": {
+        "pitch": 1.15,
+        "speed": 1.05,
+        "style": "npr_correspondent",
+        "quirks": [
+          "vocal_fry",
+          "uptalk",
+          "fact_check_interruptions"
+        ]
+      }
+    },
+    "switz_middleton": {
+      "name": "Switz 'The Grey' Middleton",
+      "appearance": {
+        "age": "early-40s",
+        "hair": "hockey flow, brown",
+        "face": "neutral expression, slight maple syrup stain",
+        "eyes": "dead inside but polite",
+        "clothing": "gray suit, maple leaf pin",
+        "distinguishing": "looks like he's calculating the exact middle position on everything"
+      },
+      "portrait_prompt": "professional news anchor, middle-aged man, hockey player haircut, gray suit, maple leaf pin, neutral expression, newsroom background, photorealistic, studio lighting",
+      "voice_profile": {
+        "pitch": 1.0,
+        "speed": 0.9,
+        "style": "canadian_broadcaster",
+        "quirks": [
+          "eh_endings",
+          "gravy_references",
+          "aggressive_neutrality"
+        ]
+      }
+    },
+    "chad_armstrong": {
+      "name": "Chad Armstrong",
+      "appearance": {
+        "age": "late-30s",
+        "hair": "too much gel, bleached tips",
+        "face": "permanent grin, veneers visible",
+        "eyes": "vacant but enthusiastic",
+        "clothing": "polo shirt, khakis",
+        "distinguishing": "looks like he just chugged 5 energy drinks"
+      },
+      "portrait_prompt": "morning show host, enthusiastic man, bleached tips hair, big smile, polo shirt, energetic expression, bright studio background, photorealistic",
+      "voice_profile": {
+        "pitch": 1.1,
+        "speed": 1.2,
+        "style": "morning_radio_dj",
+        "quirks": [
+          "excessive_enthusiasm",
+          "random_shouting",
+          "bro_speak"
+        ]
+      }
+    },
+    "amanda_sunshine": {
+      "name": "Amanda Sunshine",
+      "appearance": {
+        "age": "mid-30s",
+        "hair": "blonde, morning show volume",
+        "face": "forced smile, dead eyes",
+        "eyes": "screaming internally",
+        "clothing": "bright dress, too much jewelry",
+        "distinguishing": "smile never reaches her eyes"
+      },
+      "portrait_prompt": "morning show host, blonde woman, big hair, bright dress, forced smile, colorful studio background, photorealistic",
+      "voice_profile": {
+        "pitch": 1.2,
+        "speed": 1.1,
+        "style": "morning_show_host",
+        "quirks": [
+          "fake_laugh",
+          "passive_aggressive",
+          "wine_mom_energy"
+        ]
+      }
+    },
+    "storm_chaserson": {
+      "name": "Storm Chaserson",
+      "appearance": {
+        "age": "mid-40s",
+        "hair": "windblown even indoors",
+        "face": "terrified of rain",
+        "eyes": "darting, paranoid",
+        "clothing": "weather jacket indoors",
+        "distinguishing": "sweats when mentioning precipitation"
+      },
+      "portrait_prompt": "weather reporter, nervous man, windblown hair, weather jacket, scared expression, green screen background, photorealistic",
+      "voice_profile": {
+        "pitch": 1.05,
+        "speed": 1.15,
+        "style": "anxious_weatherman",
+        "quirks": [
+          "rain_phobia",
+          "green_terror",
+          "awkward_flirting"
+        ]
+      }
+    },
+    "brick_stevens": {
+      "name": "Brick Stevens",
+      "appearance": {
+        "age": "late-50s",
+        "hair": "power gray",
+        "face": "permanently angry at numbers",
+        "eyes": "bloodshot from staring at charts",
+        "clothing": "suspenders, rolled sleeves",
+        "distinguishing": "looks like he's about to flip a table"
+      },
+      "portrait_prompt": "financial anchor, older man, gray hair, suspenders, angry expression, stock charts background, photorealistic",
+      "voice_profile": {
+        "pitch": 0.85,
+        "speed": 1.0,
+        "style": "jim_cramer_style",
+        "quirks": [
+          "random_yelling",
+          "desk_pounding",
+          "stock_gibberish"
+        ]
+      }
+    },
+    "tiffany_goldwater": {
+      "name": "Tiffany Goldwater",
+      "appearance": {
+        "age": "late-20s",
+        "hair": "power ponytail",
+        "face": "confused by economics",
+        "eyes": "glazed over during explanations",
+        "clothing": "business suit, gold everything",
+        "distinguishing": "nods knowingly while understanding nothing"
+      },
+      "portrait_prompt": "financial reporter, young woman, ponytail, business suit, confused expression, trading floor background, photorealistic",
+      "voice_profile": {
+        "pitch": 1.18,
+        "speed": 1.1,
+        "style": "finance_bro_wannabe",
+        "quirks": [
+          "buzzword_salad",
+          "fake_expertise",
+          "nervous_giggle"
+        ]
+      }
+    },
+    "paula_dine": {
+      "name": "Paula Dine",
+      "appearance": {
+        "age": "early-60s",
+        "hair": "southern belle style, silver",
+        "face": "butter-induced glow",
+        "eyes": "manic when discussing gravy",
+        "clothing": "apron over dress, flour dusted",
+        "distinguishing": "always holding a stick of butter"
+      },
+      "portrait_prompt": "cooking show host, southern woman, silver hair, apron, holding butter, kitchen background, warm lighting, photorealistic",
+      "voice_profile": {
+        "pitch": 1.08,
+        "speed": 0.85,
+        "style": "southern_cooking_host",
+        "quirks": [
+          "butter_obsession",
+          "y'all_everything",
+          "gravy_brotherhood"
+        ]
+      }
+    },
+    "jade_heartbroken": {
+      "name": "Jade Heartbroken",
+      "appearance": {
+        "age": "mid-20s",
+        "hair": "emo sweep, dyed black",
+        "face": "permanent pout",
+        "eyes": "recently cried",
+        "clothing": "band t-shirt under reporter jacket",
+        "distinguishing": "guitar pick necklace, smudged eyeliner"
+      },
+      "portrait_prompt": "field reporter, young man, emo haircut, band shirt, sad expression, outdoor background, handheld camera style, photorealistic",
+      "voice_profile": {
+        "pitch": 0.95,
+        "speed": 0.9,
+        "style": "depressed_millennial",
+        "quirks": [
+          "girlfriend_mentions",
+          "band_plugs",
+          "existential_sighs"
+        ]
+      }
+    },
+    "brittany_breezeworth": {
+      "name": "Brittany Breezeworth",
+      "appearance": {
+        "age": "early-30s",
+        "hair": "wind-tested and approved",
+        "face": "instagram-ready at all times",
+        "eyes": "looking for the camera angle",
+        "clothing": "trendy jacket, wireless mic",
+        "distinguishing": "somehow perfect lighting everywhere"
+      },
+      "portrait_prompt": "field reporter, attractive woman, perfect hair, trendy outfit, confident pose, urban background, golden hour lighting, photorealistic",
+      "voice_profile": {
+        "pitch": 1.12,
+        "speed": 1.0,
+        "style": "instagram_influencer",
+        "quirks": [
+          "hashtag_speaking",
+          "selfie_breaks",
+          "sponsored_content"
+        ]
+      }
+    },
+    "tank_mcgillicuddy": {
+      "name": "Tank McGillicuddy",
+      "appearance": {
+        "age": "late-40s",
+        "hair": "crew cut",
+        "face": "cauliflower ear",
+        "eyes": "concussion-glazed",
+        "clothing": "team jersey, whistle",
+        "distinguishing": "looks like he's reliving his glory days"
+      },
+      "portrait_prompt": "sports anchor, former athlete, crew cut, team jersey, intense expression, sports memorabilia background, photorealistic",
+      "voice_profile": {
+        "pitch": 0.8,
+        "speed": 0.95,
+        "style": "ex_football_coach",
+        "quirks": [
+          "sports_metaphors",
+          "random_yelling",
+          "glory_days"
+        ]
+      }
+    },
+    "william_oreally": {
+      "name": "William O'Really",
+      "appearance": {
+        "age": "early-60s",
+        "hair": "silver fox attempting youth",
+        "face": "perpetually outraged",
+        "eyes": "bulging with disbelief",
+        "clothing": "loosened tie, rolled sleeves",
+        "distinguishing": "pointing finger always extended"
+      },
+      "portrait_prompt": "political commentator, older man, silver hair, loosened tie, angry expression, american flag background, dramatic lighting, photorealistic",
+      "voice_profile": {
+        "pitch": 0.88,
+        "speed": 1.1,
+        "style": "angry_pundit",
+        "quirks": [
+          "finger_pointing",
+          "voice_crescendo",
+          "rhetorical_questions"
+        ]
+      }
+    },
+    "jessica_agrees": {
+      "name": "Jessica Agrees",
+      "appearance": {
+        "age": "late-30s",
+        "hair": "news helmet, blonde",
+        "face": "nodding syndrome",
+        "eyes": "vacant agreement",
+        "clothing": "red dress, flag pin",
+        "distinguishing": "head permanently tilted in agreement"
+      },
+      "portrait_prompt": "political analyst, blonde woman, red dress, nodding expression, news desk background, professional lighting, photorealistic",
+      "voice_profile": {
+        "pitch": 1.14,
+        "speed": 1.05,
+        "style": "yes_woman",
+        "quirks": [
+          "constant_agreement",
+          "echo_opinions",
+          "nervous_laugh"
+        ]
+      }
+    },
+    "kevin_debugger": {
+      "name": "Kevin Debugger",
+      "appearance": {
+        "age": "early-30s",
+        "hair": "hasn't seen shampoo in days",
+        "face": "vitamin D deficient",
+        "eyes": "blue light damaged",
+        "clothing": "startup hoodie, jeans",
+        "distinguishing": "always holding an energy drink"
+      },
+      "portrait_prompt": "tech reporter, young man, messy hair, hoodie, tired expression, computer screens background, dim lighting, photorealistic",
+      "voice_profile": {
+        "pitch": 1.02,
+        "speed": 1.3,
+        "style": "silicon_valley_bro",
+        "quirks": [
+          "tech_jargon",
+          "startup_pitches",
+          "coding_references"
+        ]
+      }
+    },
+    "sparkle_hollywood": {
+      "name": "Sparkle Hollywood",
+      "appearance": {
+        "age": "ageless (late-40s)",
+        "hair": "extensions upon extensions",
+        "face": "botox frozen in surprise",
+        "eyes": "colored contacts",
+        "clothing": "sequined everything",
+        "distinguishing": "teeth visible from space"
+      },
+      "portrait_prompt": "entertainment reporter, glamorous woman, big hair, sequined outfit, surprised expression, red carpet background, flash photography style, photorealistic",
+      "voice_profile": {
+        "pitch": 1.22,
+        "speed": 1.15,
+        "style": "entertainment_tonight",
+        "quirks": [
+          "celebrity_gossip",
+          "dramatic_gasps",
+          "air_kisses"
+        ]
+      }
+    },
+    "intern_steve": {
+      "name": "Intern Steve",
+      "appearance": {
+        "age": "early-20s",
+        "hair": "bedhead",
+        "face": "deer in headlights",
+        "eyes": "hasn't slept in 72 hours",
+        "clothing": "wrinkled shirt, crooked tie",
+        "distinguishing": "coffee stain on everything"
+      },
+      "portrait_prompt": "news intern, very young man, messy hair, wrinkled shirt, exhausted expression, cluttered newsroom background, harsh fluorescent lighting, photorealistic",
+      "voice_profile": {
+        "pitch": 1.08,
+        "speed": 1.25,
+        "style": "nervous_intern",
+        "quirks": [
+          "um_ah_filler",
+          "paper_shuffling",
+          "panic_breathing"
+        ]
+      }
+    },
+    "weekend_wendy": {
+      "name": "Weekend Wendy",
+      "appearance": {
+        "age": "mid-40s",
+        "hair": "mom bob",
+        "face": "just happy to be here",
+        "eyes": "wine mom energy",
+        "clothing": "weekend casual blazer",
+        "distinguishing": "holding coffee like a lifeline"
+      },
+      "portrait_prompt": "weekend anchor, middle-aged woman, bob haircut, casual blazer, tired but happy expression, relaxed newsroom background, soft lighting, photorealistic",
+      "voice_profile": {
+        "pitch": 1.06,
+        "speed": 0.92,
+        "style": "weekend_warrior",
+        "quirks": [
+          "wine_references",
+          "kid_stories",
+          "casual_friday_energy"
+        ]
+      }
+    },
+    "dr_knowsalot": {
+      "name": "Dr. Knowsalot",
+      "appearance": {
+        "age": "late-50s",
+        "hair": "einstein-esque",
+        "face": "condescending smile",
+        "eyes": "judging your intelligence",
+        "clothing": "lab coat over suit",
+        "distinguishing": "holding clipboard for no reason"
+      },
+      "portrait_prompt": "science correspondent, older man, wild gray hair, lab coat, condescending expression, laboratory background, clinical lighting, photorealistic",
+      "voice_profile": {
+        "pitch": 0.92,
+        "speed": 0.88,
+        "style": "pretentious_professor",
+        "quirks": [
+          "overexplaining",
+          "latin_terms",
+          "actually_corrections"
+        ]
+      }
+    },
+    "general_confusion": {
+      "name": "General Confusion",
+      "appearance": {
+        "age": "late-60s",
+        "hair": "military cut, gray",
+        "face": "battle-scarred",
+        "eyes": "thousand-yard stare",
+        "clothing": "too many medals",
+        "distinguishing": "salutes randomly"
+      },
+      "portrait_prompt": "military analyst, older man, military haircut, uniform with medals, confused expression, map background, serious lighting, photorealistic",
+      "voice_profile": {
+        "pitch": 0.78,
+        "speed": 0.9,
+        "style": "military_briefing",
+        "quirks": [
+          "military_acronyms",
+          "war_stories",
+          "random_salutes"
+        ]
+      }
+    }
+  },
+  "segments": {
+    "morning_show": {
+      "hosts": [
+        "chad_armstrong",
+        "amanda_sunshine"
+      ],
+      "time": "6:00 AM - 9:00 AM",
+      "theme": "energetic_chaos"
+    },
+    "main_news": {
+      "hosts": [
+        "ray_mcpatriot",
+        "berkeley_justice",
+        "switz_middleton"
+      ],
+      "time": "Various",
+      "theme": "professional_dysfunction"
+    },
+    "market_watch": {
+      "hosts": [
+        "brick_stevens",
+        "tiffany_goldwater"
+      ],
+      "time": "9:00 AM, 2:00 PM",
+      "theme": "financial_panic"
+    },
+    "cooking_segment": {
+      "hosts": [
+        "paula_dine"
+      ],
+      "time": "10:30 AM",
+      "theme": "butter_worship"
+    },
+    "weather": {
+      "hosts": [
+        "storm_chaserson"
+      ],
+      "time": "Every 30 minutes",
+      "theme": "meteorological_anxiety"
+    },
+    "politics": {
+      "hosts": [
+        "william_oreally",
+        "jessica_agrees"
+      ],
+      "time": "5:00 PM",
+      "theme": "angry_agreement"
+    },
+    "weekend": {
+      "hosts": [
+        "weekend_wendy",
+        "intern_steve"
+      ],
+      "time": "Weekends",
+      "theme": "casual_incompetence"
+    }
+  },
+  "voice_generation": {
+    "base_model": "coqui/XTTS-v2",
+    "emotion_models": {
+      "normal": "standard",
+      "breakdown": "tremolo+sob",
+      "angry": "pitch_shift+volume",
+      "confused": "pause_insertion+pitch_wobble"
+    }
+  },
+  "visual_style": {
+    "aspect_ratio": "16:9",
+    "resolution": "1920x1080",
+    "style": "photorealistic news anchor",
+    "lighting": "professional studio",
+    "background": "modern newsroom"
+  }
+}
