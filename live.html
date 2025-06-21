@@ -1541,24 +1541,36 @@
     <!-- Load Hollywood Effects -->
     <script src="scripts/hollywood-init.js"></script>
     <script src="scripts/reality-glitch.js"></script>
-    <script src="scripts/live-broadcast-system.js"></script>
+    <script src="scripts/hf-broadcast-connector.js"></script>
     
     <!-- Initialize Enhanced Broadcast -->
     <script>
-        // Replace the old broadcast system with the new one
-        window.addEventListener('load', async () => {
-            console.log('🎙️ Initializing enhanced live broadcast system...');
+        // The HFBroadcastConnector auto-initializes on page load
+        // Just add some UI updates when broadcast events happen
+        
+        window.addEventListener('broadcastUpdate', (event) => {
+            const data = event.detail;
+            console.log('📡 Broadcast update:', data);
             
-            // Initialize the new broadcast system
-            const liveBroadcast = new LiveBroadcastSystem();
-            await liveBroadcast.initialize();
+            // The connector handles most UI updates automatically
+            // Add any custom behaviors here if needed
+        });
+        
+        // Show connection status
+        window.addEventListener('load', () => {
+            console.log('🎙️ Static.news Live - Audio stream connecting...');
             
-            // Start broadcasting
-            console.log('📡 Live broadcast is now active!');
-            
-            // Test the system
-            if (window.location.search.includes('test')) {
-                await liveBroadcast.testBroadcast();
+            // Update the broadcast player info
+            const playerInfo = document.querySelector('.live-player-info');
+            if (playerInfo) {
+                playerInfo.innerHTML = `
+                    <p style="color: #00ff00; font-weight: bold;">
+                        🔴 LIVE BROADCAST ACTIVE
+                    </p>
+                    <p style="font-size: 0.9rem; opacity: 0.8;">
+                        Audio streaming from Hugging Face Space
+                    </p>
+                `;
             }
         });
     </script>
