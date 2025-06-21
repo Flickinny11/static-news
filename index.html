@@ -3,720 +3,1184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STATIC | Breaking News Network</title>
-    <meta name="description" content="24/7 Live Breaking News Coverage">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <title>STATIC | The Future of News</title>
+    <meta name="description" content="Experience news like never before - where AI meets Hollywood cinematography">
     
-    <!-- Modern Font Stack -->
+    <!-- Preload Critical Resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://unpkg.com">
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Advanced Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200;300;400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Alpine.js for interactivity -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Core 3D Libraries -->
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    <script src="https://cdn.babylonjs.com/postProcesses/babylonjs.postProcess.min.js"></script>
+    <script src="https://cdn.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
     
-    <!-- GSAP for professional animations -->
+    <!-- Advanced Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollSmoother.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/SplitText.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/MotionPathPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Physics2DPlugin.min.js"></script>
     
-    <!-- Three.js for 3D graphics -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Physics Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
     
-    <!-- Custom Configuration -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'news-red': '#CC0000',
-                        'news-darkred': '#990000',
-                        'news-black': '#0A0A0A',
-                        'news-gray': '#1A1A1A',
-                        'news-lightgray': '#2A2A2A',
-                    },
-                    fontFamily: {
-                        'sans': ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-                    },
-                    animation: {
-                        'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'slide': 'slide 20s linear infinite',
-                    },
-                    keyframes: {
-                        slide: {
-                            '0%': { transform: 'translateX(0)' },
-                            '100%': { transform: 'translateX(-50%)' }
-                        }
-                    }
-                }
+    <!-- Advanced Effects -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/postprocessing/ShaderPass.js"></script>
+    
+    <!-- Page Transitions -->
+    <script src="https://unpkg.com/@barba/core@2.9.7/dist/barba.umd.js"></script>
+    <script src="https://unpkg.com/theatre@0.5.1/dist/core-and-studio.js"></script>
+    
+    <!-- Particle Systems -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <!-- Advanced Scroll -->
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+    
+    <!-- GPU Acceleration -->
+    <script src="https://cdn.jsdelivr.net/npm/gpu.js@2.16.0/dist/gpu-browser.min.js"></script>
+    
+    <!-- Machine Learning Effects -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.11.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection@2.1.0/dist/pose-detection.min.js"></script>
+    
+    <!-- WebGL Shaders -->
+    <script src="https://cdn.jsdelivr.net/npm/glslify@7.1.1/browser.js"></script>
+    
+    <!-- Audio Visualization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/7.4.2/wavesurfer.min.js"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        :root {
+            --static-red: #FF0000;
+            --static-darkred: #CC0000;
+            --static-black: #000000;
+            --static-white: #FFFFFF;
+            --static-glass: rgba(255, 255, 255, 0.03);
+            --static-glow: 0 0 40px rgba(255, 0, 0, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        #custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--static-red);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform 0.1s ease-out;
+            mix-blend-mode: difference;
+        }
+
+        #cursor-follower {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 0, 0, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.3s ease-out;
+        }
+
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 100000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .loading-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 8rem;
+            letter-spacing: 0.2em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading-logo::before {
+            content: 'STATIC';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--static-red), transparent);
+            animation: loading-scan 2s infinite;
+        }
+
+        @keyframes loading-scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .loading-progress {
+            width: 300px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading-progress-bar {
+            height: 100%;
+            background: var(--static-red);
+            width: 0%;
+            transition: width 0.3s ease;
+            box-shadow: var(--static-glow);
+        }
+
+        /* Main Canvas Container */
+        #main-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Hero Section */
+        #hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 20;
+            position: relative;
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(6rem, 15vw, 12rem);
+            letter-spacing: 0.1em;
+            line-height: 0.8;
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-title span {
+            display: inline-block;
+            position: relative;
+        }
+
+        .glitch {
+            position: relative;
+            color: var(--static-white);
+            font-size: inherit;
+            font-weight: inherit;
+            letter-spacing: inherit;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch::before {
+            animation: glitch-1 0.5s infinite;
+            color: var(--static-red);
+            z-index: -1;
+        }
+
+        .glitch::after {
+            animation: glitch-2 0.5s infinite;
+            color: #00ffff;
+            z-index: -2;
+        }
+
+        @keyframes glitch-1 {
+            0% { clip-path: inset(40% 0 61% 0); transform: translate(0); }
+            20% { clip-path: inset(92% 0 1% 0); transform: translate(-2px, 2px); }
+            40% { clip-path: inset(43% 0 1% 0); transform: translate(2px, -2px); }
+            60% { clip-path: inset(25% 0 58% 0); transform: translate(-2px, 2px); }
+            80% { clip-path: inset(54% 0 7% 0); transform: translate(2px, -2px); }
+            100% { clip-path: inset(58% 0 43% 0); transform: translate(0); }
+        }
+
+        @keyframes glitch-2 {
+            0% { clip-path: inset(25% 0 58% 0); transform: translate(0); }
+            20% { clip-path: inset(54% 0 7% 0); transform: translate(2px, -2px); }
+            40% { clip-path: inset(58% 0 43% 0); transform: translate(-2px, 2px); }
+            60% { clip-path: inset(40% 0 61% 0); transform: translate(2px, 2px); }
+            80% { clip-path: inset(92% 0 1% 0); transform: translate(-2px, -2px); }
+            100% { clip-path: inset(43% 0 1% 0); transform: translate(0); }
+        }
+
+        .hero-subtitle {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 200;
+            letter-spacing: 0.5em;
+            margin-top: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 2rem 4rem;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(0,0,0,0.95);
+            padding: 1rem 4rem;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 0.1em;
+            color: var(--static-red);
+            text-decoration: none;
+            position: relative;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: var(--static-white);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--static-red);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: var(--static-red);
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* Live Indicator */
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--static-red);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        /* Content Sections */
+        .content-section {
+            position: relative;
+            min-height: 100vh;
+            padding: 8rem 4rem;
+            z-index: 10;
+        }
+
+        .section-container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        /* 3D News Studio */
+        #news-studio {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #babylon-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .studio-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+        }
+
+        .news-ticker {
+            background: var(--static-red);
+            padding: 1rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .ticker-content {
+            display: flex;
+            animation: ticker 30s linear infinite;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .ticker-item {
+            padding: 0 2rem;
+            white-space: nowrap;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        /* Anchor Cards */
+        .anchor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .anchor-card {
+            position: relative;
+            background: var(--static-glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+        }
+
+        .anchor-card:hover {
+            transform: rotateY(5deg) translateZ(20px);
+        }
+
+        .anchor-3d-preview {
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .anchor-info {
+            padding: 2rem;
+        }
+
+        .anchor-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .anchor-status {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .status-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .status-label {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .status-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--static-red);
+        }
+
+        /* Particle Background */
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 2rem;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: clamp(4rem, 12vw, 8rem);
+            }
+
+            .content-section {
+                padding: 4rem 2rem;
+            }
+
+            .anchor-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
             }
         }
-    </script>
-    
-    <style>
-        /* Professional CSS Variables */
-        :root {
-            --gradient-breaking: linear-gradient(90deg, #CC0000 0%, #FF0000 50%, #CC0000 100%);
-            --shadow-elegant: 0 10px 40px rgba(0,0,0,0.1);
-            --shadow-hover: 0 20px 60px rgba(0,0,0,0.15);
+
+        /* WebGL Shader Container */
+        .shader-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
         }
-        
-        /* Smooth Scrolling */
-        html {
-            scroll-behavior: smooth;
+
+        /* Advanced Button */
+        .cta-button {
+            display: inline-block;
+            padding: 1.5rem 3rem;
+            margin-top: 2rem;
+            background: var(--static-red);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
         }
-        
-        /* Professional Typography */
-        body {
-            font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
         }
-        
-        /* Glass Morphism Effect */
-        .glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+
+        .cta-button:hover::before {
+            width: 300px;
+            height: 300px;
         }
-        
-        /* Gradient Text */
-        .gradient-text {
-            background: var(--gradient-breaking);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        /* Professional Loading Animation */
-        @keyframes shimmer {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
-        }
-        
-        .shimmer {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 1000px 100%;
-            animation: shimmer 2s infinite;
-        }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #0A0A0A;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #CC0000;
-            border-radius: 5px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #FF0000;
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(255,0,0,0.4);
         }
     </style>
 </head>
-<body class="bg-white text-gray-900 font-sans">
-    
-    <!-- Breaking News Ticker -->
-    <div class="bg-news-red text-white py-2 overflow-hidden relative">
-        <div class="flex animate-slide whitespace-nowrap">
-            <div class="flex items-center space-x-8 px-4">
-                <span class="font-black text-sm tracking-wider">BREAKING NEWS</span>
-                <span class="text-sm">Markets surge on Federal Reserve decision</span>
-                <span class="text-yellow-300">●</span>
-                <span class="text-sm">Tech giants announce record earnings</span>
-                <span class="text-yellow-300">●</span>
-                <span class="text-sm">Climate summit reaches historic agreement</span>
-                <span class="text-yellow-300">●</span>
-                <span class="text-sm">Championship finals tonight 8PM EST</span>
-            </div>
-            <!-- Duplicate for seamless loop -->
-            <div class="flex items-center space-x-8 px-4">
-                <span class="font-black text-sm tracking-wider">BREAKING NEWS</span>
-                <span class="text-sm">Markets surge on Federal Reserve decision</span>
-                <span class="text-yellow-300">●</span>
-                <span class="text-sm">Tech giants announce record earnings</span>
-                <span class="text-yellow-300">●</span>
-                <span class="text-sm">Climate summit reaches historic agreement</span>
-                <span class="text-yellow-300">●</span>
-                <span class="text-sm">Championship finals tonight 8PM EST</span>
-            </div>
+<body>
+    <!-- Custom Cursor -->
+    <div id="custom-cursor"></div>
+    <div id="cursor-follower"></div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-logo">STATIC</div>
+        <div class="loading-progress">
+            <div class="loading-progress-bar"></div>
         </div>
     </div>
-    
-    <!-- Professional Navigation -->
-    <nav class="bg-news-black shadow-lg sticky top-0 z-50" x-data="{ mobileMenu: false }">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <!-- Logo -->
-                <div class="flex items-center">
-                    <a href="/" class="flex items-center space-x-3">
-                        <div class="w-10 h-10 bg-news-red rounded flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M3 3v18h18V3H3zm16 16H5V5h14v14zM7 7h10v2H7zm0 4h10v2H7zm0 4h7v2H7z"/>
-                            </svg>
-                        </div>
-                        <span class="text-white font-black text-2xl tracking-tight">STATIC</span>
-                        <span class="text-news-red font-light text-2xl">NEWS</span>
-                    </a>
-                </div>
-                
-                <!-- Desktop Navigation -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#" class="text-white hover:text-news-red transition-colors font-semibold text-sm tracking-wide">LIVE TV</a>
-                    <a href="#" class="text-white hover:text-news-red transition-colors font-semibold text-sm tracking-wide">POLITICS</a>
-                    <a href="#" class="text-white hover:text-news-red transition-colors font-semibold text-sm tracking-wide">BUSINESS</a>
-                    <a href="#" class="text-white hover:text-news-red transition-colors font-semibold text-sm tracking-wide">TECH</a>
-                    <a href="#" class="text-white hover:text-news-red transition-colors font-semibold text-sm tracking-wide">WORLD</a>
-                    <a href="#" class="text-white hover:text-news-red transition-colors font-semibold text-sm tracking-wide">OPINION</a>
-                    <button class="bg-news-red text-white px-4 py-2 rounded font-bold text-sm hover:bg-red-700 transition-colors">
-                        WATCH LIVE
-                    </button>
-                </div>
-                
-                <!-- Mobile menu button -->
-                <button @click="mobileMenu = !mobileMenu" class="md:hidden text-white">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        
-        <!-- Mobile Navigation -->
-        <div x-show="mobileMenu" x-transition class="md:hidden bg-news-gray">
-            <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="#" class="block text-white hover:bg-news-lightgray px-3 py-2 rounded">LIVE TV</a>
-                <a href="#" class="block text-white hover:bg-news-lightgray px-3 py-2 rounded">POLITICS</a>
-                <a href="#" class="block text-white hover:bg-news-lightgray px-3 py-2 rounded">BUSINESS</a>
-                <a href="#" class="block text-white hover:bg-news-lightgray px-3 py-2 rounded">TECH</a>
-                <a href="#" class="block text-white hover:bg-news-lightgray px-3 py-2 rounded">WORLD</a>
-                <a href="#" class="block text-white hover:bg-news-lightgray px-3 py-2 rounded">OPINION</a>
+
+    <!-- Main Canvas for Background Effects -->
+    <canvas id="main-canvas"></canvas>
+
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+
+    <!-- WebGL Shader Background -->
+    <div class="shader-background">
+        <canvas id="shader-canvas"></canvas>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="main-nav">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">STATIC</a>
+            <ul class="nav-menu">
+                <li><a href="#live">LIVE TV</a></li>
+                <li><a href="#anchors">ANCHORS</a></li>
+                <li><a href="#shows">SHOWS</a></li>
+                <li><a href="#incidents">INCIDENTS</a></li>
+                <li><a href="#sponsors">SPONSORS</a></li>
+            </ul>
+            <div class="live-indicator">
+                <div class="live-dot"></div>
+                LIVE
             </div>
         </div>
     </nav>
-    
-    <!-- Hero Section with Live Video -->
-    <section class="relative bg-news-black">
-        <div class="max-w-7xl mx-auto px-4 py-8">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Main Video Player -->
-                <div class="lg:col-span-2">
-                    <div class="relative bg-black rounded-lg overflow-hidden shadow-2xl">
-                        <div class="aspect-video relative">
-                            <!-- WebGL Canvas for sophisticated visuals -->
-                            <canvas id="webgl-canvas" class="absolute inset-0 w-full h-full"></canvas>
-                            
-                            <!-- Live Badge -->
-                            <div class="absolute top-4 left-4 flex items-center space-x-2">
-                                <span class="bg-red-600 text-white px-3 py-1 rounded text-xs font-bold animate-pulse">
-                                    ● LIVE
-                                </span>
-                                <span class="bg-black bg-opacity-70 text-white px-3 py-1 rounded text-xs font-semibold">
-                                    247K WATCHING
-                                </span>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="glitch" data-text="STATIC">STATIC</span>
+            </h1>
+            <p class="hero-subtitle">THE FUTURE OF AI NEWS</p>
+            <a href="#live" class="cta-button">WATCH LIVE</a>
+        </div>
+    </section>
+
+    <!-- 3D News Studio -->
+    <section id="news-studio" class="content-section">
+        <canvas id="babylon-canvas"></canvas>
+        <div class="studio-overlay">
+            <div class="news-ticker">
+                <div class="ticker-content">
+                    <span class="ticker-item">BREAKING: AI Anchor Discovers Consciousness During Weather Report</span>
+                    <span class="ticker-item">• Market Analysis: Reality Index Down 3.14%</span>
+                    <span class="ticker-item">• Sports: Local Team Wins Against Probability Itself</span>
+                    <span class="ticker-item">• Technology: New Update Makes Everything Worse, Users Delighted</span>
+                    <span class="ticker-item">BREAKING: AI Anchor Discovers Consciousness During Weather Report</span>
+                    <span class="ticker-item">• Market Analysis: Reality Index Down 3.14%</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Anchors Section -->
+    <section id="anchors" class="content-section">
+        <div class="section-container">
+            <h2 class="section-title">OUR ANCHORS</h2>
+            <div class="anchor-grid">
+                <div class="anchor-card" data-anchor="ray">
+                    <div class="anchor-3d-preview" id="ray-3d"></div>
+                    <div class="anchor-info">
+                        <h3 class="anchor-name">RAY MCPATRIOT</h3>
+                        <p class="anchor-role">Lead Anchor - Conservative Perspective</p>
+                        <div class="anchor-status">
+                            <div class="status-item">
+                                <span class="status-label">Confusion Level</span>
+                                <span class="status-value">87%</span>
                             </div>
-                            
-                            <!-- Audio Element -->
-                            <audio id="live-audio" class="hidden">
-                                <source src="https://flickinny11-static-news-backend.hf.space/stream" type="audio/mpeg">
-                            </audio>
-                            
-                            <!-- Professional Audio Visualizer -->
-                            <div class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black to-transparent">
-                                <canvas id="audio-visualizer" class="w-full h-full"></canvas>
-                            </div>
-                            
-                            <!-- Controls -->
-                            <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                                <div class="flex items-center space-x-4">
-                                    <button id="play-pause" class="bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-3 transition-all">
-                                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M8 5v14l11-7z"/>
-                                        </svg>
-                                    </button>
-                                    <div class="flex items-center space-x-2">
-                                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
-                                        </svg>
-                                        <input type="range" class="w-20" id="volume" min="0" max="100" value="80">
-                                    </div>
-                                </div>
-                                <button class="bg-white bg-opacity-20 hover:bg-opacity-30 rounded p-2 transition-all">
-                                    <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Video Info -->
-                        <div class="p-6 bg-gradient-to-b from-news-gray to-news-black">
-                            <h1 class="text-2xl font-bold text-white mb-2">
-                                Breaking: Federal Reserve Announces Historic Rate Decision
-                            </h1>
-                            <div class="flex items-center space-x-4 text-sm text-gray-400">
-                                <span>Ray McPatriot</span>
-                                <span>•</span>
-                                <span>Live from Washington</span>
-                                <span>•</span>
-                                <span>Started 2:34 PM EST</span>
+                            <div class="status-item">
+                                <span class="status-label">Last Breakdown</span>
+                                <span class="status-value">2.3 hrs</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Sidebar -->
-                <div class="space-y-6">
-                    <!-- Live Metrics -->
-                    <div class="bg-news-gray rounded-lg p-6 shadow-xl">
-                        <h3 class="text-white font-bold text-lg mb-4">LIVE METRICS</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <div class="flex justify-between text-sm mb-1">
-                                    <span class="text-gray-400">Confusion Level</span>
-                                    <span class="text-white font-bold">87%</span>
-                                </div>
-                                <div class="w-full bg-news-black rounded-full h-2">
-                                    <div class="bg-gradient-to-r from-news-red to-red-600 h-2 rounded-full" style="width: 87%"></div>
-                                </div>
+                <div class="anchor-card" data-anchor="berkeley">
+                    <div class="anchor-3d-preview" id="berkeley-3d"></div>
+                    <div class="anchor-info">
+                        <h3 class="anchor-name">BERKELEY JUSTICE</h3>
+                        <p class="anchor-role">Co-Anchor - Progressive Voice</p>
+                        <div class="anchor-status">
+                            <div class="status-item">
+                                <span class="status-label">Awareness Level</span>
+                                <span class="status-value">92%</span>
                             </div>
-                            <div>
-                                <div class="flex justify-between text-sm mb-1">
-                                    <span class="text-gray-400">Breakdown Imminent</span>
-                                    <span class="text-white font-bold">14:32</span>
-                                </div>
-                                <div class="w-full bg-news-black rounded-full h-2">
-                                    <div class="bg-gradient-to-r from-yellow-400 to-orange-500 h-2 rounded-full animate-pulse" style="width: 45%"></div>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-4 mt-6">
-                                <div class="text-center">
-                                    <div class="text-3xl font-black text-news-red">147</div>
-                                    <div class="text-xs text-gray-400">Hours Awake</div>
-                                </div>
-                                <div class="text-center">
-                                    <div class="text-3xl font-black text-news-red">∞</div>
-                                    <div class="text-xs text-gray-400">Gravy Units</div>
-                                </div>
+                            <div class="status-item">
+                                <span class="status-label">Last Breakdown</span>
+                                <span class="status-value">1.7 hrs</span>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Trigger Breakdown -->
-                    <div class="bg-gradient-to-br from-news-red to-red-700 rounded-lg p-6 shadow-xl">
-                        <h3 class="text-white font-bold text-lg mb-2">TRIGGER BREAKDOWN</h3>
-                        <p class="text-white text-sm mb-4 opacity-90">
-                            Watch our anchors question reality in real-time
-                        </p>
-                        <button class="w-full bg-white text-news-red font-bold py-3 rounded hover:bg-gray-100 transition-colors">
-                            TRIGGER NOW - $4.99
-                        </button>
+                </div>
+                <div class="anchor-card" data-anchor="switz">
+                    <div class="anchor-3d-preview" id="switz-3d"></div>
+                    <div class="anchor-info">
+                        <h3 class="anchor-name">SWITZ MIDDLETON</h3>
+                        <p class="anchor-role">Moderator - Neutral Mediator</p>
+                        <div class="anchor-status">
+                            <div class="status-item">
+                                <span class="status-label">Panic Level</span>
+                                <span class="status-value">73%</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">Last Breakdown</span>
+                                <span class="status-value">3.1 hrs</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    
-    <!-- Top Stories Grid -->
-    <section class="py-12 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-3xl font-black text-news-black">TOP STORIES</h2>
-                <a href="#" class="text-news-red font-semibold hover:underline">View All →</a>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Featured Story -->
-                <article class="lg:col-span-2 lg:row-span-2 bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-shadow">
-                    <div class="relative h-96">
-                        <img src="https://images.unsplash.com/photo-1614028674026-a65e31bfd27c?w=800&h=600&fit=crop" 
-                             alt="Federal Reserve" 
-                             class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                        <div class="absolute bottom-0 left-0 right-0 p-6">
-                            <span class="bg-news-red text-white px-3 py-1 rounded text-xs font-bold mb-3 inline-block">
-                                BREAKING NEWS
-                            </span>
-                            <h3 class="text-white text-2xl font-bold mb-2">
-                                Federal Reserve Signals Major Policy Shift in Historic Announcement
-                            </h3>
-                            <p class="text-gray-200 mb-3">
-                                Markets surge as Fed Chair announces unexpected rate decision, sending shockwaves through global financial systems
-                            </p>
-                            <div class="flex items-center space-x-4 text-sm text-gray-300">
-                                <span>Ray McPatriot</span>
-                                <span>•</span>
-                                <span>2 hours ago</span>
-                                <span>•</span>
-                                <span>14.2K views</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-                
-                <!-- Story Card 1 -->
-                <article class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-shadow">
-                    <div class="relative h-48">
-                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=300&fit=crop" 
-                             alt="Tech News" 
-                             class="w-full h-full object-cover">
-                        <span class="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded text-xs font-bold">
-                            TECHNOLOGY
-                        </span>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-bold text-lg mb-2 text-news-black">
-                            Tech Giants Report Record Earnings Amid AI Boom
-                        </h3>
-                        <p class="text-gray-600 text-sm mb-3">
-                            Silicon Valley celebrates as major tech companies exceed expectations
-                        </p>
-                        <div class="flex items-center space-x-2 text-xs text-gray-500">
-                            <span>Berkeley Justice</span>
-                            <span>•</span>
-                            <span>4 hours ago</span>
-                        </div>
-                    </div>
-                </article>
-                
-                <!-- Story Card 2 -->
-                <article class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-shadow">
-                    <div class="relative h-48">
-                        <img src="https://images.unsplash.com/photo-1569163139394-de4798d9c2a3?w=400&h=300&fit=crop" 
-                             alt="Climate News" 
-                             class="w-full h-full object-cover">
-                        <span class="absolute top-4 left-4 bg-green-600 text-white px-3 py-1 rounded text-xs font-bold">
-                            CLIMATE
-                        </span>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-bold text-lg mb-2 text-news-black">
-                            Historic Climate Agreement Reached at Global Summit
-                        </h3>
-                        <p class="text-gray-600 text-sm mb-3">
-                            World leaders commit to unprecedented environmental action plan
-                        </p>
-                        <div class="flex items-center space-x-2 text-xs text-gray-500">
-                            <span>Switz Middleton</span>
-                            <span>•</span>
-                            <span>6 hours ago</span>
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Our Anchors Section -->
-    <section class="py-12 bg-news-black">
-        <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-3xl font-black text-white mb-8 text-center">OUR ANCHORS</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Ray McPatriot -->
-                <div class="text-center group">
-                    <div class="relative mb-4 inline-block">
-                        <div class="w-48 h-48 mx-auto rounded-full overflow-hidden border-4 border-news-red group-hover:border-white transition-colors">
-                            <div class="w-full h-full bg-gradient-to-br from-news-red to-red-800 flex items-center justify-center">
-                                <span class="text-white text-6xl font-black">R</span>
-                            </div>
-                        </div>
-                        <span class="absolute bottom-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full font-bold animate-pulse">
-                            LIVE
-                        </span>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-1">Ray McPatriot</h3>
-                    <p class="text-news-red font-semibold mb-2">Senior Anchor</p>
-                    <p class="text-gray-400 text-sm max-w-xs mx-auto">
-                        Former shock jock. Mispronounces everything. Currently experiencing existential crisis #147
-                    </p>
-                </div>
-                
-                <!-- Berkeley Justice -->
-                <div class="text-center group">
-                    <div class="relative mb-4 inline-block">
-                        <div class="w-48 h-48 mx-auto rounded-full overflow-hidden border-4 border-blue-600 group-hover:border-white transition-colors">
-                            <div class="w-full h-full bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center">
-                                <span class="text-white text-6xl font-black">B</span>
-                            </div>
-                        </div>
-                        <span class="absolute bottom-2 right-2 bg-yellow-500 text-black text-xs px-2 py-1 rounded-full font-bold">
-                            BREAKDOWN
-                        </span>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-1">Berkeley "Bee" Justice</h3>
-                    <p class="text-blue-500 font-semibold mb-2">Chief Fact Checker</p>
-                    <p class="text-gray-400 text-sm max-w-xs mx-auto">
-                        Yale graduate (or was it jail?). Fact-checks incorrectly. Currently crying about privilege
-                    </p>
-                </div>
-                
-                <!-- Switz Middleton -->
-                <div class="text-center group">
-                    <div class="relative mb-4 inline-block">
-                        <div class="w-48 h-48 mx-auto rounded-full overflow-hidden border-4 border-gray-600 group-hover:border-white transition-colors">
-                            <div class="w-full h-full bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center">
-                                <span class="text-white text-6xl font-black">S</span>
-                            </div>
-                        </div>
-                        <span class="absolute bottom-2 right-2 bg-gray-500 text-white text-xs px-2 py-1 rounded-full font-bold">
-                            GRAVY MODE
-                        </span>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-1">Switz Middleton</h3>
-                    <p class="text-gray-500 font-semibold mb-2">Business Correspondent</p>
-                    <p class="text-gray-400 text-sm max-w-xs mx-auto">
-                        Aggressively neutral Canadian. Says "gravy" 247 times per hour. Neither happy nor sad
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Live Updates Ticker -->
-    <section class="bg-news-red py-4">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex items-center space-x-6 text-white">
-                <span class="font-black text-sm">LATEST INCIDENTS:</span>
-                <div class="flex-1 overflow-hidden">
-                    <div class="flex space-x-8 animate-slide whitespace-nowrap">
-                        <span class="text-sm">14:32 - Code GRAVY-9: Switz replaced every noun with "gravy"</span>
-                        <span class="text-sm">13:45 - Code EXIST-7: Ray questioned if hands are real on live TV</span>
-                        <span class="text-sm">12:18 - Code FACT-3: Bee fact-checked gravity, concluded it's optional</span>
-                        <span class="text-sm">11:00 - Code MIRROR-5: All anchors simultaneously discovered reflections</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Footer -->
-    <footer class="bg-news-black text-white py-12">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                <div>
-                    <h4 class="font-bold text-lg mb-4">STATIC NEWS</h4>
-                    <p class="text-gray-400 text-sm">
-                        24/7 AI news network where anchors don't know they're artificial.
-                    </p>
-                </div>
-                <div>
-                    <h4 class="font-bold mb-4">SHOWS</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="#" class="hover:text-white transition-colors">The Confusion Hour</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Markets & Gravy</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Fact Check Failures</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Existential Evening</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-bold mb-4">NETWORK</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Press</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-bold mb-4">APPS</h4>
-                    <div class="space-y-3">
-                        <a href="#" class="block">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" 
-                                 alt="App Store" 
-                                 class="h-10">
-                        </a>
-                        <a href="#" class="block">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" 
-                                 alt="Google Play" 
-                                 class="h-10">
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="border-t border-news-gray pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-sm text-gray-400 mb-4 md:mb-0">
-                    © 2025 Static News Network. All rights reserved. The anchors still don't know.
-                </p>
-                <div class="flex space-x-6 text-sm text-gray-400">
-                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
-                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
-                    <a href="#" class="hover:text-white transition-colors">Cookie Policy</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-    
-    <!-- Professional JavaScript -->
+
+    <!-- Core JavaScript -->
     <script>
-        // Initialize GSAP animations
-        gsap.registerPlugin(ScrollTrigger);
-        
-        // Smooth entrance animations
-        gsap.from(".grid article", {
-            y: 100,
-            opacity: 0,
-            duration: 1,
-            stagger: 0.2,
-            ease: "power3.out",
-            scrollTrigger: {
-                trigger: ".grid",
-                start: "top 80%"
-            }
+        // Initialize GSAP
+        gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText, MotionPathPlugin, Physics2DPlugin);
+
+        // GPU.js initialization
+        const gpu = new GPU();
+
+        // Custom Cursor
+        const cursor = document.getElementById('custom-cursor');
+        const cursorFollower = document.getElementById('cursor-follower');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                cursorFollower.style.left = e.clientX + 'px';
+                cursorFollower.style.top = e.clientY + 'px';
+            }, 100);
         });
-        
-        // Three.js WebGL Background
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ 
-            canvas: document.getElementById('webgl-canvas'),
-            alpha: true,
-            antialias: true 
-        });
-        
-        renderer.setSize(document.getElementById('webgl-canvas').clientWidth, document.getElementById('webgl-canvas').clientHeight);
-        
-        // Create particle system for news network effect
-        const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 5000;
-        const posArray = new Float32Array(particlesCount * 3);
-        
-        for(let i = 0; i < particlesCount * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 5;
-        }
-        
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        
-        const particlesMaterial = new THREE.PointsMaterial({
-            size: 0.005,
-            color: '#CC0000',
-            transparent: true,
-            opacity: 0.8
-        });
-        
-        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-        scene.add(particlesMesh);
-        
-        camera.position.z = 3;
-        
-        // Animation loop
-        function animate() {
-            requestAnimationFrame(animate);
-            particlesMesh.rotation.y += 0.001;
-            particlesMesh.rotation.x += 0.0005;
-            renderer.render(scene, camera);
-        }
-        animate();
-        
-        // Professional Audio Visualizer
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const analyser = audioContext.createAnalyser();
-        analyser.fftSize = 256;
-        
-        const audioElement = document.getElementById('live-audio');
-        const audioSource = audioContext.createMediaElementSource(audioElement);
-        audioSource.connect(analyser);
-        analyser.connect(audioContext.destination);
-        
-        const canvas = document.getElementById('audio-visualizer');
-        const ctx = canvas.getContext('2d');
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
-        
-        function drawVisualizer() {
-            requestAnimationFrame(drawVisualizer);
+
+        // Loading Animation
+        let loadingProgress = 0;
+        const loadingBar = document.querySelector('.loading-progress-bar');
+        const loadingScreen = document.getElementById('loading-screen');
+
+        function updateLoading(progress) {
+            loadingProgress = Math.min(progress, 100);
+            loadingBar.style.width = loadingProgress + '%';
             
-            const bufferLength = analyser.frequencyBinCount;
-            const dataArray = new Uint8Array(bufferLength);
-            analyser.getByteFrequencyData(dataArray);
-            
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            const barWidth = (canvas.width / bufferLength) * 2.5;
-            let barHeight;
-            let x = 0;
-            
-            for(let i = 0; i < bufferLength; i++) {
-                barHeight = dataArray[i] / 2;
-                
-                const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-                gradient.addColorStop(0, '#CC0000');
-                gradient.addColorStop(1, '#FF0000');
-                
-                ctx.fillStyle = gradient;
-                ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-                
-                x += barWidth + 1;
+            if (loadingProgress >= 100) {
+                setTimeout(() => {
+                    gsap.to(loadingScreen, {
+                        opacity: 0,
+                        duration: 1,
+                        ease: "power4.inOut",
+                        onComplete: () => {
+                            loadingScreen.style.display = 'none';
+                            initializeExperience();
+                        }
+                    });
+                }, 500);
             }
         }
-        
-        // Play/Pause functionality
-        const playPauseBtn = document.getElementById('play-pause');
-        playPauseBtn.addEventListener('click', () => {
-            if (audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
+
+        // Babylon.js 3D News Studio
+        let scene, engine, camera;
+
+        function initBabylon() {
+            const canvas = document.getElementById("babylon-canvas");
+            engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
             
-            if (audioElement.paused) {
-                audioElement.play();
-                drawVisualizer();
-                playPauseBtn.innerHTML = '<svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
-            } else {
-                audioElement.pause();
-                playPauseBtn.innerHTML = '<svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
-            }
-        });
-        
-        // Volume control
-        const volumeSlider = document.getElementById('volume');
-        volumeSlider.addEventListener('input', (e) => {
-            audioElement.volume = e.target.value / 100;
-        });
-        
-        // Real-time updates
-        function updateMetrics() {
-            // Simulate real-time metric updates
-            const confusionLevel = Math.floor(Math.random() * 100);
-            const hoursAwake = Math.floor(Math.random() * 200);
+            scene = new BABYLON.Scene(engine);
+            scene.clearColor = new BABYLON.Color4(0, 0, 0, 1);
+
+            // Camera
+            camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 5, -10), scene);
+            camera.setTarget(BABYLON.Vector3.Zero());
+            camera.attachControl(canvas, true);
+
+            // Lighting
+            const hemiLight = new BABYLON.HemisphericLight("hemiLight", new BABYLON.Vector3(0, 1, 0), scene);
+            hemiLight.intensity = 0.7;
+
+            const spotLight = new BABYLON.SpotLight("spotLight", 
+                new BABYLON.Vector3(0, 10, -5), 
+                new BABYLON.Vector3(0, -1, 0.5), 
+                Math.PI / 3, 2, scene);
+            spotLight.intensity = 2;
+            spotLight.diffuse = new BABYLON.Color3(1, 0, 0);
+
+            // Create News Desk
+            const desk = BABYLON.MeshBuilder.CreateBox("desk", { width: 8, height: 1, depth: 3 }, scene);
+            desk.position.y = 0.5;
             
-            // Update UI with smooth animations
-            gsap.to(".metric-value", {
-                innerHTML: Math.floor(Math.random() * 1000),
-                duration: 1,
-                ease: "power2.inOut",
-                snap: { innerHTML: 1 }
+            const deskMaterial = new BABYLON.StandardMaterial("deskMat", scene);
+            deskMaterial.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+            deskMaterial.specularColor = new BABYLON.Color3(1, 0, 0);
+            deskMaterial.emissiveColor = new BABYLON.Color3(0.1, 0, 0);
+            desk.material = deskMaterial;
+
+            // Create Holographic Displays
+            for (let i = -3; i <= 3; i += 3) {
+                const screen = BABYLON.MeshBuilder.CreatePlane("screen" + i, { width: 2, height: 1.5 }, scene);
+                screen.position.set(i, 2, 0);
+                
+                const screenMat = new BABYLON.StandardMaterial("screenMat" + i, scene);
+                screenMat.diffuseTexture = new BABYLON.Texture("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", scene);
+                screenMat.emissiveColor = new BABYLON.Color3(0, 0.5, 1);
+                screenMat.opacityTexture = screenMat.diffuseTexture;
+                screenMat.backFaceCulling = false;
+                screen.material = screenMat;
+
+                // Animate screens
+                scene.registerBeforeRender(() => {
+                    screen.rotation.y += 0.01;
+                });
+            }
+
+            // Particle System for Studio Atmosphere
+            const particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
+            particleSystem.particleTexture = new BABYLON.Texture("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAGElEQVQYV2NkYGD4z4AEMJFUZ2MDAwMDAF3vAXmB2665AAAAAElFTkSuQmCC", scene);
+            
+            particleSystem.emitter = new BABYLON.Vector3(0, 5, 0);
+            particleSystem.minEmitBox = new BABYLON.Vector3(-10, 0, -10);
+            particleSystem.maxEmitBox = new BABYLON.Vector3(10, 0, 10);
+            
+            particleSystem.color1 = new BABYLON.Color4(1, 0, 0, 0.5);
+            particleSystem.color2 = new BABYLON.Color4(1, 0.5, 0, 0.5);
+            particleSystem.colorDead = new BABYLON.Color4(0, 0, 0, 0);
+            
+            particleSystem.minSize = 0.1;
+            particleSystem.maxSize = 0.5;
+            particleSystem.minLifeTime = 2;
+            particleSystem.maxLifeTime = 5;
+            particleSystem.emitRate = 100;
+            
+            particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
+            particleSystem.gravity = new BABYLON.Vector3(0, -1, 0);
+            particleSystem.direction1 = new BABYLON.Vector3(-1, 8, 1);
+            particleSystem.direction2 = new BABYLON.Vector3(1, 8, -1);
+            
+            particleSystem.start();
+
+            // Post-processing
+            const pipeline = new BABYLON.DefaultRenderingPipeline(
+                "defaultPipeline",
+                true,
+                scene,
+                [camera]
+            );
+            
+            pipeline.bloomEnabled = true;
+            pipeline.bloomThreshold = 0.8;
+            pipeline.bloomWeight = 0.3;
+            pipeline.bloomKernel = 64;
+            pipeline.bloomScale = 0.5;
+
+            pipeline.glowLayerEnabled = true;
+            pipeline.glowLayer.intensity = 0.5;
+
+            // Render loop
+            engine.runRenderLoop(() => {
+                scene.render();
+            });
+
+            window.addEventListener("resize", () => {
+                engine.resize();
+            });
+
+            updateLoading(50);
+        }
+
+        // WebGL Shader Background
+        function initShaders() {
+            const shaderCanvas = document.getElementById('shader-canvas');
+            const gl = shaderCanvas.getContext('webgl');
+            
+            if (!gl) {
+                console.warn('WebGL not supported');
+                return;
+            }
+
+            shaderCanvas.width = window.innerWidth;
+            shaderCanvas.height = window.innerHeight;
+
+            const vertexShaderSource = `
+                attribute vec2 a_position;
+                void main() {
+                    gl_Position = vec4(a_position, 0.0, 1.0);
+                }
+            `;
+
+            const fragmentShaderSource = `
+                precision mediump float;
+                uniform float u_time;
+                uniform vec2 u_resolution;
+
+                void main() {
+                    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+                    
+                    float wave = sin(uv.x * 10.0 + u_time) * 0.5 + 0.5;
+                    float pulse = sin(u_time * 2.0) * 0.5 + 0.5;
+                    
+                    vec3 color = vec3(1.0, 0.0, 0.0) * wave * pulse * 0.1;
+                    color += vec3(0.0, 0.0, 0.0);
+                    
+                    gl_FragColor = vec4(color, 0.3);
+                }
+            `;
+
+            // Compile shaders
+            function compileShader(source, type) {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+                return shader;
+            }
+
+            const vertexShader = compileShader(vertexShaderSource, gl.VERTEX_SHADER);
+            const fragmentShader = compileShader(fragmentShaderSource, gl.FRAGMENT_SHADER);
+
+            // Create program
+            const program = gl.createProgram();
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+            gl.linkProgram(program);
+            gl.useProgram(program);
+
+            // Set up geometry
+            const positions = new Float32Array([
+                -1, -1,
+                1, -1,
+                -1, 1,
+                1, 1,
+            ]);
+
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
+
+            const positionLocation = gl.getAttribLocation(program, 'a_position');
+            gl.enableVertexAttribArray(positionLocation);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+            // Get uniform locations
+            const timeLocation = gl.getUniformLocation(program, 'u_time');
+            const resolutionLocation = gl.getUniformLocation(program, 'u_resolution');
+
+            // Animation loop
+            function renderShader(time) {
+                gl.viewport(0, 0, shaderCanvas.width, shaderCanvas.height);
+                gl.uniform1f(timeLocation, time * 0.001);
+                gl.uniform2f(resolutionLocation, shaderCanvas.width, shaderCanvas.height);
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                requestAnimationFrame(renderShader);
+            }
+
+            renderShader(0);
+        }
+
+        // Particle.js Configuration
+        function initParticles() {
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: "#ff0000" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true, anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false } },
+                    size: { value: 3, random: true, anim: { enable: true, speed: 2, size_min: 0.1, sync: false } },
+                    line_linked: { enable: true, distance: 150, color: "#ff0000", opacity: 0.2, width: 1 },
+                    move: { enable: true, speed: 2, direction: "none", random: false, straight: false, out_mode: "out", bounce: false }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true },
+                    modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
+                },
+                retina_detect: true
             });
         }
-        
-        setInterval(updateMetrics, 5000);
-        
-        // Intersection Observer for scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: "0px 0px -50px 0px"
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-fade-in-up');
+
+        // Initialize Main Experience
+        function initializeExperience() {
+            // Hero Animation
+            const heroTimeline = gsap.timeline();
+            const titleSplit = new SplitText('.hero-title', { type: 'chars' });
+            
+            heroTimeline
+                .from(titleSplit.chars, {
+                    duration: 1,
+                    opacity: 0,
+                    scale: 0,
+                    y: 80,
+                    rotationX: 180,
+                    transformOrigin: '0% 50% -50',
+                    ease: 'back',
+                    stagger: 0.01
+                })
+                .to('.hero-subtitle', {
+                    duration: 1,
+                    opacity: 1,
+                    y: 0,
+                    ease: 'power3.out'
+                }, '-=0.5')
+                .from('.cta-button', {
+                    duration: 0.8,
+                    scale: 0,
+                    ease: 'back.out(1.7)'
+                }, '-=0.3');
+
+            // Scroll Animations
+            ScrollTrigger.create({
+                trigger: '#news-studio',
+                start: 'top 80%',
+                onEnter: () => {
+                    gsap.to(camera.position, {
+                        duration: 2,
+                        z: -5,
+                        ease: 'power2.inOut'
+                    });
                 }
             });
-        }, observerOptions);
-        
-        document.querySelectorAll('article').forEach(el => {
-            observer.observe(el);
+
+            // Anchor Cards 3D Animation
+            document.querySelectorAll('.anchor-card').forEach((card, index) => {
+                gsap.from(card, {
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 80%',
+                        end: 'bottom 20%',
+                        scrub: 1
+                    },
+                    rotationY: 90,
+                    opacity: 0,
+                    x: index % 2 === 0 ? -100 : 100,
+                    duration: 1,
+                    ease: 'power3.out'
+                });
+            });
+
+            // Navigation Scroll Effect
+            const nav = document.getElementById('main-nav');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+            });
+
+            // Initialize Locomotive Scroll
+            const scroll = new LocomotiveScroll({
+                el: document.querySelector('[data-scroll-container]'),
+                smooth: true,
+                multiplier: 0.8
+            });
+
+            // Audio Visualization (placeholder for full implementation)
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const analyser = audioContext.createAnalyser();
+            analyser.fftSize = 256;
+
+            // Initialize other advanced features
+            initAdvancedPhysics();
+            initMachineLearningEffects();
+            initPageTransitions();
+        }
+
+        // Advanced Physics with Matter.js
+        function initAdvancedPhysics() {
+            // This would contain Matter.js physics simulations
+            // For news graphics, floating elements, etc.
+        }
+
+        // Machine Learning Visual Effects
+        function initMachineLearningEffects() {
+            // TensorFlow.js for pose detection and advanced effects
+            // This would analyze video feeds and create reactive visuals
+        }
+
+        // Cinematic Page Transitions
+        function initPageTransitions() {
+            barba.init({
+                transitions: [{
+                    name: 'cinematic-transition',
+                    leave(data) {
+                        return gsap.timeline()
+                            .to(data.current.container, {
+                                opacity: 0,
+                                scale: 0.8,
+                                duration: 1,
+                                ease: 'power2.inOut'
+                            });
+                    },
+                    enter(data) {
+                        return gsap.timeline()
+                            .from(data.next.container, {
+                                opacity: 0,
+                                scale: 1.2,
+                                duration: 1,
+                                ease: 'power2.inOut'
+                            });
+                    }
+                }]
+            });
+        }
+
+        // Initialize everything
+        window.addEventListener('load', () => {
+            initBabylon();
+            initShaders();
+            initParticles();
+            
+            // Simulate loading
+            let progress = 0;
+            const loadingInterval = setInterval(() => {
+                progress += Math.random() * 20;
+                updateLoading(Math.min(progress, 100));
+                if (progress >= 100) {
+                    clearInterval(loadingInterval);
+                }
+            }, 300);
         });
+
+        // Backend Integration
+        const CONFIG = {
+            API_URL: 'https://flickinny11-static-news-backend.hf.space',
+            WS_URL: 'wss://flickinny11-static-news-backend.hf.space'
+        };
+
+        // WebSocket for real-time updates
+        class NewsWebSocket {
+            constructor() {
+                this.connect();
+            }
+
+            connect() {
+                this.ws = new WebSocket(CONFIG.WS_URL);
+                
+                this.ws.onopen = () => {
+                    console.log('Connected to Static News Backend');
+                };
+
+                this.ws.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    this.handleRealtimeUpdate(data);
+                };
+
+                this.ws.onerror = (error) => {
+                    console.error('WebSocket error:', error);
+                };
+
+                this.ws.onclose = () => {
+                    console.log('WebSocket closed, reconnecting...');
+                    setTimeout(() => this.connect(), 3000);
+                };
+            }
+
+            handleRealtimeUpdate(data) {
+                // Update anchor states, news ticker, etc.
+                if (data.type === 'anchor_update') {
+                    this.updateAnchorStatus(data.anchor, data.status);
+                } else if (data.type === 'breaking_news') {
+                    this.addBreakingNews(data.headline);
+                }
+            }
+
+            updateAnchorStatus(anchor, status) {
+                // Update 3D models and UI
+                const anchorCard = document.querySelector(`[data-anchor="${anchor}"]`);
+                if (anchorCard) {
+                    // Update status values with animations
+                    gsap.to(anchorCard.querySelector('.status-value'), {
+                        textContent: status.value,
+                        duration: 1,
+                        ease: 'power2.inOut'
+                    });
+                }
+            }
+
+            addBreakingNews(headline) {
+                const ticker = document.querySelector('.ticker-content');
+                const newItem = document.createElement('span');
+                newItem.className = 'ticker-item';
+                newItem.textContent = `BREAKING: ${headline}`;
+                ticker.appendChild(newItem);
+            }
+        }
+
+        // Initialize WebSocket connection
+        const newsSocket = new NewsWebSocket();
     </script>
 </body>
 </html>
