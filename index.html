@@ -41,6 +41,11 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/shaders/CopyShader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/postprocessing/Pass.js"></script>
+    
+    <!-- Physics -->
+    <script src="https://cdn.jsdelivr.net/npm/cannon@0.6.2/build/cannon.min.js"></script>
     
     <!-- Page Transitions -->
     <script src="https://unpkg.com/@barba/core@2.9.7/dist/barba.umd.js"></script>
@@ -91,6 +96,22 @@
             background: #000;
             color: #fff;
             overflow-x: hidden;
+        }
+
+        /* Reality Fabric Background Container */
+        #reality-fabric-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            pointer-events: none;
+        }
+        
+        #reality-fabric-bg canvas {
+            width: 100% !important;
+            height: 100% !important;
         }
 
         /* Custom Cursor */
@@ -603,8 +624,6 @@
     <!-- Main Canvas for Background Effects -->
     <canvas id="main-canvas"></canvas>
 
-    <!-- Particle Background -->
-    <div id="particles-js"></div>
 
     <!-- WebGL Shader Background -->
     <div class="shader-background">
@@ -1331,5 +1350,40 @@
     
         </div> <!-- End smooth-content -->
     </div> <!-- End smooth-wrapper -->
+    
+    <!-- Reality Fabric Background -->
+    <div id="reality-fabric-bg"></div>
+    
+    <!-- Initialize Reality Fabric Background -->
+    <script src="scripts/reality-fabric-background.js"></script>
+    <script>
+        // Initialize the revolutionary background system
+        const realityFabric = new RealityFabricBackground();
+        
+        // Wait for page load
+        window.addEventListener('load', () => {
+            realityFabric.init('reality-fabric-bg', {
+                showStats: false // Set to true for performance monitoring
+            });
+            
+            // Make background interactive on certain areas
+            const bgContainer = document.getElementById('reality-fabric-bg');
+            bgContainer.style.pointerEvents = 'auto';
+            
+            // Connect to reality glitch system
+            if (window.realityGlitchSystem) {
+                window.realityGlitchSystem.onBreakdown = () => {
+                    realityFabric.triggerBreakdown();
+                };
+            }
+        });
+        
+        // Clean up on page unload
+        window.addEventListener('beforeunload', () => {
+            if (realityFabric) {
+                realityFabric.dispose();
+            }
+        });
+    </script>
 </body>
 </html>
