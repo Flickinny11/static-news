@@ -110,9 +110,9 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-            opacity: 0.3;
-            filter: blur(2px);
-            transform: scale(1.1);
+            opacity: 0.7;
+            filter: blur(0.5px);
+            transform: scale(1.05);
         }
 
 
@@ -217,6 +217,8 @@
             align-items: center;
             justify-content: center;
             z-index: 10;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(1px);
         }
 
         .hero-content {
@@ -459,6 +461,8 @@
             min-height: 100vh;
             padding: 8rem 4rem;
             z-index: 10;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(0.5px);
         }
 
         .section-container {
@@ -1441,5 +1445,8 @@
     
     <!-- Particles Background -->
     <div id="particles-js"></div>
+    
+    <!-- Enhanced STATIC Animation -->
+    <script src="scripts/enhanced-static-animation.js"></script>
 </body>
 </html>
