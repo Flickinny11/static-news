@@ -46,6 +46,28 @@ class SystemVerification {
                     () => window.aiCharacterBroadcastIntegration?.characterVideoElement !== null,
                     () => typeof window.aiCharacterBroadcastIntegration?.playCharacterVideo === 'function'
                 ]
+            },
+            'userInteractionSystem': {
+                name: 'User Interaction System',
+                required: true,
+                checks: [
+                    () => window.userInteractionSystem?.isInitialized === true,
+                    () => document.getElementById('user-comment-section') !== null,
+                    () => typeof window.userInteractionSystem?.submitComment === 'function',
+                    () => typeof window.userInteractionSystem?.startVoting === 'function',
+                    () => window.userInteractionSystem?.adminPanel !== undefined
+                ]
+            },
+            'multiAngleVideoProduction': {
+                name: 'Multi-Angle Video Production',
+                required: true,
+                checks: [
+                    () => window.multiAngleVideoProduction !== undefined,
+                    () => window.multiAngleVideoProduction?.cameras?.size > 0,
+                    () => typeof window.multiAngleVideoProduction?.generateMultiAngleSequence === 'function',
+                    () => window.multiAngleVideoProduction?.cameraPresets !== undefined,
+                    () => window.multiAngleVideoProduction?.blendingEngine !== undefined
+                ]
             }
         };
         
@@ -240,7 +262,10 @@ class SystemVerification {
             /fixme/i,
             /data:image\/png;base64,mock/i,
             /would\s+call/i,
-            /simulate/i
+            /simulate/i,
+            /for\s+now/i,
+            /temporary/i,
+            /fake\s+data/i
         ];
         
         let placeholdersFound = 0;
