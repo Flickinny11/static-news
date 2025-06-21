@@ -22,25 +22,34 @@ except:
 
 # Import our broadcast system
 try:
-    from complete_hf_broadcast_space import (
-        AudioGenerator, VideoGenerator, BroadcastOrchestrator,
-        CHARACTER_CONFIGS, STUDIO_SETUPS
+    # Try complete broadcast system first
+    from app_complete_broadcast import (
+        StaticNewsBroadcastSystem,
+        create_gradio_interface,
+        websocket_handler
     )
+    USE_COMPLETE_SYSTEM = True
+    logger.info("Using complete broadcast system with all models")
 except ImportError:
-    logger.warning("Complete broadcast system not available, using simplified pipeline")
-    from video_pipeline_simple import (
-        StaticNewsVideoGenerator as VideoGenerator,
-        HFModelIntegration as AudioGenerator,
-        BroadcastManager as BroadcastOrchestrator
-    )
-    # Load character configs
+    logger.warning("Complete broadcast system not available, trying simplified pipeline")
     try:
-        with open('characters_config.json', 'r') as f:
-            CHARACTER_CONFIGS = json.load(f)['characters']
-        STUDIO_SETUPS = {}
-    except:
-        CHARACTER_CONFIGS = {}
-        STUDIO_SETUPS = {}
+        from video_pipeline_simple import (
+            StaticNewsVideoGenerator as VideoGenerator,
+            HFModelIntegration as AudioGenerator,
+            BroadcastManager as BroadcastOrchestrator
+        )
+        USE_COMPLETE_SYSTEM = False
+        # Load character configs
+        try:
+            with open('characters_config.json', 'r') as f:
+                CHARACTER_CONFIGS = json.load(f)['characters']
+            STUDIO_SETUPS = {}
+        except:
+            CHARACTER_CONFIGS = {}
+            STUDIO_SETUPS = {}
+    except ImportError:
+        logger.error("No broadcast system available")
+        raise
 
 # Set up logging
 logging.basicConfig(

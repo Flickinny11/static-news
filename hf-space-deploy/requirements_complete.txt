@@ -1,0 +1,42 @@
+# Core dependencies
+gradio==4.16.0
+torch==2.1.2
+transformers==4.37.2
+numpy==1.24.3
+opencv-python-headless==4.8.1.78
+pillow==10.1.0
+scipy==1.11.4
+soundfile==0.12.1
+
+# Dia 1.6B TTS
+accelerate==0.25.0
+sentencepiece==0.1.99
+
+# SkyReels V2 for video generation
+diffusers==0.24.0
+einops==0.7.0
+imageio==2.33.1
+imageio-ffmpeg==0.4.9
+
+# MusicGen for theme music
+audiocraft==1.1.0
+xformers==0.0.23
+torchaudio==2.1.2
+
+# Audio processing
+librosa==0.10.1
+pydub==0.25.1
+
+# WebSocket and async
+websockets==12.0
+aiohttp==3.9.1
+aiofiles==23.2.1
+
+# News processing
+feedparser==6.0.10
+requests==2.31.0
+
+# Utilities
+python-dotenv==1.0.0
+psutil==5.9.6
+tqdm==4.66.1
