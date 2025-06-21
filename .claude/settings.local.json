@@ -18,7 +18,8 @@
       "WebFetch(domain:flickinny11.github.io)",
       "Bash(swift build)",
       "Bash(grep:*)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(git add:*)"
     ],
     "deny": []
   }

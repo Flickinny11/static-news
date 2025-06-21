@@ -66,6 +66,9 @@
     <!-- Audio Visualization -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/7.4.2/wavesurfer.min.js"></script>
     
+    <!-- Hollywood Effects CSS -->
+    <link rel="stylesheet" href="styles/hollywood-effects.css">
+    
     <!-- Custom Styles -->
     <style>
         :root {
@@ -578,7 +581,11 @@
         }
     </style>
 </head>
-<body>
+<body data-scroll-container>
+    <!-- Smooth Scroll Wrapper -->
+    <div id="smooth-wrapper">
+        <div id="smooth-content">
+    
     <!-- Custom Cursor -->
     <div id="custom-cursor"></div>
     <div id="cursor-follower"></div>
@@ -621,9 +628,9 @@
     </nav>
 
     <!-- Hero Section -->
-    <section id="hero">
+    <section id="hero" data-scroll data-scroll-speed="-5">
         <div class="hero-content">
-            <h1 class="hero-title">
+            <h1 class="hero-title" data-scroll data-scroll-speed="2" data-scroll-position="top">
                 <span class="glitch" data-text="STATIC">STATIC</span>
             </h1>
             <p class="hero-subtitle">THE FUTURE OF AI NEWS</p>
@@ -632,7 +639,7 @@
     </section>
 
     <!-- 3D News Studio -->
-    <section id="news-studio" class="content-section">
+    <section id="news-studio" class="content-section" data-scroll data-scroll-speed="-2">
         <canvas id="babylon-canvas"></canvas>
         <div class="studio-overlay">
             <div class="news-ticker">
@@ -649,11 +656,11 @@
     </section>
 
     <!-- Anchors Section -->
-    <section id="anchors" class="content-section">
+    <section id="anchors" class="content-section" data-scroll data-scroll-speed="-1">
         <div class="section-container">
             <h2 class="section-title">OUR ANCHORS</h2>
             <div class="anchor-grid">
-                <div class="anchor-card" data-anchor="ray">
+                <div class="anchor-card" data-anchor="ray" data-scroll data-scroll-speed="1" data-scroll-offset="100">
                     <div class="anchor-3d-preview" id="ray-3d"></div>
                     <div class="anchor-info">
                         <h3 class="anchor-name">RAY MCPATRIOT</h3>
@@ -670,7 +677,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="anchor-card" data-anchor="berkeley">
+                <div class="anchor-card" data-anchor="berkeley" data-scroll data-scroll-speed="1.5" data-scroll-offset="100">
                     <div class="anchor-3d-preview" id="berkeley-3d"></div>
                     <div class="anchor-info">
                         <h3 class="anchor-name">BERKELEY JUSTICE</h3>
@@ -687,7 +694,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="anchor-card" data-anchor="switz">
+                <div class="anchor-card" data-anchor="switz" data-scroll data-scroll-speed="2" data-scroll-offset="100">
                     <div class="anchor-3d-preview" id="switz-3d"></div>
                     <div class="anchor-info">
                         <h3 class="anchor-name">SWITZ MIDDLETON</h3>
@@ -1186,5 +1193,29 @@
     <!-- Load additional advanced systems -->
     <script src="scripts/quantum-renderer.js"></script>
     <script src="scripts/cinematic-transitions.js"></script>
+    <script src="scripts/cinematic-scroll.js"></script>
+    <script src="scripts/reality-glitch.js"></script>
+    <script src="scripts/hollywood-init.js"></script>
+    
+    <!-- Initialize all effects after page load -->
+    <script>
+        // Remove loading screen when ready
+        window.addEventListener('hollywood-ready', () => {
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen) {
+                gsap.to(loadingScreen, {
+                    opacity: 0,
+                    duration: 1.5,
+                    ease: 'power4.inOut',
+                    onComplete: () => {
+                        loadingScreen.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+    
+        </div> <!-- End smooth-content -->
+    </div> <!-- End smooth-wrapper -->
 </body>
 </html>
