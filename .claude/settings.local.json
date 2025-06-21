@@ -29,7 +29,8 @@
       "Bash(touch:*)",
       "Bash(ssh:*)",
       "Bash(cat:*)",
-      "Bash(scp:*)"
+      "Bash(scp:*)",
+      "Bash(cp:*)"
     ],
     "deny": []
   }
