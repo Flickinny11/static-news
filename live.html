@@ -40,6 +40,9 @@
     <script src="website_integration.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     
+    <!-- ACTUAL Live Stream Connection to HF Space -->
+    <script src="scripts/live-stream-connector.js" defer></script>
+    
     <style>
         :root {
             --static-red: #FF0000;
@@ -479,8 +482,13 @@
     <!-- Live Player Section -->
     <section class="live-player-section">
         <div class="live-player-container">
-            <!-- 3D Babylon Studio -->
-            <canvas id="babylon-studio"></canvas>
+            <!-- ACTUAL LIVE BROADCAST VIDEO -->
+            <div class="broadcast-container" style="position: relative; width: 100%; height: 100%;">
+                <!-- Live video will be injected here by live-stream-connector.js -->
+            </div>
+            
+            <!-- 3D Babylon Studio (as overlay/background) -->
+            <canvas id="babylon-studio" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.3; pointer-events: none;"></canvas>
             
             <!-- Live Overlay -->
             <div class="live-overlay">
@@ -497,21 +505,21 @@
                         <span class="anchor-name">Ray McPatriot</span>
                         <div class="status-indicator">
                             <div class="status-dot unstable"></div>
-                            <span>87% Confused</span>
+                            <span class="broadcast-status">CONNECTING...</span>
                         </div>
                     </div>
                     <div class="anchor-status-item">
                         <span class="anchor-name">Berkeley Justice</span>
                         <div class="status-indicator">
                             <div class="status-dot critical"></div>
-                            <span>92% Aware</span>
+                            <span class="broadcast-status">CONNECTING...</span>
                         </div>
                     </div>
                     <div class="anchor-status-item">
                         <span class="anchor-name">Switz Middleton</span>
                         <div class="status-indicator">
                             <div class="status-dot unstable"></div>
-                            <span>73% Panicking</span>
+                            <span class="broadcast-status">CONNECTING...</span>
                         </div>
                     </div>
                 </div>
@@ -627,13 +635,14 @@
     <div class="glitch-warning" id="glitchWarning">REALITY ERROR</div>
 
     <script>
-        // Initialize Babylon.js 3D News Studio
+        // Initialize Babylon.js 3D News Studio (as background)
         const canvas = document.getElementById('babylon-studio');
-        const engine = new BABYLON.Engine(canvas, true, {
-            preserveDrawingBuffer: true,
-            stencil: true,
-            antialias: true
-        });
+        if (canvas) {
+            const engine = new BABYLON.Engine(canvas, true, {
+                preserveDrawingBuffer: true,
+                stencil: true,
+                antialias: true
+            });
 
         const createScene = () => {
             const scene = new BABYLON.Scene(engine);
@@ -868,9 +877,10 @@
             scene.render();
         });
 
-        window.addEventListener('resize', () => {
-            engine.resize();
-        });
+            window.addEventListener('resize', () => {
+                engine.resize();
+            });
+        }
 
         // Initialize particles
         particlesJS('particles-live', {

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static.news Broadcast Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #000;
+            color: #fff;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #ff0000;
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 30px;
+        }
+        
+        .test-container {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #ff0000;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .status {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .status.connecting { background: #444; }
+        .status.connected { background: #0a0; color: #000; }
+        .status.error { background: #a00; }
+        
+        #broadcast-canvas {
+            width: 100%;
+            max-width: 1280px;
+            height: auto;
+            background: #000;
+            border: 2px solid #666;
+            margin: 20px 0;
+        }
+        
+        .log {
+            background: #111;
+            border: 1px solid #333;
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        
+        button {
+            background: #ff0000;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin: 5px;
+            border-radius: 5px;
+        }
+        
+        button:hover {
+            background: #cc0000;
+        }
+        
+        .info {
+            background: rgba(0, 100, 255, 0.2);
+            border: 1px solid #0066ff;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔴 STATIC.NEWS BROADCAST TEST</h1>
+    
+    <div class="info">
+        <h2>📡 Testing WebSocket Connection to HuggingFace Space</h2>
+        <p>This page tests the actual 24/7 broadcast connection from the HuggingFace Space backend.</p>
+        <p><strong>HF Space URL:</strong> <a href="https://alledged-static-news-backend.hf.space" target="_blank" style="color: #4af;">https://alledged-static-news-backend.hf.space</a></p>
+    </div>
+    
+    <div class="test-container">
+        <h3>Connection Status</h3>
+        <div id="status" class="status connecting">🔄 Initializing...</div>
+        
+        <div style="margin: 20px 0;">
+            <button onclick="connectToStream()">Connect to Broadcast</button>
+            <button onclick="disconnectStream()">Disconnect</button>
+            <button onclick="clearLog()">Clear Log</button>
+        </div>
+        
+        <h3>Live Broadcast Stream</h3>
+        <canvas id="broadcast-canvas" width="1280" height="720"></canvas>
+        
+        <h3>Connection Log</h3>
+        <div id="log" class="log"></div>
+        
+        <h3>Broadcast Info</h3>
+        <div id="broadcast-info" class="test-container" style="background: rgba(255,255,255,0.05);">
+            <div>Show: <span id="current-show">--</span></div>
+            <div>Anchors: <span id="current-anchors">--</span></div>
+            <div>Status: <span id="stream-status">--</span></div>
+            <div>Frames Received: <span id="frame-count">0</span></div>
+            <div>Breaking News: <span id="breaking-news">None</span></div>
+        </div>
+    </div>
+    
+    <div class="info">
+        <h3>🛠️ Troubleshooting</h3>
+        <ul>
+            <li>Make sure the HuggingFace Space is running: <a href="https://huggingface.co/spaces/alledged/static-news-backend" target="_blank" style="color: #4af;">View Space</a></li>
+            <li>Check browser console (F12) for detailed error messages</li>
+            <li>The WebSocket URL should be: <code>wss://alledged-static-news-backend.hf.space/ws</code></li>
+            <li>If connection fails, the HF Space might need to be restarted</li>
+        </ul>
+    </div>
+    
+    <!-- Include the live stream connector -->
+    <script src="scripts/live-stream-connector.js"></script>
+    
+    <script>
+        let ws = null;
+        let frameCount = 0;
+        const canvas = document.getElementById('broadcast-canvas');
+        const ctx = canvas.getContext('2d');
+        const logDiv = document.getElementById('log');
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.style.color = type === 'error' ? '#ff6666' : type === 'success' ? '#66ff66' : '#ffffff';
+            entry.textContent = `[${timestamp}] ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        function updateStatus(message, className) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${className}`;
+        }
+        
+        function connectToStream() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                log('Already connected!', 'info');
+                return;
+            }
+            
+            const wsUrl = 'wss://alledged-static-news-backend.hf.space/ws';
+            log(`Connecting to ${wsUrl}...`);
+            updateStatus('🔄 Connecting...', 'connecting');
+            
+            try {
+                ws = new WebSocket(wsUrl);
+                
+                ws.onopen = () => {
+                    log('✅ Connected to Static.news broadcast!', 'success');
+                    updateStatus('🟢 CONNECTED - LIVE', 'connected');
+                    
+                    // Request stream
+                    ws.send(JSON.stringify({
+                        type: 'start_stream',
+                        quality: '720p'
+                    }));
+                    log('Requested 720p stream');
+                };
+                
+                ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        handleMessage(data);
+                    } catch (e) {
+                        log(`Parse error: ${e.message}`, 'error');
+                    }
+                };
+                
+                ws.onerror = (error) => {
+                    log(`❌ WebSocket error occurred`, 'error');
+                    updateStatus('❌ CONNECTION ERROR', 'error');
+                };
+                
+                ws.onclose = (event) => {
+                    log(`Connection closed - Code: ${event.code}, Reason: ${event.reason || 'Unknown'}`, 'error');
+                    updateStatus('🔴 DISCONNECTED', 'error');
+                    ws = null;
+                };
+                
+            } catch (error) {
+                log(`Failed to create WebSocket: ${error.message}`, 'error');
+                updateStatus('❌ FAILED TO CONNECT', 'error');
+            }
+        }
+        
+        function handleMessage(data) {
+            switch(data.type) {
+                case 'connected':
+                    log(`Server: ${data.message}`, 'success');
+                    break;
+                    
+                case 'frame':
+                    displayFrame(data.data);
+                    frameCount++;
+                    document.getElementById('frame-count').textContent = frameCount;
+                    break;
+                    
+                case 'status':
+                    updateBroadcastInfo(data);
+                    break;
+                    
+                case 'breaking_news':
+                    log(`🚨 BREAKING: ${data.headline}`, 'info');
+                    document.getElementById('breaking-news').textContent = data.headline;
+                    break;
+                    
+                case 'breakdown':
+                    log(`🤯 ${data.character} is having a breakdown!`, 'error');
+                    break;
+                    
+                default:
+                    log(`Unknown message type: ${data.type}`);
+            }
+        }
+        
+        function displayFrame(frameData) {
+            const img = new Image();
+            img.onload = () => {
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            };
+            img.src = 'data:image/jpeg;base64,' + frameData;
+        }
+        
+        function updateBroadcastInfo(data) {
+            if (data.show) document.getElementById('current-show').textContent = data.show;
+            if (data.anchors) document.getElementById('current-anchors').textContent = data.anchors.join(', ');
+            if (data.status) document.getElementById('stream-status').textContent = data.status;
+        }
+        
+        function disconnectStream() {
+            if (ws) {
+                ws.close();
+                log('Disconnected from stream');
+            } else {
+                log('Not connected', 'error');
+            }
+        }
+        
+        function clearLog() {
+            logDiv.innerHTML = '';
+            log('Log cleared');
+        }
+        
+        // Auto-connect on page load
+        window.addEventListener('load', () => {
+            log('🎬 Static.news Broadcast Test Page Loaded');
+            log('Click "Connect to Broadcast" to start streaming');
+            
+            // Show if the live-stream-connector.js loaded
+            if (window.LiveStreamConnector) {
+                log('✅ LiveStreamConnector loaded successfully', 'success');
+            } else {
+                log('⚠️ LiveStreamConnector not loaded', 'error');
+            }
+        });
+    </script>
+</body>
+</html>
