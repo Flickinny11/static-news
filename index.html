@@ -80,8 +80,9 @@
     
     <!-- Premium 3D Studio Scripts -->
     <script src="scripts/studio-hdri-generator.js"></script>
-    <script src="scripts/babylon-studio-scene.js" defer></script>
-    <script src="scripts/premium-3d-studio.js" defer></script>
+    <script src="scripts/simple-3d-studio.js" defer></script>
+    <!-- <script src="scripts/babylon-studio-scene.js" defer></script> -->
+    <!-- <script src="scripts/premium-3d-studio.js" defer></script> -->
     
     <!-- Custom Styles -->
     <style>
@@ -968,10 +969,6 @@
             }, 100);
         });
 
-        // Initialize Photorealistic Newsroom Background
-        const newsroomCanvas = document.getElementById('newsroom-background');
-        const newsroom = new PhotorealisticNewsroom(newsroomCanvas);
-        
         // Loading Animation
         let loadingProgress = 0;
         const loadingBar = document.querySelector('.loading-progress-bar');
@@ -982,10 +979,6 @@
             loadingBar.style.width = loadingProgress + '%';
             
             if (loadingProgress >= 100) {
-                // Initialize newsroom in background
-                await newsroom.init();
-                newsroom.enableOptimizations();
-                
                 setTimeout(() => {
                     gsap.to(loadingScreen, {
                         opacity: 0,

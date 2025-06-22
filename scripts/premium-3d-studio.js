@@ -12,6 +12,13 @@ const StudioHDRI = window.StudioHDRI;
 class PremiumNewsStudio {
     constructor() {
         this.container = document.getElementById('studio-background');
+        
+        // Check if container exists
+        if (!this.container) {
+            console.error('Premium 3D Studio: Container element #studio-background not found!');
+            return;
+        }
+        
         this.scene = new THREE.Scene();
         this.camera = null;
         this.renderer = null;
@@ -35,19 +42,27 @@ class PremiumNewsStudio {
     }
     
     setupRenderer() {
+        // Create canvas element
+        const canvas = document.createElement('canvas');
+        canvas.id = 'studio-canvas';
+        
         this.renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
             antialias: true,
-            alpha: true,
+            alpha: false, // Changed to false for better visibility
             powerPreference: "high-performance"
         });
         
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setPixelRatio(window.devicePixelRatio);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Limit pixel ratio
         this.renderer.outputEncoding = THREE.sRGBEncoding;
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 1.2;
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        
+        // Set clear color
+        this.renderer.setClearColor(0x0a0a0a, 1);
         
         this.container.appendChild(this.renderer.domElement);
     }
@@ -108,7 +123,7 @@ class PremiumNewsStudio {
             this.scene.environment = texture;
         }
         
-        this.scene.background = null; // Transparent for overlay
+        this.scene.background = new THREE.Color(0x0a0a0a); // Dark background instead of transparent
     }
     
     createStudio() {
@@ -444,50 +459,46 @@ class PremiumNewsStudio {
     }
     
     setupLighting() {
+        // Brighter ambient for visibility
+        const ambientLight = new THREE.AmbientLight(0x404040, 1.5);
+        this.scene.add(ambientLight);
+        
         // Key light (main broadcast light)
-        const keyLight = new THREE.SpotLight(0xffffff, 3);
+        const keyLight = new THREE.DirectionalLight(0xffffff, 2);
         keyLight.position.set(-5, 8, 8);
-        keyLight.target.position.set(0, 1, 0);
-        keyLight.angle = Math.PI / 6;
-        keyLight.penumbra = 0.3;
-        keyLight.decay = 2;
-        keyLight.distance = 30;
         keyLight.castShadow = true;
         keyLight.shadow.mapSize.width = 2048;
         keyLight.shadow.mapSize.height = 2048;
         keyLight.shadow.camera.near = 0.5;
-        keyLight.shadow.camera.far = 30;
+        keyLight.shadow.camera.far = 50;
+        keyLight.shadow.camera.left = -20;
+        keyLight.shadow.camera.right = 20;
+        keyLight.shadow.camera.top = 20;
+        keyLight.shadow.camera.bottom = -20;
         this.scene.add(keyLight);
-        this.scene.add(keyLight.target);
         
         // Fill light
-        const fillLight = new THREE.SpotLight(0xffffff, 1.5);
+        const fillLight = new THREE.DirectionalLight(0xffffff, 1);
         fillLight.position.set(5, 6, 5);
-        fillLight.target.position.set(0, 1, 0);
-        fillLight.angle = Math.PI / 4;
-        fillLight.penumbra = 0.5;
         this.scene.add(fillLight);
         
         // Back light for rim lighting
-        const backLight = new THREE.SpotLight(0x4488ff, 2);
+        const backLight = new THREE.DirectionalLight(0x4488ff, 1);
         backLight.position.set(0, 7, -8);
-        backLight.target.position.set(0, 1, 0);
-        backLight.angle = Math.PI / 3;
-        backLight.penumbra = 0.4;
         this.scene.add(backLight);
         
-        // Studio ambient
-        const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
-        this.scene.add(ambientLight);
-        
         // Red accent lights
-        const accentLight1 = new THREE.PointLight(0xff0000, 1, 10);
+        const accentLight1 = new THREE.PointLight(0xff0000, 2, 15);
         accentLight1.position.set(-8, 2, 0);
         this.scene.add(accentLight1);
         
-        const accentLight2 = new THREE.PointLight(0xff0000, 1, 10);
+        const accentLight2 = new THREE.PointLight(0xff0000, 2, 15);
         accentLight2.position.set(8, 2, 0);
         this.scene.add(accentLight2);
+        
+        // Add hemisphere light for overall illumination
+        const hemiLight = new THREE.HemisphereLight(0x404040, 0x000000, 1);
+        this.scene.add(hemiLight);
         
         // Animated light effects
         this.animateLights();
@@ -536,7 +547,25 @@ class PremiumNewsStudio {
     }
 }
 
+// Make PremiumNewsStudio available globally
+window.PremiumNewsStudio = PremiumNewsStudio;
+
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    window.premiumStudio = new PremiumNewsStudio();
+    // Add debug logging
+    console.log('Premium 3D Studio: DOM loaded');
+    
+    // Check if THREE.js is loaded
+    if (typeof THREE === 'undefined') {
+        console.error('Premium 3D Studio: THREE.js not loaded!');
+        return;
+    }
+    
+    try {
+        console.log('Premium 3D Studio: Initializing...');
+        window.premiumStudio = new PremiumNewsStudio();
+        console.log('Premium 3D Studio: Initialized successfully');
+    } catch (error) {
+        console.error('Premium 3D Studio: Initialization error:', error);
+    }
 });

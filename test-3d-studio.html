@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Studio Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        #studio-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+        }
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            background: rgba(0,0,0,0.7);
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="studio-container"></div>
+    <div id="info">
+        <h3>3D Studio Test</h3>
+        <p id="status">Initializing...</p>
+    </div>
+
+    <script>
+        // Simple test to verify THREE.js is working
+        const container = document.getElementById('studio-container');
+        const status = document.getElementById('status');
+        
+        try {
+            // Create scene
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0a0a0a);
+            
+            // Create camera
+            const camera = new THREE.PerspectiveCamera(
+                45,
+                window.innerWidth / window.innerHeight,
+                0.1,
+                1000
+            );
+            camera.position.set(-10, 5, 15);
+            camera.lookAt(0, 2, 0);
+            
+            // Create renderer
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+            
+            // Add basic lighting
+            const ambientLight = new THREE.AmbientLight(0x404040, 1);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(5, 10, 5);
+            scene.add(directionalLight);
+            
+            // Create a simple desk
+            const deskGeometry = new THREE.BoxGeometry(10, 0.5, 3);
+            const deskMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x2a2a2a,
+                roughness: 0.3,
+                metalness: 0.7
+            });
+            const desk = new THREE.Mesh(deskGeometry, deskMaterial);
+            desk.position.y = 1;
+            scene.add(desk);
+            
+            // Add red accent light
+            const redLight = new THREE.PointLight(0xff0000, 2, 10);
+            redLight.position.set(0, 2, 0);
+            scene.add(redLight);
+            
+            // Add some studio elements
+            for (let i = -3; i <= 3; i++) {
+                const monitorGeometry = new THREE.BoxGeometry(2, 1.5, 0.1);
+                const monitorMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x000033,
+                    emissive: 0x001122,
+                    emissiveIntensity: 0.5
+                });
+                const monitor = new THREE.Mesh(monitorGeometry, monitorMaterial);
+                monitor.position.set(i * 2, 3, -5);
+                scene.add(monitor);
+            }
+            
+            // Floor
+            const floorGeometry = new THREE.PlaneGeometry(30, 20);
+            const floorMaterial = new THREE.MeshStandardMaterial({
+                color: 0x1a1a1a,
+                roughness: 0.8
+            });
+            const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+            floor.rotation.x = -Math.PI / 2;
+            scene.add(floor);
+            
+            status.textContent = 'Studio loaded successfully!';
+            status.style.color = '#00ff00';
+            
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                // Rotate camera around center
+                const time = Date.now() * 0.0005;
+                camera.position.x = Math.cos(time) * 15;
+                camera.position.z = Math.sin(time) * 15;
+                camera.lookAt(0, 2, 0);
+                
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+            
+            // Handle resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+            
+        } catch (error) {
+            status.textContent = 'Error: ' + error.message;
+            status.style.color = '#ff0000';
+            console.error('3D Studio Error:', error);
+        }
+    </script>
+</body>
+</html>
