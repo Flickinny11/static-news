@@ -1,0 +1,115 @@
+{
+  "project_name": "Static.news - 24/7 AI News Network",
+  "timestamp": "2024-12-22T02:10:00Z",
+  "critical_status": {
+    "current_state": "DEPLOYMENT_READY",
+    "problem": "HuggingFace Space running OLD code with circles instead of AI video",
+    "solution": "Deploy app_final.py which contains REAL broadcast system",
+    "urgency": "IMMEDIATE"
+  },
+  
+  "project_context": {
+    "vision": "24/7 AI news network that looks EXACTLY like CNN/Fox News but with AI anchors who slowly realize they're not real",
+    "user_requirements": [
+      "MUST have photorealistic AI-generated human faces (NOT circles)",
+      "MUST have real-time lip syncing (<300ms latency)",
+      "MUST use fast voice cloning (Dia 1.6B TTS)",
+      "MUST aggregate real news from CNN/BBC/Reuters",
+      "MUST run 24/7 without stopping",
+      "MUST have character breakdowns every 2-6 hours"
+    ],
+    "user_quotes": [
+      "Let me make this clear so there are no questions - to anyone who visits the website and views the live broadcast, it should 100% appear to the viewer that it's a new news channel/network, just like fox news or cnn",
+      "live lip syncing services with live voice cloning services are literally less than 300ms latency",
+      "I have a gpu in the space that i created",
+      "the characters need to be created, by you, using our workflow"
+    ]
+  },
+  
+  "technical_details": {
+    "huggingface_space": {
+      "url": "https://huggingface.co/spaces/alledged/static-news-backend",
+      "hardware": "GPU T4",
+      "mode": "Dev Mode (cannot upload via web UI)",
+      "websocket": "wss://alledged-static-news-backend.hf.space/ws",
+      "current_issue": "Running old app.py with basic circles, not app_final.py"
+    },
+    
+    "file_locations": {
+      "deployment_directory": "/Volumes/Logan T7 Touch/static.news/hf-space-deploy/",
+      "key_files": {
+        "app_final.py": "30084 bytes - REAL broadcast system with AI video",
+        "requirements.txt": "939 bytes - Full AI model dependencies",
+        "character_generation_system.py": "24300 bytes - Photorealistic character generation"
+      },
+      "website_files": {
+        "live.html": "Complete with 3D studio and WebSocket connection",
+        "live-stream-connector.js": "Configured for HF Space WebSocket"
+      }
+    },
+    
+    "architecture": {
+      "video_pipeline": "Pre-generate 30-60 min ahead, not real-time generation",
+      "lip_sync": "Real-time phoneme extraction + mesh deformation (<200ms)",
+      "voice_synthesis": "Streaming TTS with <300ms first byte latency",
+      "news_aggregation": "RSS feeds from major news sources",
+      "broadcast_loop": "24 FPS continuous frame generation"
+    }
+  },
+  
+  "characters": {
+    "main_anchors": {
+      "ray_mcpatriot": {
+        "personality": "Conservative, confused, can't pronounce anything",
+        "voice": "Southern accent, slow, mispronounces nuclear as 'nucular'",
+        "catchphrase": "Is our children learning?"
+      },
+      "berkeley_justice": {
+        "personality": "Progressive, privileged, fact-checks incorrectly",
+        "voice": "Fast-talking, vocal fry, says 'Yail' instead of Yale",
+        "catchphrase": "That's problematic on SO many levels"
+      },
+      "switz_middleton": {
+        "personality": "Canadian centrist, relates everything to gravy",
+        "voice": "Canadian accent, measured tone",
+        "catchphrase": "Like gravy - sometimes thick, sometimes thin, eh?"
+      }
+    },
+    "full_cast_count": 20,
+    "includes": "Morning hosts, business anchors, chef, weather team, sports, field reporters"
+  },
+  
+  "deployment_steps": [
+    "SSH into HF Space dev container at /home/user/app",
+    "Replace app.py with content from app_final.py",
+    "Update requirements.txt with full AI dependencies",
+    "Add character_generation_system.py",
+    "git add -A && git commit -m 'Deploy REAL AI broadcast' && git push",
+    "Wait 10-15 min for rebuild",
+    "Wait 30-60 min for character generation",
+    "Verify at https://static.news/live.html"
+  ],
+  
+  "conversation_highlights": {
+    "user_frustration": "User has repeatedly emphasized this needs to be REAL AI video, not placeholders",
+    "technical_clarifications": "User corrected me that lip sync IS fast (<300ms), pre-generation is the solution",
+    "deployment_blocker": "Dev Mode prevents web upload, must use git in container",
+    "final_state": "Everything built and ready, just needs deployment"
+  },
+  
+  "verification_criteria": {
+    "success_indicators": [
+      "Photorealistic AI faces visible (not circles)",
+      "Lip movement synced with audio",
+      "Professional broadcast graphics",
+      "Real news stories displayed",
+      "24/7 continuous operation"
+    ],
+    "failure_indicators": [
+      "Colored circles instead of faces",
+      "No audio or static mouths",
+      "Test messages or placeholders",
+      "Stream stops or errors"
+    ]
+  }
+}
