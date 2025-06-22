@@ -55,14 +55,14 @@ class PremiumNewsStudio {
     setupCamera() {
         // Camera positioned as cameraman view
         this.camera = new THREE.PerspectiveCamera(
-            35, // Broadcast camera FOV
+            45, // Wider FOV to see more of the studio
             window.innerWidth / window.innerHeight,
             0.1,
             1000
         );
         
-        // Professional camera position
-        this.camera.position.set(-8, 3.5, 12);
+        // Professional camera position - pulled back to show more
+        this.camera.position.set(-12, 5, 18);
         this.camera.lookAt(0, 2, -2);
         
         // Subtle camera movement for realism
@@ -510,8 +510,8 @@ class PremiumNewsStudio {
         
         // Subtle camera movement
         this.cameraMovement.time += 0.01;
-        this.camera.position.x = -8 + Math.sin(this.cameraMovement.time * 0.3) * 0.1;
-        this.camera.position.y = 3.5 + Math.sin(this.cameraMovement.time * 0.2) * 0.05;
+        this.camera.position.x = -12 + Math.sin(this.cameraMovement.time * 0.3) * 0.2;
+        this.camera.position.y = 5 + Math.sin(this.cameraMovement.time * 0.2) * 0.1;
         
         // Update camera look
         this.camera.lookAt(0, 2, -2);
@@ -529,7 +529,10 @@ class PremiumNewsStudio {
         this.camera.updateProjectionMatrix();
         
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.composer.setSize(window.innerWidth, window.innerHeight);
+        
+        if (this.composer) {
+            this.composer.setSize(window.innerWidth, window.innerHeight);
+        }
     }
 }
 

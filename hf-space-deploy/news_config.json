@@ -1,0 +1,147 @@
+{
+  "news_api": {
+    "api_key": "",
+    "endpoints": {
+      "top_headlines": "https://newsapi.org/v2/top-headlines",
+      "everything": "https://newsapi.org/v2/everything",
+      "sources": "https://newsapi.org/v2/sources"
+    },
+    "default_params": {
+      "country": "us",
+      "pageSize": 50,
+      "sortBy": "publishedAt"
+    }
+  },
+  "rss_feeds": {
+    "general": [
+      "http://rss.cnn.com/rss/cnn_topstories.rss",
+      "http://feeds.bbci.co.uk/news/world/rss.xml",
+      "http://feeds.reuters.com/reuters/topNews",
+      "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
+      "https://feeds.npr.org/1001/rss.xml",
+      "https://www.theguardian.com/world/rss"
+    ],
+    "politics": [
+      "http://feeds.washingtonpost.com/rss/politics",
+      "https://www.politico.com/rss/congress.xml",
+      "http://rss.cnn.com/rss/cnn_allpolitics.rss"
+    ],
+    "technology": [
+      "https://feeds.arstechnica.com/arstechnica/index",
+      "https://www.theverge.com/rss/index.xml",
+      "https://techcrunch.com/feed/"
+    ],
+    "business": [
+      "https://feeds.bloomberg.com/markets/news.rss",
+      "https://www.ft.com/?format=rss",
+      "http://feeds.marketwatch.com/marketwatch/topstories"
+    ],
+    "science": [
+      "https://www.sciencedaily.com/rss/all.xml",
+      "https://phys.org/rss-feed/",
+      "https://www.nature.com/nature.rss"
+    ],
+    "health": [
+      "https://rssfeeds.webmd.com/rss/rss.aspx?RSSSource=RSS_PUBLIC",
+      "https://www.medicalnewstoday.com/rss/news.xml"
+    ],
+    "entertainment": [
+      "https://variety.com/feed/",
+      "https://www.hollywoodreporter.com/feed",
+      "https://deadline.com/feed/"
+    ],
+    "sports": [
+      "https://www.espn.com/espn/rss/news",
+      "https://sports.yahoo.com/rss/",
+      "https://www.si.com/rss/si_topstories.rss"
+    ]
+  },
+  "article_generation": {
+    "batch_size": 10,
+    "generation_interval": 1800,
+    "max_articles_per_category": 50,
+    "importance_thresholds": {
+      "breaking": 80,
+      "featured": 60,
+      "standard": 30
+    },
+    "content_length": {
+      "min_words": 400,
+      "max_words": 1200,
+      "target_words": 800
+    }
+  },
+  "authors": {
+    "personalities": [
+      {
+        "id": "sarah_chen",
+        "specialties": ["technology", "ai", "startups"],
+        "writing_traits": ["analytical", "forward-thinking", "detailed"]
+      },
+      {
+        "id": "marcus_johnson",
+        "specialties": ["politics", "policy", "elections"],
+        "writing_traits": ["investigative", "balanced", "insider perspective"]
+      },
+      {
+        "id": "elena_rodriguez",
+        "specialties": ["international", "conflict", "diplomacy"],
+        "writing_traits": ["on-ground reporting", "cultural context", "human stories"]
+      },
+      {
+        "id": "david_thompson",
+        "specialties": ["business", "markets", "economics"],
+        "writing_traits": ["data-driven", "strategic analysis", "trend spotting"]
+      },
+      {
+        "id": "priya_patel",
+        "specialties": ["science", "health", "research"],
+        "writing_traits": ["explanatory", "accessible", "evidence-based"]
+      },
+      {
+        "id": "james_wright",
+        "specialties": ["climate", "environment", "sustainability"],
+        "writing_traits": ["urgent", "solution-focused", "investigative"]
+      },
+      {
+        "id": "sophia_kim",
+        "specialties": ["entertainment", "media", "culture"],
+        "writing_traits": ["insider knowledge", "trend analysis", "critical eye"]
+      },
+      {
+        "id": "michael_davis",
+        "specialties": ["sports", "athletics", "competition"],
+        "writing_traits": ["passionate", "statistical", "behind-the-scenes"]
+      }
+    ]
+  },
+  "image_generation": {
+    "placeholder_sizes": {
+      "hero": [1200, 630],
+      "thumbnail": [400, 300],
+      "square": [600, 600]
+    },
+    "colors_by_category": {
+      "politics": "#DC2626",
+      "technology": "#3B82F6",
+      "business": "#10B981",
+      "world": "#8B5CF6",
+      "science": "#F59E0B",
+      "health": "#EC4899",
+      "environment": "#22C55E",
+      "entertainment": "#FB923C",
+      "sports": "#FBD343"
+    }
+  },
+  "routing": {
+    "article_url_pattern": "/article/{article_id}",
+    "author_url_pattern": "/author/{author_id}",
+    "category_url_pattern": "/category/{category}",
+    "api_endpoints": {
+      "latest": "/api/articles/latest",
+      "article": "/api/article/{id}",
+      "category": "/api/category/{name}",
+      "search": "/api/search"
+    }
+  }
+}
