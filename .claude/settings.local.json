@@ -42,7 +42,8 @@
       "Bash(cp:*)",
       "Bash(\"/Volumes/Logan T7 Touch/static.news/notify.sh\" \"HF Space deployed! Building now at https://huggingface.co/spaces/alledged/static-news-backend\")",
       "Bash(\"/Volumes/Logan T7 Touch/static.news/notify.sh\" \"Major progress! HF Space deployed with Dia 1.6B TTS, SkyReels V2 video, MusicGen themes, and fake celebrity system. Check https://huggingface.co/spaces/alledged/static-news-backend for build status\")",
-      "WebFetch(domain:huggingface.co)"
+      "WebFetch(domain:huggingface.co)",
+      "Bash(\"/Volumes/Logan T7 Touch/static.news/notify.sh\" \"Updates complete! Test HF connection at: https://flickinny11.github.io/static-news/test-hf-connection.html - Professional news system added. 3D studio background active on homepage.\")"
     ],
     "deny": []
   }
