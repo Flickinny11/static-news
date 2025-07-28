@@ -598,6 +598,137 @@ async def trigger_anchor_breakdown(anchor: str):
             "error": "Failed to trigger breakdown"
         }
 
+@app.get("/social/trending")
+async def get_trending_topics():
+    """Get trending social media topics"""
+    try:
+        from core.social_media_integration import social_media_monitor
+        
+        trends = await social_media_monitor.get_trending_topics()
+        hashtags = social_media_monitor.get_trending_hashtags()
+        
+        return {
+            "trending_topics": [
+                {
+                    "topic": trend.topic,
+                    "platform": trend.platform,
+                    "volume": trend.volume,
+                    "sentiment": trend.sentiment
+                }
+                for trend in trends[:10]
+            ],
+            "trending_hashtags": hashtags[:8],
+            "last_updated": datetime.now().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"Social media trends error: {e}")
+        return {
+            "trending_topics": [],
+            "trending_hashtags": [],
+            "error": "Unable to fetch social media trends"
+        }
+
+@app.get("/analytics/dashboard")
+async def get_analytics_dashboard():
+    """Get comprehensive analytics dashboard data"""
+    try:
+        from core.analytics_dashboard import analytics_dashboard
+        
+        overview = await analytics_dashboard.get_dashboard_overview()
+        realtime = await analytics_dashboard.get_realtime_metrics()
+        
+        return {
+            "overview": overview,
+            "realtime": realtime,
+            "last_updated": datetime.now().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"Analytics dashboard error: {e}")
+        return {
+            "error": "Unable to fetch analytics data",
+            "overview": {},
+            "realtime": {}
+        }
+
+@app.get("/analytics/viewership")
+async def get_viewership_analytics(days: int = 7):
+    """Get detailed viewership analytics"""
+    try:
+        from core.analytics_dashboard import analytics_dashboard
+        
+        analytics = await analytics_dashboard.get_viewership_analytics(days)
+        
+        return analytics
+        
+    except Exception as e:
+        logger.error(f"Viewership analytics error: {e}")
+        return {
+            "error": "Unable to fetch viewership analytics",
+            "period_days": days
+        }
+
+@app.get("/analytics/content")
+async def get_content_analytics(category: str = None, days: int = 30):
+    """Get content performance analytics"""
+    try:
+        from core.analytics_dashboard import analytics_dashboard
+        
+        analytics = await analytics_dashboard.get_content_analytics(category, days)
+        
+        return analytics
+        
+    except Exception as e:
+        logger.error(f"Content analytics error: {e}")
+        return {
+            "error": "Unable to fetch content analytics",
+            "category_filter": category
+        }
+
+@app.get("/analytics/anchors")
+async def get_anchor_analytics(anchor: str = None):
+    """Get anchor performance analytics"""
+    try:
+        from core.analytics_dashboard import analytics_dashboard
+        
+        analytics = await analytics_dashboard.get_anchor_analytics(anchor)
+        
+        return analytics
+        
+    except Exception as e:
+        logger.error(f"Anchor analytics error: {e}")
+        return {
+            "error": "Unable to fetch anchor analytics",
+            "anchor_filter": anchor
+        }
+
+@app.post("/analytics/record/viewership")
+async def record_viewership_data(
+    concurrent_viewers: int,
+    platform_breakdown: Dict = None,
+    geographic_breakdown: Dict = None
+):
+    """Record viewership metrics"""
+    try:
+        from core.analytics_dashboard import analytics_dashboard
+        
+        await analytics_dashboard.record_viewership(
+            concurrent_viewers, platform_breakdown, geographic_breakdown
+        )
+        
+        return {
+            "success": True,
+            "message": "Viewership data recorded"
+        }
+        
+    except Exception as e:
+        logger.error(f"Record viewership error: {e}")
+        return {
+            "success": False,
+            "error": "Failed to record viewership data"
+        }
+
 # WebSocket for real-time updates
 from fastapi import WebSocket, WebSocketDisconnect
 
