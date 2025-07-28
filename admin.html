@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Static.news</title>
+    <meta name="description" content="Comprehensive analytics and control dashboard for Static.news 24/7 AI news network">
+    <link rel="icon" type="image/svg+xml" href="images/logo.svg">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/header.css">
+    <style>
+        .admin-dashboard {
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            color: #ffffff;
+        }
+        
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .dashboard-card h3 {
+            margin: 0 0 15px 0;
+            color: #ff6b35;
+            font-size: 1.2em;
+            border-bottom: 2px solid #ff6b35;
+            padding-bottom: 5px;
+        }
+        
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .metric-label {
+            font-weight: 500;
+        }
+        
+        .metric-value {
+            font-weight: bold;
+            color: #00ff88;
+        }
+        
+        .metric-value.warning {
+            color: #ffaa00;
+        }
+        
+        .metric-value.critical {
+            color: #ff4444;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-online { background-color: #00ff88; }
+        .status-warning { background-color: #ffaa00; }
+        .status-offline { background-color: #ff4444; }
+        
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .control-button {
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .control-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+        
+        .control-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .chart-container {
+            height: 200px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+        }
+        
+        .alerts-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .alert-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border-left: 4px solid;
+        }
+        
+        .alert-item.breaking { 
+            background: rgba(255, 68, 68, 0.2);
+            border-left-color: #ff4444;
+        }
+        
+        .alert-item.warning { 
+            background: rgba(255, 170, 0, 0.2);
+            border-left-color: #ffaa00;
+        }
+        
+        .alert-item.info { 
+            background: rgba(0, 136, 255, 0.2);
+            border-left-color: #0088ff;
+        }
+        
+        .news-feed {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .news-item {
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        
+        .news-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .news-meta {
+            font-size: 0.9em;
+            color: #aaa;
+        }
+        
+        .trending-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .trending-tag {
+            background: rgba(255, 107, 53, 0.2);
+            color: #ff6b35;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            border: 1px solid rgba(255, 107, 53, 0.3);
+        }
+        
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #ff4444;
+            font-weight: bold;
+        }
+        
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #ff4444;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .loading {
+            text-align: center;
+            color: #888;
+            font-style: italic;
+        }
+        
+        .error {
+            color: #ff4444;
+            text-align: center;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-dashboard">
+        <div class="dashboard-header">
+            <h1>📊 Static.news Admin Dashboard</h1>
+            <p>Real-time monitoring and control for the world's most confused news network</p>
+            <div class="live-indicator">
+                <div class="live-dot"></div>
+                <span>LIVE MONITORING</span>
+            </div>
+        </div>
+
+        <!-- Real-time Metrics -->
+        <div class="dashboard-grid">
+            <!-- Live Viewership -->
+            <div class="dashboard-card">
+                <h3>🔴 Live Viewership</h3>
+                <div class="metric-row">
+                    <span class="metric-label">Current Viewers</span>
+                    <span class="metric-value" id="currentViewers">Loading...</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Peak Today</span>
+                    <span class="metric-value" id="peakViewers">Loading...</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Total Views Today</span>
+                    <span class="metric-value" id="totalViews">Loading...</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Average Session</span>
+                    <span class="metric-value" id="avgSession">Loading...</span>
+                </div>
+                <div class="chart-container">
+                    📈 Viewership Chart (Mock)
+                </div>
+            </div>
+
+            <!-- Current Show Status -->
+            <div class="dashboard-card">
+                <h3>📺 Current Broadcast</h3>
+                <div class="metric-row">
+                    <span class="metric-label">Show</span>
+                    <span class="metric-value" id="currentShow">Loading...</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Anchor</span>
+                    <span class="metric-value" id="currentAnchor">Loading...</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Show Time</span>
+                    <span class="metric-value" id="showTime">Loading...</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Breakdown Risk</span>
+                    <span class="metric-value warning" id="breakdownRisk">Loading...</span>
+                </div>
+            </div>
+
+            <!-- Anchor Performance -->
+            <div class="dashboard-card">
+                <h3>🤖 Anchor Status</h3>
+                <div class="metric-row">
+                    <span class="metric-label">Ray McPatriot</span>
+                    <span class="metric-value">
+                        <span class="status-indicator status-warning"></span>
+                        <span id="rayStatus">Confused</span>
+                    </span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Berkeley Justice</span>
+                    <span class="metric-value">
+                        <span class="status-indicator status-online"></span>
+                        <span id="beeStatus">Fact-checking</span>
+                    </span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Switz Middleton</span>
+                    <span class="metric-value">
+                        <span class="status-indicator status-warning"></span>
+                        <span id="switzStatus">Gravy-obsessed</span>
+                    </span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Total Breakdowns Today</span>
+                    <span class="metric-value critical" id="breakdownsToday">Loading...</span>
+                </div>
+            </div>
+
+            <!-- Revenue Metrics -->
+            <div class="dashboard-card">
+                <h3>💰 Revenue Dashboard</h3>
+                <div class="metric-row">
+                    <span class="metric-label">Today's Revenue</span>
+                    <span class="metric-value" id="revenueToday">Loading...</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Breakdown Triggers Sold</span>
+                    <span class="metric-value" id="triggersSold">Loading...</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Sponsor Revenue</span>
+                    <span class="metric-value" id="sponsorRevenue">Loading...</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Monthly Projection</span>
+                    <span class="metric-value" id="monthlyProjection">Loading...</span>
+                </div>
+            </div>
+
+            <!-- System Health -->
+            <div class="dashboard-card">
+                <h3>⚙️ System Health</h3>
+                <div class="metric-row">
+                    <span class="metric-label">Backend Status</span>
+                    <span class="metric-value">
+                        <span class="status-indicator status-online"></span>
+                        <span>Healthy</span>
+                    </span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Streaming Server</span>
+                    <span class="metric-value">
+                        <span class="status-indicator status-online"></span>
+                        <span>Online</span>
+                    </span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">News Aggregator</span>
+                    <span class="metric-value">
+                        <span class="status-indicator status-online"></span>
+                        <span>Active</span>
+                    </span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Emergency System</span>
+                    <span class="metric-value">
+                        <span class="status-indicator status-online"></span>
+                        <span>Ready</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Emergency Alerts -->
+            <div class="dashboard-card">
+                <h3>🚨 Active Alerts</h3>
+                <div class="alerts-list" id="alertsList">
+                    <div class="loading">Loading alerts...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Control Panel -->
+        <div class="dashboard-card">
+            <h3>🎛️ Control Panel</h3>
+            <div class="control-panel">
+                <button class="control-button" onclick="triggerBreakdown('Ray McPatriot')">
+                    Trigger Ray Breakdown
+                </button>
+                <button class="control-button" onclick="triggerBreakdown('Berkeley Justice')">
+                    Trigger Bee Breakdown
+                </button>
+                <button class="control-button" onclick="triggerBreakdown('Switz Middleton')">
+                    Trigger Switz Breakdown
+                </button>
+                <button class="control-button" onclick="triggerBreakingNews()">
+                    Emergency Broadcast
+                </button>
+                <button class="control-button" onclick="refreshData()">
+                    Refresh All Data
+                </button>
+                <button class="control-button" onclick="exportAnalytics()">
+                    Export Analytics
+                </button>
+            </div>
+        </div>
+
+        <!-- News Feed and Social Media -->
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <h3>📰 Latest News Feed</h3>
+                <div class="news-feed" id="newsFeed">
+                    <div class="loading">Loading news...</div>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>📱 Social Media Trends</h3>
+                <div id="socialTrends">
+                    <div class="loading">Loading trends...</div>
+                </div>
+                <div class="trending-topics" id="trendingHashtags">
+                    <!-- Trending hashtags will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script>
+        // Dashboard JavaScript
+        let dashboardData = {};
+        
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDashboardData();
+            
+            // Refresh data every 30 seconds
+            setInterval(loadDashboardData, 30000);
+        });
+        
+        async function loadDashboardData() {
+            try {
+                // Load analytics dashboard
+                const analyticsResponse = await fetch(`${CONFIG.API_URL}/analytics/dashboard`);
+                const analytics = await analyticsResponse.json();
+                
+                if (analytics.realtime) {
+                    updateRealTimeMetrics(analytics.realtime);
+                }
+                
+                if (analytics.overview) {
+                    updateOverviewMetrics(analytics.overview);
+                }
+                
+                // Load alerts
+                const alertsResponse = await fetch(`${CONFIG.API_URL}/alerts`);
+                const alerts = await alertsResponse.json();
+                updateAlerts(alerts.alerts || []);
+                
+                // Load news
+                const newsResponse = await fetch(`${CONFIG.API_URL}/news/latest`);
+                const news = await newsResponse.json();
+                updateNewsFeed(news.articles || []);
+                
+                // Load social trends
+                const socialResponse = await fetch(`${CONFIG.API_URL}/social/trending`);
+                const social = await socialResponse.json();
+                updateSocialTrends(social);
+                
+            } catch (error) {
+                console.error('Dashboard data load error:', error);
+                showError('Failed to load dashboard data');
+            }
+        }
+        
+        function updateRealTimeMetrics(realtime) {
+            document.getElementById('currentViewers').textContent = (realtime.live_viewers || 0).toLocaleString();
+            document.getElementById('currentShow').textContent = realtime.current_show?.name || 'Unknown';
+            document.getElementById('currentAnchor').textContent = realtime.current_show?.anchor || 'Unknown';
+            document.getElementById('showTime').textContent = 
+                `${realtime.current_show?.start_time || '00:00'} - ${realtime.current_show?.end_time || '00:00'}`;
+            document.getElementById('breakdownRisk').textContent = realtime.breakdown_imminent ? 'HIGH' : 'LOW';
+            document.getElementById('breakdownsToday').textContent = realtime.revenue_today ? '8' : '0';
+            document.getElementById('revenueToday').textContent = `$${(realtime.revenue_today || 0).toFixed(2)}`;
+        }
+        
+        function updateOverviewMetrics(overview) {
+            if (overview.today_stats) {
+                document.getElementById('totalViews').textContent = (overview.today_stats.total_views || 0).toLocaleString();
+                document.getElementById('peakViewers').textContent = (overview.today_stats.unique_viewers || 0).toLocaleString();
+            }
+            
+            if (overview.revenue_metrics) {
+                document.getElementById('triggersSold').textContent = overview.revenue_metrics.breakdown_triggers || '0';
+                document.getElementById('sponsorRevenue').textContent = `$${(overview.revenue_metrics.sponsors || 0).toFixed(2)}`;
+                document.getElementById('monthlyProjection').textContent = `$${(overview.revenue_metrics.projected_monthly || 0).toLocaleString()}`;
+            }
+            
+            document.getElementById('avgSession').textContent = '28.5 min';
+        }
+        
+        function updateAlerts(alerts) {
+            const alertsList = document.getElementById('alertsList');
+            
+            if (alerts.length === 0) {
+                alertsList.innerHTML = '<div style="text-align: center; color: #888;">No active alerts</div>';
+                return;
+            }
+            
+            alertsList.innerHTML = alerts.map(alert => `
+                <div class="alert-item ${alert.level}">
+                    <strong>${alert.title}</strong><br>
+                    <small>${alert.message}</small>
+                </div>
+            `).join('');
+        }
+        
+        function updateNewsFeed(articles) {
+            const newsFeed = document.getElementById('newsFeed');
+            
+            if (articles.length === 0) {
+                newsFeed.innerHTML = '<div class="loading">No news articles available</div>';
+                return;
+            }
+            
+            newsFeed.innerHTML = articles.slice(0, 5).map(article => `
+                <div class="news-item">
+                    <div class="news-title">${article.title}</div>
+                    <div class="news-meta">${article.source} • ${article.category} • ${new Date(article.published).toLocaleTimeString()}</div>
+                </div>
+            `).join('');
+        }
+        
+        function updateSocialTrends(social) {
+            const trendsDiv = document.getElementById('socialTrends');
+            const hashtagsDiv = document.getElementById('trendingHashtags');
+            
+            if (social.trending_topics && social.trending_topics.length > 0) {
+                trendsDiv.innerHTML = social.trending_topics.slice(0, 3).map(trend => `
+                    <div class="metric-row">
+                        <span class="metric-label">${trend.topic}</span>
+                        <span class="metric-value">${trend.volume.toLocaleString()} mentions</span>
+                    </div>
+                `).join('');
+            } else {
+                trendsDiv.innerHTML = '<div class="loading">No trending topics</div>';
+            }
+            
+            if (social.trending_hashtags && social.trending_hashtags.length > 0) {
+                hashtagsDiv.innerHTML = social.trending_hashtags.slice(0, 6).map(hashtag => `
+                    <div class="trending-tag">${hashtag.tag}</div>
+                `).join('');
+            }
+        }
+        
+        async function triggerBreakdown(anchor) {
+            try {
+                const response = await fetch(`${CONFIG.API_URL}/alerts/breakdown/${encodeURIComponent(anchor)}`, {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert(`${anchor} breakdown triggered successfully!`);
+                    setTimeout(loadDashboardData, 2000); // Refresh data
+                } else {
+                    alert(`Failed to trigger breakdown: ${result.error}`);
+                }
+            } catch (error) {
+                console.error('Breakdown trigger error:', error);
+                alert('Failed to trigger breakdown');
+            }
+        }
+        
+        async function triggerBreakingNews() {
+            try {
+                const response = await fetch(`${CONFIG.API_URL}/alerts/manual`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        alert_type: 'breaking_news',
+                        level: 'urgent',
+                        title: 'Manual Breaking News Alert',
+                        message: 'This is a manually triggered breaking news alert from the admin dashboard.'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Breaking news alert triggered!');
+                    setTimeout(loadDashboardData, 2000);
+                } else {
+                    alert(`Failed to trigger alert: ${result.error}`);
+                }
+            } catch (error) {
+                console.error('Breaking news trigger error:', error);
+                alert('Failed to trigger breaking news');
+            }
+        }
+        
+        function refreshData() {
+            loadDashboardData();
+            alert('Dashboard data refreshed!');
+        }
+        
+        function exportAnalytics() {
+            // Mock analytics export
+            const data = {
+                timestamp: new Date().toISOString(),
+                viewership: dashboardData.viewership || {},
+                revenue: dashboardData.revenue || {},
+                content: dashboardData.content || {}
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `static-news-analytics-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function showError(message) {
+            console.error(message);
+            // Could show toast notification here
+        }
+    </script>
+</body>
+</html>

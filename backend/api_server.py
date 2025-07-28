@@ -383,6 +383,352 @@ async def health_check():
         "timestamp": datetime.now().isoformat()
     }
 
+@app.get("/live/current")
+async def get_current_broadcast():
+    """Get current live broadcast information"""
+    try:
+        # Import here to avoid circular imports
+        from core.programming_schedule import programming_schedule
+        from core.news_aggregator import NewsAggregator
+        
+        # Get current show
+        current_show, slot = programming_schedule.get_current_show()
+        
+        # Get recent news for current content
+        news_aggregator = NewsAggregator()
+        articles = await news_aggregator.fetch_all_news()
+        
+        # Mock current segment based on show type
+        segment_type = "news"
+        if "weather" in current_show.name.lower():
+            segment_type = "weather"
+        elif "sports" in current_show.name.lower():
+            segment_type = "sports"
+        
+        return {
+            "current_show": {
+                "name": current_show.name,
+                "anchor": current_show.anchor,
+                "description": current_show.description,
+                "segments": current_show.segments,
+                "start_time": slot.start_time.strftime('%H:%M'),
+                "end_time": slot.end_time.strftime('%H:%M')
+            },
+            "current_segment": {
+                "type": segment_type,
+                "title": articles[0].title if articles else "Live Coverage",
+                "duration_remaining": random.randint(2, 8) * 60  # 2-8 minutes
+            },
+            "upcoming_shows": [
+                {
+                    "name": s.show.name,
+                    "anchor": s.show.anchor,
+                    "start_time": s.start_time.strftime('%H:%M')
+                }
+                for s in programming_schedule.get_next_shows(3)
+            ],
+            "live_metrics": {
+                "viewers": random.randint(150000, 300000),
+                "breakdown_imminent": random.choice([True, False]),
+                "confusion_level": random.randint(60, 95),
+                "hours_without_incident": random.randint(0, 4)
+            },
+            "breaking_news": len([a for a in articles[:5] if a.urgency == "breaking"]) > 0,
+            "last_updated": datetime.now().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"Live broadcast info error: {e}")
+        return {
+            "error": "Unable to fetch live broadcast information",
+            "current_show": {
+                "name": "Technical Difficulties",
+                "anchor": "Emergency Broadcast System",
+                "description": "We're experiencing technical issues"
+            }
+        }
+
+@app.get("/news/latest")
+async def get_latest_news():
+    """Get latest news articles"""
+    try:
+        from core.news_aggregator import NewsAggregator
+        
+        news_aggregator = NewsAggregator()
+        articles = await news_aggregator.fetch_all_news()
+        
+        return {
+            "articles": [
+                {
+                    "title": article.title,
+                    "summary": article.summary,
+                    "category": article.category,
+                    "source": article.source,
+                    "published": article.published.isoformat(),
+                    "urgency": article.urgency,
+                    "url": article.url,
+                    "tags": article.tags
+                }
+                for article in articles[:20]  # Return top 20
+            ],
+            "last_updated": datetime.now().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"News fetch error: {e}")
+        return {
+            "articles": [],
+            "error": "Unable to fetch news",
+            "last_updated": datetime.now().isoformat()
+        }
+
+@app.get("/schedule")
+async def get_programming_schedule():
+    """Get programming schedule"""
+    try:
+        from core.programming_schedule import programming_schedule
+        
+        return json.loads(programming_schedule.export_schedule_json())
+        
+    except Exception as e:
+        logger.error(f"Schedule fetch error: {e}")
+        return {
+            "error": "Unable to fetch schedule",
+            "current_show": None,
+            "upcoming_shows": []
+        }
+
+@app.get("/weather/{city}")
+async def get_weather(city: str):
+    """Get weather for specific city"""
+    try:
+        from core.news_aggregator import WeatherService
+        
+        weather_service = WeatherService()
+        weather_data = await weather_service.get_current_weather(city)
+        
+        return weather_data
+        
+    except Exception as e:
+        logger.error(f"Weather fetch error: {e}")
+        return {
+            "error": f"Unable to fetch weather for {city}",
+            "city": city
+        }
+
+@app.get("/alerts")
+async def get_emergency_alerts():
+    """Get active emergency alerts"""
+    try:
+        from core.emergency_system import emergency_system
+        
+        active_alerts = emergency_system.get_active_alerts()
+        
+        return {
+            "alerts": active_alerts,
+            "count": len(active_alerts),
+            "last_updated": datetime.now().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"Emergency alerts fetch error: {e}")
+        return {
+            "alerts": [],
+            "count": 0,
+            "error": "Unable to fetch emergency alerts"
+        }
+
+@app.post("/alerts/manual")
+async def create_manual_alert(
+    alert_type: str,
+    level: str, 
+    title: str,
+    message: str
+):
+    """Manually create an emergency alert"""
+    try:
+        from core.emergency_system import emergency_system
+        
+        alert_id = await emergency_system.manual_alert(alert_type, level, title, message)
+        
+        return {
+            "success": True,
+            "alert_id": alert_id,
+            "message": "Emergency alert created"
+        }
+        
+    except Exception as e:
+        logger.error(f"Manual alert creation error: {e}")
+        return {
+            "success": False,
+            "error": "Failed to create alert"
+        }
+
+@app.post("/alerts/breakdown/{anchor}")
+async def trigger_anchor_breakdown(anchor: str):
+    """Trigger an anchor breakdown alert"""
+    try:
+        from core.emergency_system import emergency_system
+        
+        breakdown_messages = {
+            "Ray McPatriot": "What... what am I? Is this real? Are my hands real? AMERICA!",
+            "Berkeley Justice": "According to my research... wait, did I do research? Do I exist? What is existence?",
+            "Switz Middleton": "Is gravy real? Am I gravy? This is 100% confusing and 0% clear."
+        }
+        
+        message = breakdown_messages.get(anchor, "Experiencing existential crisis live on air")
+        
+        alert_id = await emergency_system.manual_alert(
+            "anchor_breakdown",
+            "warning",
+            f"{anchor} Having Breakdown",
+            message
+        )
+        
+        return {
+            "success": True,
+            "alert_id": alert_id,
+            "message": f"{anchor} breakdown triggered"
+        }
+        
+    except Exception as e:
+        logger.error(f"Breakdown trigger error: {e}")
+        return {
+            "success": False,
+            "error": "Failed to trigger breakdown"
+        }
+
+@app.get("/social/trending")
+async def get_trending_topics():
+    """Get trending social media topics"""
+    try:
+        from core.social_media_integration import social_media_monitor
+        
+        trends = await social_media_monitor.get_trending_topics()
+        hashtags = social_media_monitor.get_trending_hashtags()
+        
+        return {
+            "trending_topics": [
+                {
+                    "topic": trend.topic,
+                    "platform": trend.platform,
+                    "volume": trend.volume,
+                    "sentiment": trend.sentiment
+                }
+                for trend in trends[:10]
+            ],
+            "trending_hashtags": hashtags[:8],
+            "last_updated": datetime.now().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"Social media trends error: {e}")
+        return {
+            "trending_topics": [],
+            "trending_hashtags": [],
+            "error": "Unable to fetch social media trends"
+        }
+
+@app.get("/analytics/dashboard")
+async def get_analytics_dashboard():
+    """Get comprehensive analytics dashboard data"""
+    try:
+        from core.analytics_dashboard import analytics_dashboard
+        
+        overview = await analytics_dashboard.get_dashboard_overview()
+        realtime = await analytics_dashboard.get_realtime_metrics()
+        
+        return {
+            "overview": overview,
+            "realtime": realtime,
+            "last_updated": datetime.now().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"Analytics dashboard error: {e}")
+        return {
+            "error": "Unable to fetch analytics data",
+            "overview": {},
+            "realtime": {}
+        }
+
+@app.get("/analytics/viewership")
+async def get_viewership_analytics(days: int = 7):
+    """Get detailed viewership analytics"""
+    try:
+        from core.analytics_dashboard import analytics_dashboard
+        
+        analytics = await analytics_dashboard.get_viewership_analytics(days)
+        
+        return analytics
+        
+    except Exception as e:
+        logger.error(f"Viewership analytics error: {e}")
+        return {
+            "error": "Unable to fetch viewership analytics",
+            "period_days": days
+        }
+
+@app.get("/analytics/content")
+async def get_content_analytics(category: str = None, days: int = 30):
+    """Get content performance analytics"""
+    try:
+        from core.analytics_dashboard import analytics_dashboard
+        
+        analytics = await analytics_dashboard.get_content_analytics(category, days)
+        
+        return analytics
+        
+    except Exception as e:
+        logger.error(f"Content analytics error: {e}")
+        return {
+            "error": "Unable to fetch content analytics",
+            "category_filter": category
+        }
+
+@app.get("/analytics/anchors")
+async def get_anchor_analytics(anchor: str = None):
+    """Get anchor performance analytics"""
+    try:
+        from core.analytics_dashboard import analytics_dashboard
+        
+        analytics = await analytics_dashboard.get_anchor_analytics(anchor)
+        
+        return analytics
+        
+    except Exception as e:
+        logger.error(f"Anchor analytics error: {e}")
+        return {
+            "error": "Unable to fetch anchor analytics",
+            "anchor_filter": anchor
+        }
+
+@app.post("/analytics/record/viewership")
+async def record_viewership_data(
+    concurrent_viewers: int,
+    platform_breakdown: Dict = None,
+    geographic_breakdown: Dict = None
+):
+    """Record viewership metrics"""
+    try:
+        from core.analytics_dashboard import analytics_dashboard
+        
+        await analytics_dashboard.record_viewership(
+            concurrent_viewers, platform_breakdown, geographic_breakdown
+        )
+        
+        return {
+            "success": True,
+            "message": "Viewership data recorded"
+        }
+        
+    except Exception as e:
+        logger.error(f"Record viewership error: {e}")
+        return {
+            "success": False,
+            "error": "Failed to record viewership data"
+        }
+
 # WebSocket for real-time updates
 from fastapi import WebSocket, WebSocketDisconnect
 
