@@ -1,14 +1,24 @@
-// Static.news Main JavaScript - Production Ready
+// Static.news Main JavaScript - Enhanced with Real Data Integration
 
 // Initialize on DOM load
 document.addEventListener('DOMContentLoaded', function() {
     initializeDateTime();
     initializeBreakingNews();
-    initializeMetrics();
+    initializeLiveData();
     initializeIncidents();
     setupEventListeners();
     startLiveUpdates();
 });
+
+// Global data store
+let liveData = {
+    currentShow: null,
+    currentSegment: null,
+    recentNews: [],
+    weatherData: null,
+    sportsData: [],
+    metrics: {}
+};
 
 // Date and Time Updates
 function initializeDateTime() {
@@ -28,34 +38,211 @@ function initializeDateTime() {
     setInterval(updateDateTime, 1000);
 }
 
-// Breaking News Rotation
+// Enhanced Breaking News with Real Data
 function initializeBreakingNews() {
-    const breakingNews = [
-        "Ray McPatriot experiencing severe existential crisis LIVE ON AIR",
-        "Berkeley Justice fact-checks own existence, finds insufficient evidence",
-        "Switz Middleton says 'gravy' 147 times in single sentence",
-        "URGENT: All three anchors simultaneously question reality",
-        "Ray discovers hands might not be real during weather segment",
-        "Bee crying about privilege she can't define or remember having",
-        "Switz achieves new record: 89% gravy-to-word ratio"
-    ];
-    
-    let currentIndex = 0;
     const breakingText = document.getElementById('breakingText');
     
-    function rotateBreaking() {
-        breakingText.style.opacity = '0';
-        setTimeout(() => {
-            currentIndex = (currentIndex + 1) % breakingNews.length;
-            breakingText.textContent = breakingNews[currentIndex];
-            breakingText.style.opacity = '1';
-        }, 500);
+    async function updateBreakingNews() {
+        try {
+            const response = await fetch(`${CONFIG.API_URL}/news/latest`);
+            const data = await response.json();
+            
+            if (data.articles && data.articles.length > 0) {
+                // Filter for breaking news
+                const breakingNews = data.articles.filter(article => article.urgency === 'breaking');
+                
+                if (breakingNews.length > 0) {
+                    const randomBreaking = breakingNews[Math.floor(Math.random() * breakingNews.length)];
+                    breakingText.style.opacity = '0';
+                    setTimeout(() => {
+                        breakingText.textContent = `BREAKING: ${randomBreaking.title}`;
+                        breakingText.style.opacity = '1';
+                    }, 500);
+                } else {
+                    // Fallback to regular news as "breaking"
+                    const topStory = data.articles[0];
+                    breakingText.style.opacity = '0';
+                    setTimeout(() => {
+                        breakingText.textContent = `LIVE COVERAGE: ${topStory.title}`;
+                        breakingText.style.opacity = '1';
+                    }, 500);
+                }
+            }
+        } catch (error) {
+            console.error('Breaking news update failed:', error);
+            // Fallback to static breaking news
+            fallbackBreakingNews();
+        }
     }
     
-    setInterval(rotateBreaking, 8000);
+    function fallbackBreakingNews() {
+        const breakingNews = [
+            "Ray McPatriot experiencing severe existential crisis LIVE ON AIR",
+            "Berkeley Justice fact-checks own existence, finds insufficient evidence", 
+            "Switz Middleton says 'gravy' 147 times in single sentence",
+            "URGENT: All three anchors simultaneously question reality"
+        ];
+        
+        const randomNews = breakingNews[Math.floor(Math.random() * breakingNews.length)];
+        breakingText.textContent = randomNews;
+    }
+    
+    // Update breaking news every 30 seconds
+    updateBreakingNews();
+    setInterval(updateBreakingNews, 30000);
 }
 
-// Live Metrics Updates
+// Initialize Live Data Integration
+async function initializeLiveData() {
+    try {
+        // Fetch current broadcast info
+        const broadcastResponse = await fetch(`${CONFIG.API_URL}/live/current`);
+        const broadcastData = await broadcastResponse.json();
+        
+        if (broadcastData.current_show) {
+            liveData.currentShow = broadcastData.current_show;
+            liveData.currentSegment = broadcastData.current_segment;
+            
+            // Update UI with current show
+            updateCurrentShowDisplay(broadcastData);
+        }
+        
+        // Fetch latest news
+        const newsResponse = await fetch(`${CONFIG.API_URL}/news/latest`);
+        const newsData = await newsResponse.json();
+        
+        if (newsData.articles) {
+            liveData.recentNews = newsData.articles;
+            updateNewsDisplay(newsData.articles);
+        }
+        
+    } catch (error) {
+        console.error('Live data initialization failed:', error);
+        // Fall back to mock data
+        initializeMockData();
+    }
+}
+
+function updateCurrentShowDisplay(broadcastData) {
+    // Update header show info
+    const showNameEl = document.querySelector('.show-name');
+    const anchorNameEl = document.getElementById('currentAnchor');
+    const segmentTitleEl = document.getElementById('segmentTitle');
+    
+    if (showNameEl && broadcastData.current_show) {
+        showNameEl.textContent = broadcastData.current_show.name;
+    }
+    
+    if (anchorNameEl && broadcastData.current_show) {
+        anchorNameEl.textContent = broadcastData.current_show.anchor;
+    }
+    
+    if (segmentTitleEl && broadcastData.current_segment) {
+        segmentTitleEl.textContent = broadcastData.current_segment.title || 'Live Coverage';
+    }
+    
+    // Update viewer count if available
+    const viewerCountEl = document.querySelector('.viewer-count');
+    if (viewerCountEl && broadcastData.live_metrics) {
+        viewerCountEl.textContent = `${(broadcastData.live_metrics.viewers / 1000).toFixed(0)}K watching`;
+    }
+    
+    // Update confusion level
+    const confusionLevelEl = document.getElementById('confusionLevel');
+    if (confusionLevelEl && broadcastData.live_metrics) {
+        confusionLevelEl.textContent = `${broadcastData.live_metrics.confusion_level}%`;
+    }
+}
+
+function updateNewsDisplay(articles) {
+    const storiesGrid = document.querySelector('.stories-grid');
+    if (!storiesGrid) return;
+    
+    // Clear existing stories except the first one (template)
+    const existingStories = storiesGrid.querySelectorAll('.story-card:not(:first-child)');
+    existingStories.forEach(story => story.remove());
+    
+    // Add new stories from real news
+    articles.slice(0, 3).forEach((article, index) => {
+        if (index === 0) {
+            // Update the featured story
+            const featuredStory = storiesGrid.querySelector('.story-card.featured');
+            if (featuredStory) {
+                updateStoryCard(featuredStory, article, true);
+            }
+        } else {
+            // Create new story cards
+            const storyCard = createStoryCard(article, false);
+            storiesGrid.appendChild(storyCard);
+        }
+    });
+}
+
+function updateStoryCard(cardElement, article, isFeatured = false) {
+    const titleEl = cardElement.querySelector('h3 a');
+    const summaryEl = cardElement.querySelector('p');
+    const authorEl = cardElement.querySelector('.author');
+    const timeEl = cardElement.querySelector('.time');
+    const categoryEl = cardElement.querySelector('.story-category');
+    
+    if (titleEl) titleEl.textContent = article.title;
+    if (summaryEl) summaryEl.textContent = article.summary;
+    if (authorEl) authorEl.textContent = article.source;
+    if (timeEl) {
+        const publishedTime = new Date(article.published);
+        const now = new Date();
+        const diffHours = Math.floor((now - publishedTime) / (1000 * 60 * 60));
+        timeEl.textContent = `${diffHours} hours ago`;
+    }
+    if (categoryEl) categoryEl.textContent = article.category.toUpperCase();
+    
+    // Update category styling
+    const banner = cardElement.querySelector('.story-banner');
+    if (banner) {
+        banner.className = `story-banner ${article.category}`;
+    }
+}
+
+function createStoryCard(article, isFeatured = false) {
+    const cardElement = document.createElement('article');
+    cardElement.className = isFeatured ? 'story-card featured' : 'story-card';
+    
+    const publishedTime = new Date(article.published);
+    const now = new Date();
+    const diffHours = Math.floor((now - publishedTime) / (1000 * 60 * 60));
+    
+    cardElement.innerHTML = `
+        <div class="story-banner ${article.category}">
+            <div class="story-icon">${getCategoryIcon(article.category)}</div>
+            <span class="story-category">${article.category.toUpperCase()}</span>
+        </div>
+        <div class="story-content">
+            <h3><a href="${article.url}" target="_blank">${article.title}</a></h3>
+            <p>${article.summary}</p>
+            <div class="story-meta">
+                <span class="author">${article.source}</span>
+                <span class="time">${diffHours} hours ago</span>
+            </div>
+        </div>
+    `;
+    
+    return cardElement;
+}
+
+function getCategoryIcon(category) {
+    const icons = {
+        'politics': '🏛️',
+        'business': '💼',
+        'technology': '💻',
+        'sports': '⚽',
+        'weather': '🌤️',
+        'international': '🌍',
+        'general': '📰'
+    };
+    return icons[category] || '📰';
+}
+
+// Enhanced Live Metrics with Real Data
 function initializeMetrics() {
     const metrics = {
         hoursAwake: 147,
@@ -65,8 +252,23 @@ function initializeMetrics() {
         confusionLevel: 87
     };
     
-    function updateMetrics() {
-        // Simulate metric changes
+    async function updateMetrics() {
+        try {
+            // Fetch real metrics if available
+            const response = await fetch(`${CONFIG.API_URL}/metrics`);
+            const data = await response.json();
+            
+            if (data && !data.error) {
+                // Update with real data
+                metrics.gravyCount = data.gravy_mentions || metrics.gravyCount;
+                metrics.swearJar = data.swear_jar_total || metrics.swearJar;
+                metrics.hoursAwake = data.hours_without_sleep || metrics.hoursAwake;
+            }
+        } catch (error) {
+            console.error('Metrics update failed:', error);
+        }
+        
+        // Simulate some changes for entertainment
         metrics.hoursAwake += Math.random() < 0.1 ? 1 : 0;
         metrics.gravyCount += Math.random() < 0.3 ? Math.floor(Math.random() * 3) : 0;
         metrics.swearJar += Math.random() < 0.2 ? Math.floor(Math.random() * 5) : 0;
@@ -76,15 +278,88 @@ function initializeMetrics() {
             metrics.confusionLevel + Math.random() * 3);
         
         // Update DOM
-        document.getElementById('hoursAwake').textContent = metrics.hoursAwake;
-        document.getElementById('gravyCount').textContent = metrics.gravyCount;
-        document.getElementById('swearJar').textContent = `$${metrics.swearJar}`;
-        document.getElementById('friendshipLevel').textContent = `${Math.floor(metrics.friendshipLevel)}%`;
-        document.getElementById('confusionLevel').textContent = `${Math.floor(metrics.confusionLevel)}%`;
+        updateMetricsDisplay(metrics);
+    }
+    
+    function updateMetricsDisplay(metrics) {
+        const elements = {
+            'hoursAwake': metrics.hoursAwake,
+            'gravyCount': metrics.gravyCount,
+            'swearJar': `$${metrics.swearJar}`,
+            'friendshipLevel': `${Math.floor(metrics.friendshipLevel)}%`,
+            'confusionLevel': `${Math.floor(metrics.confusionLevel)}%`
+        };
+        
+        Object.entries(elements).forEach(([id, value]) => {
+            const element = document.getElementById(id);
+            if (element) element.textContent = value;
+        });
     }
     
     updateMetrics();
     setInterval(updateMetrics, 5000);
+}
+
+// Weather Integration
+async function updateWeatherInfo() {
+    try {
+        const response = await fetch(`${CONFIG.API_URL}/weather/New York`);
+        const weatherData = await response.json();
+        
+        if (weatherData && !weatherData.error) {
+            liveData.weatherData = weatherData;
+            
+            // Update weather display if elements exist
+            const weatherElements = document.querySelectorAll('.weather-info');
+            weatherElements.forEach(el => {
+                el.innerHTML = `
+                    <span>${weatherData.city}: ${weatherData.temperature}°F</span>
+                    <span>${weatherData.description}</span>
+                `;
+            });
+        }
+    } catch (error) {
+        console.error('Weather update failed:', error);
+    }
+}
+
+// Enhanced Schedule Integration
+async function updateScheduleDisplay() {
+    try {
+        const response = await fetch(`${CONFIG.API_URL}/schedule`);
+        const scheduleData = await response.json();
+        
+        if (scheduleData && scheduleData.upcoming_shows) {
+            // Update upcoming shows display
+            const upcomingContainer = document.querySelector('.upcoming-shows');
+            if (upcomingContainer) {
+                upcomingContainer.innerHTML = scheduleData.upcoming_shows.slice(0, 3).map(show => `
+                    <div class="upcoming-show">
+                        <span class="show-time">${show.start_time}</span>
+                        <span class="show-name">${show.name}</span>
+                        <span class="show-anchor">${show.anchor}</span>
+                    </div>
+                `).join('');
+            }
+        }
+    } catch (error) {
+        console.error('Schedule update failed:', error);
+    }
+}
+
+// Initialize mock data fallback
+function initializeMockData() {
+    console.log('Falling back to mock data');
+    // Keep existing mock functionality as fallback
+    const mockMetrics = {
+        hoursAwake: 147,
+        gravyCount: 89,
+        swearJar: 234,
+        friendshipLevel: 12,
+        confusionLevel: 87
+    };
+    
+    updateMetricsDisplay(mockMetrics);
 }
 
 // Incident Updates
@@ -205,16 +480,37 @@ function startLiveUpdates() {
     // Update breakdown timer
     setInterval(updateBreakdownTimer, 1000);
     
-    // Rotate anchors
+    // Update weather info every 10 minutes
+    updateWeatherInfo();
+    setInterval(updateWeatherInfo, 600000);
+    
+    // Update schedule display every 5 minutes
+    updateScheduleDisplay();
+    setInterval(updateScheduleDisplay, 300000);
+    
+    // Refresh live data every 30 seconds
+    setInterval(initializeLiveData, 30000);
+    
+    // Rotate anchors based on actual schedule
     const anchors = ['Ray McPatriot', 'Berkeley Justice', 'Switz Middleton'];
     let currentAnchorIndex = 0;
     
-    setInterval(() => {
-        currentAnchorIndex = (currentAnchorIndex + 1) % anchors.length;
-        document.getElementById('currentAnchor').textContent = anchors[currentAnchorIndex];
-        
-        // Update segment title
-        updateSegmentTitle(anchors[currentAnchorIndex]);
+    setInterval(async () => {
+        try {
+            // Get current show info to determine actual anchor
+            const response = await fetch(`${CONFIG.API_URL}/live/current`);
+            const data = await response.json();
+            
+            if (data.current_show && data.current_show.anchor) {
+                document.getElementById('currentAnchor').textContent = data.current_show.anchor;
+                updateSegmentTitle(data.current_show.anchor);
+            }
+        } catch (error) {
+            // Fallback to rotating anchors
+            currentAnchorIndex = (currentAnchorIndex + 1) % anchors.length;
+            document.getElementById('currentAnchor').textContent = anchors[currentAnchorIndex];
+            updateSegmentTitle(anchors[currentAnchorIndex]);
+        }
     }, 300000); // Every 5 minutes
 }
 
