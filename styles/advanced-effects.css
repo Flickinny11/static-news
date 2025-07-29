@@ -1,0 +1,438 @@
+/* Static.news Advanced Visual Effects - Premium News Network */
+
+:root {
+    --primary-red: #CC0000;
+    --dark-red: #990000;
+    --light-red: #FF3333;
+    --neon-red: #FF0040;
+    --electric-blue: #00FFFF;
+    --gold: #FFD700;
+    --silver: #C0C0C0;
+}
+
+/* Glitch Effects for Breaking News */
+.glitch-text {
+    position: relative;
+    color: var(--white);
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch-text::before {
+    animation: glitch-1 0.5s infinite;
+    color: var(--electric-blue);
+    z-index: -1;
+}
+
+.glitch-text::after {
+    animation: glitch-2 0.5s infinite;
+    color: var(--neon-red);
+    z-index: -2;
+}
+
+@keyframes glitch-1 {
+    0%, 14%, 15%, 49%, 50%, 99%, 100% {
+        transform: translate(0);
+    }
+    15%, 49% {
+        transform: translate(-2px, 2px);
+    }
+}
+
+@keyframes glitch-2 {
+    0%, 20%, 21%, 62%, 63%, 99%, 100% {
+        transform: translate(0);
+    }
+    21%, 62% {
+        transform: translate(2px, -2px);
+    }
+}
+
+/* Dynamic Holographic Effect */
+.holographic {
+    background: linear-gradient(45deg, 
+        transparent 30%, 
+        rgba(255, 255, 255, 0.1) 50%, 
+        transparent 70%);
+    background-size: 200% 200%;
+    animation: hologram-scan 3s linear infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+.holographic::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(0, 255, 255, 0.4), 
+        transparent);
+    animation: hologram-sweep 2s linear infinite;
+}
+
+@keyframes hologram-scan {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
+}
+
+@keyframes hologram-sweep {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* 3D News Card Effect */
+.news-card-3d {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.news-card-3d:hover {
+    transform: rotateY(10deg) rotateX(5deg) translateZ(20px);
+}
+
+.news-card-3d .card-face {
+    backface-visibility: hidden;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.news-card-3d:hover .card-face {
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.2),
+        0 0 30px rgba(204, 0, 0, 0.3),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+/* Matrix Rain Effect for Background */
+.matrix-rain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.03;
+}
+
+.matrix-char {
+    position: absolute;
+    color: var(--neon-red);
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    animation: matrix-fall linear infinite;
+}
+
+@keyframes matrix-fall {
+    0% {
+        transform: translateY(-100vh);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+/* Neon Glow Text Effects */
+.neon-text {
+    color: var(--white);
+    text-shadow: 
+        0 0 5px var(--neon-red),
+        0 0 10px var(--neon-red),
+        0 0 15px var(--neon-red),
+        0 0 20px var(--neon-red);
+    animation: neon-flicker 2s infinite alternate;
+}
+
+@keyframes neon-flicker {
+    0%, 100% {
+        text-shadow: 
+            0 0 5px var(--neon-red),
+            0 0 10px var(--neon-red),
+            0 0 15px var(--neon-red),
+            0 0 20px var(--neon-red);
+    }
+    50% {
+        text-shadow: 
+            0 0 2px var(--neon-red),
+            0 0 5px var(--neon-red),
+            0 0 8px var(--neon-red),
+            0 0 12px var(--neon-red);
+    }
+}
+
+/* Particle System Background */
+.particle-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.particle {
+    position: absolute;
+    background: var(--primary-red);
+    border-radius: 50%;
+    opacity: 0.1;
+    animation: particle-float linear infinite;
+}
+
+@keyframes particle-float {
+    0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.1;
+    }
+    90% {
+        opacity: 0.1;
+    }
+    100% {
+        transform: translateY(-100vh) translateX(100px);
+        opacity: 0;
+    }
+}
+
+/* Cyberpunk UI Elements */
+.cyber-border {
+    position: relative;
+    border: 2px solid transparent;
+    background: linear-gradient(45deg, var(--dark-gray), var(--medium-gray)) padding-box,
+                linear-gradient(45deg, var(--neon-red), var(--electric-blue)) border-box;
+}
+
+.cyber-border::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, var(--neon-red), var(--electric-blue));
+    border-radius: inherit;
+    z-index: -1;
+    animation: cyber-pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes cyber-pulse {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Scanline Effect */
+.scanlines {
+    position: relative;
+    overflow: hidden;
+}
+
+.scanlines::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        transparent 50%,
+        rgba(0, 255, 0, 0.02) 50%
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+    animation: scanline-move 0.1s linear infinite;
+}
+
+@keyframes scanline-move {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(4px); }
+}
+
+/* Television Static Effect */
+.tv-static {
+    position: relative;
+    overflow: hidden;
+}
+
+.tv-static::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 1px 1px, white 1px, transparent 0);
+    background-size: 20px 20px;
+    opacity: 0.05;
+    animation: static-noise 0.1s infinite;
+}
+
+@keyframes static-noise {
+    0% { background-position: 0 0; }
+    100% { background-position: 20px 20px; }
+}
+
+/* Dynamic Wave Effect */
+.wave-bg {
+    position: relative;
+    overflow: hidden;
+}
+
+.wave-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(204, 0, 0, 0.1), 
+        transparent);
+    animation: wave-slide 3s ease-in-out infinite;
+}
+
+@keyframes wave-slide {
+    0% { transform: translateX(-100%); }
+    50% { transform: translateX(0%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Premium Glass Morphism */
+.glass-morph {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Advanced Parallax Effects */
+.parallax-container {
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    perspective: 1px;
+}
+
+.parallax-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform-origin: center center;
+}
+
+.parallax-back {
+    transform: translateZ(-1px) scale(2);
+}
+
+.parallax-mid {
+    transform: translateZ(-0.5px) scale(1.5);
+}
+
+.parallax-front {
+    transform: translateZ(0);
+}
+
+/* Morphing Buttons */
+.morph-btn {
+    position: relative;
+    border: none;
+    padding: 12px 24px;
+    background: linear-gradient(45deg, var(--primary-red), var(--dark-red));
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.morph-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+    transform: translate(-50%, -50%);
+}
+
+.morph-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(204, 0, 0, 0.4);
+}
+
+.morph-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* Responsive Optimizations */
+@media (max-width: 768px) {
+    .glitch-text::before,
+    .glitch-text::after {
+        display: none; /* Reduce complexity on mobile */
+    }
+    
+    .particle-bg,
+    .matrix-rain {
+        display: none; /* Disable resource-intensive effects on mobile */
+    }
+    
+    .news-card-3d:hover {
+        transform: translateY(-5px); /* Simplified hover on mobile */
+    }
+}
+
+/* High Performance Mode */
+@media (prefers-reduced-motion: reduce) {
+    .glitch-text::before,
+    .glitch-text::after,
+    .holographic::before,
+    .particle-bg,
+    .matrix-rain {
+        display: none;
+    }
+    
+    .neon-text {
+        animation: none;
+        text-shadow: 0 0 5px var(--neon-red);
+    }
+}
+
+/* Dark Mode Enhancements */
+@media (prefers-color-scheme: dark) {
+    .glass-morph {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .cyber-border {
+        background: linear-gradient(45deg, var(--black), var(--dark-gray)) padding-box,
+                    linear-gradient(45deg, var(--neon-red), var(--electric-blue)) border-box;
+    }
+}

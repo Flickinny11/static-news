@@ -3,6 +3,13 @@
 .env.local
 .env.*.local
 
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
 # Audio files
 audio/*.mp3
 audio/*.wav
@@ -53,3 +60,14 @@ current_pricing.json
 # Secret files (API keys, etc.)
 SECRET_*.txt
 SECRET_*.*
+
+# Build artifacts
+dist/
+build/
+*.tgz
+*.tar.gz
+
+# AI model cache
+models/
+.cache/
+.huggingface/

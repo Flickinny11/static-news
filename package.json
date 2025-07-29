@@ -1,0 +1,27 @@
+{
+  "name": "static-news",
+  "version": "1.0.0",
+  "description": "> News that never stops. AI that never sleeps.",
+  "main": "config.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babylonjs/core": "^8.19.0",
+    "@babylonjs/loaders": "^8.19.0",
+    "@babylonjs/materials": "^8.19.0",
+    "aos": "^2.3.4",
+    "babylonjs": "^8.19.0",
+    "gsap": "^3.13.0",
+    "intersection-observer": "^0.12.2",
+    "locomotive-scroll": "^4.1.4",
+    "lottie-web": "^5.13.0",
+    "three.js": "^0.77.1"
+  }
+}
