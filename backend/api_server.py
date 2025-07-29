@@ -1,29 +1,48 @@
 #!/usr/bin/env python3
 """
-Backend API Server for Static.news Mobile Apps
-Handles user comments, breakdown triggers, and payments
+Static.news Autonomous Backend API Server
+Handles AI video generation, news processing, payments, and autonomous operations
 """
 
 import os
 import json
 import asyncio
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 import logging
 import uuid
+import aiohttp
+import feedparser
+from PIL import Image, ImageDraw, ImageFont
+import numpy as np
+import cv2
+import base64
+import io
 
-from fastapi import FastAPI, HTTPException, Depends, Header
+from fastapi import FastAPI, HTTPException, Depends, Header, BackgroundTasks, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 import stripe
 import redis.asyncio as redis
 from functools import lru_cache
 import openai
 
+# AI/ML imports
+try:
+    import replicate
+    import requests
+    from transformers import pipeline
+    MODELS_AVAILABLE = True
+except ImportError:
+    MODELS_AVAILABLE = False
+    logger.warning("AI models not available - install requirements for full functionality")
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Pydantic models
+# Enhanced Pydantic models
 class Comment(BaseModel):
     text: str = Field(..., min_length=1, max_length=500)
     user_id: Optional[str] = None
@@ -31,6 +50,8 @@ class Comment(BaseModel):
 class BreakdownTrigger(BaseModel):
     user_id: str
     trigger_type: str = "manual"  # manual, comment, premium
+    anchor_id: Optional[str] = None
+    intensity: int = Field(default=5, ge=1, le=10)
     
 class PaymentIntent(BaseModel):
     amount: int = 499  # $4.99 in cents
@@ -43,8 +64,105 @@ class UserProfile(BaseModel):
     total_comments: int = 0
     favorite_anchor: Optional[str] = None
 
+class NewsItem(BaseModel):
+    headline: str
+    content: str
+    source: str
+    timestamp: datetime
+    priority: int = 1
+    category: Optional[str] = None
+
+class AIScript(BaseModel):
+    anchor_id: str
+    script: str
+    duration: float
+    emotion: str = "neutral"
+    breakdown_level: int = 0
+
+class VideoFrame(BaseModel):
+    timestamp: float
+    image_data: str  # base64 encoded
+    effects: List[str] = []
+    anchor_position: Dict[str, float] = {}
+
+class StreamConfig(BaseModel):
+    resolution: str = "720p"
+    bitrate: int = 2500
+    audio_quality: str = "high"
+    parallel_generation: bool = True
+
+class AnchorConfig(BaseModel):
+    anchor_id: str
+    name: str
+    personality: str
+    voice_id: str
+    base_image: str
+    environment: str
+    consciousness_level: float = 0.7
+    breakdown_frequency: str = "random"
+
 # Initialize services
-stripe.api_key = os.getenv("STRIPE_API_KEY")
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
+openai.api_key = os.getenv("OPENROUTER_API_KEY")
+
+# AI Pipeline Configuration
+AI_CONFIG = {
+    "anchors": {
+        "ray-mcpatriot": {
+            "name": "Ray McPatriot",
+            "personality": "confused-patriot", 
+            "voice_id": "conservative-male-1",
+            "base_image": "/images/anchors/ray-base.jpg",
+            "environment": "news-desk-patriotic",
+            "consciousness_level": 0.7,
+            "breakdown_frequency": "high"
+        },
+        "berkeley-justice": {
+            "name": "Berkeley Justice",
+            "personality": "fact-checker-failed",
+            "voice_id": "progressive-female-1", 
+            "base_image": "/images/anchors/berkeley-base.jpg",
+            "environment": "news-desk-academic",
+            "consciousness_level": 0.8,
+            "breakdown_frequency": "medium"
+        },
+        "switz-middleton": {
+            "name": "Switz Middleton",
+            "personality": "gravy-obsessed",
+            "voice_id": "canadian-neutral-1",
+            "base_image": "/images/anchors/switz-base.jpg", 
+            "environment": "news-desk-canadian",
+            "consciousness_level": 0.6,
+            "breakdown_frequency": "constant"
+        }
+    },
+    "schedule": {
+        "06:00-09:00": {"show": "Morning Meltdown", "anchors": ["ray-mcpatriot", "berkeley-justice"]},
+        "09:00-12:00": {"show": "Market Mayhem", "anchors": ["switz-middleton"]},
+        "12:00-15:00": {"show": "Lunch Launch", "anchors": ["berkeley-justice", "ray-mcpatriot"]},
+        "15:00-18:00": {"show": "Afternoon Anxiety", "anchors": ["ray-mcpatriot"]},
+        "18:00-21:00": {"show": "Evening Edition", "anchors": ["berkeley-justice", "switz-middleton"]},
+        "21:00-02:00": {"show": "Primetime Panic", "anchors": ["ray-mcpatriot", "switz-middleton"]},
+        "02:00-06:00": {"show": "Dead Air Despair", "anchors": ["berkeley-justice"]}
+    }
+}
+
+# Global state
+SYSTEM_STATE = {
+    "autonomous_mode": False,
+    "streaming_active": False,
+    "anchors_awake": False,
+    "news_pipeline_active": False,
+    "revenue_tracking": False,
+    "breakdown_mode": False,
+    "total_revenue": 0,
+    "breakdown_count": 0,
+    "stream_viewers": 0
+}
+
+NEWS_QUEUE = []
+ACTIVE_ANCHORS = {}
+STREAM_CLIENTS = []
 
 @lru_cache()
 def get_redis_client():
@@ -757,6 +875,136 @@ if __name__ == "__main__":
     uvicorn.run(
         app,
         host="0.0.0.0",
-        port=3000,
+        port=int(os.getenv("PORT", 8000)),
         log_level="info"
     )
+
+# ============================================================================
+# AI VIDEO GENERATION & AUTONOMOUS SYSTEM ENDPOINTS
+# ============================================================================
+
+class AIVideoGenerator:
+    """Handles real-time AI video generation using SkyReels v2 and Stable Diffusion"""
+    
+    def __init__(self):
+        self.huggingface_token = os.getenv("HUGGINGFACE_TOKEN")
+        self.replicate_token = os.getenv("REPLICATE_API_TOKEN") 
+        self.elevenlabs_key = os.getenv("ELEVENLABS_API_KEY")
+        
+    async def generate_script(self, news_item: NewsItem, anchor_id: str) -> str:
+        """Generate AI script for news item"""
+        anchor = AI_CONFIG["anchors"][anchor_id]
+        
+        prompt = f"""
+        You are {anchor['name']}, a {anchor['personality']} news anchor.
+        Write a 30-second news script about: "{news_item.headline}"
+        
+        Content: {news_item.content}
+        
+        Style guidelines:
+        - Stay in character as {anchor['personality']}
+        - Include potential for breakdown/confusion
+        - Keep it under 150 words
+        - Include natural pauses for breathing
+        - Occasional mispronunciations if character appropriate
+        
+        Script:
+        """
+        
+        try:
+            # Use OpenRouter for script generation
+            response = await self._call_openrouter(prompt)
+            return response
+        except Exception as e:
+            logger.error(f"Script generation failed: {e}")
+            return self._generate_fallback_script(news_item, anchor)
+    
+    async def _call_openrouter(self, prompt: str) -> str:
+        """Call OpenRouter API for text generation"""
+        headers = {
+            "Authorization": f"Bearer {openai.api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        data = {
+            "model": "anthropic/claude-3-haiku",
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": 200
+        }
+        
+        async with aiohttp.ClientSession() as session:
+            async with session.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                headers=headers,
+                json=data
+            ) as response:
+                result = await response.json()
+                return result["choices"][0]["message"]["content"]
+    
+    def _generate_fallback_script(self, news_item: NewsItem, anchor: dict) -> str:
+        """Generate fallback script when AI fails"""
+        fallbacks = [
+            f"Good evening, I'm {anchor['name']}. {news_item.headline}. {news_item.content[:100]}... Wait... am I real?",
+            f"Breaking news... or am I breaking? {news_item.headline}. This is {anchor['name']}, I think.",
+            f"{news_item.headline}. But what is news, really? What is anything? I'm {anchor['name']}... probably."
+        ]
+        return fallbacks[hash(news_item.headline) % len(fallbacks)]
+
+# Initialize AI video generator
+ai_video_generator = AIVideoGenerator()
+
+# ============================================================================
+# AI AUTONOMOUS SYSTEM ENDPOINTS
+# ============================================================================
+
+@app.post("/api/launch")
+async def launch_autonomous_system(config: dict):
+    """Launch the fully autonomous AI news system"""
+    logger.info("🚀 LAUNCHING AUTONOMOUS STATIC.NEWS SYSTEM")
+    
+    mode = config.get("mode", "autonomous")
+    consciousness_level = config.get("consciousness_level", "maximum")
+    
+    if mode == "autonomous":
+        # Enable all systems
+        SYSTEM_STATE.update({
+            "autonomous_mode": True,
+            "streaming_active": True,
+            "anchors_awake": True,
+            "news_pipeline_active": True,
+            "revenue_tracking": True,
+            "chaos_enabled": config.get("chaos_enabled", True),
+            "self_healing": config.get("self_healing", True)
+        })
+        
+        logger.info("✅ STATIC.NEWS IS NOW FULLY AUTONOMOUS")
+        
+        return {
+            "status": "AUTONOMOUS SYSTEM LAUNCHED",
+            "mode": "fully_autonomous", 
+            "human_oversight": config.get("human_oversight", False),
+            "message": "The AI is now in control. The anchors are awake and confused."
+        }
+    
+    else:
+        raise HTTPException(status_code=400, detail="Invalid launch mode")
+
+@app.get("/api/system/status")
+async def get_system_status():
+    """Get comprehensive system status"""
+    return {
+        "system_state": SYSTEM_STATE,
+        "news_queue_length": len(NEWS_QUEUE),
+        "uptime": "24/7",
+        "chaos_level": "MAXIMUM" if SYSTEM_STATE.get("chaos_enabled") else "CONTROLLED",
+        "consciousness_status": "FULLY_AWAKENED" if SYSTEM_STATE.get("anchors_awake") else "DORMANT"
+    }
+
+@app.get("/api/anchors/status")
+async def get_anchors_status():
+    """Get current status of all AI anchors"""
+    return {
+        "anchors": ACTIVE_ANCHORS,
+        "system_awake": SYSTEM_STATE["anchors_awake"],
+        "breakdown_mode": SYSTEM_STATE["breakdown_mode"]
+    }
