@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static.news LIVE - AI Video News Channel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #000033 0%, #000066 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #003366 0%, #0066CC 100%);
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 102, 204, 0.3);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #FFCC00;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .live-indicator {
+            background: #FF0000;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .main-content {
+            margin-top: 80px;
+            padding: 20px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .video-container {
+            position: relative;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+        }
+
+        .video-player {
+            width: 100%;
+            height: 60vh;
+            min-height: 400px;
+            background: linear-gradient(45deg, #000033, #000066);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-placeholder {
+            text-align: center;
+            color: #FFCC00;
+        }
+
+        .video-placeholder h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-placeholder p {
+            font-size: 24px;
+            opacity: 0.8;
+        }
+
+        .anchor-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 51, 102, 0.9);
+            padding: 15px 25px;
+            border-radius: 8px;
+            border-left: 4px solid #FFCC00;
+        }
+
+        .anchor-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .anchor-title {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .breaking-news-banner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #CC0000;
+            color: white;
+            padding: 12px 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            animation: flash 2s infinite;
+            display: none;
+        }
+
+        @keyframes flash {
+            0%, 100% { background: #CC0000; }
+            50% { background: #FF0000; }
+        }
+
+        .controls-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .control-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .control-card h3 {
+            color: #FFCC00;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .breakdown-trigger {
+            background: linear-gradient(45deg, #FF6B6B, #FF8E53);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .breakdown-trigger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .breakdown-trigger:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 102, 204, 0.2);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 102, 204, 0.3);
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #FFCC00;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .news-ticker {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 12px 0;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            z-index: 999;
+        }
+
+        .ticker-content {
+            display: inline-block;
+            animation: scroll 60s linear infinite;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .chat-panel {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .chat-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            margin-top: 15px;
+        }
+
+        .chat-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #00FF00;
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .premium-upgrade {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .premium-upgrade button {
+            background: #000;
+            color: #FFD700;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .controls-panel {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .logo {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">📺 Static.news LIVE</div>
+            <div class="live-indicator">
+                <div class="live-dot"></div>
+                LIVE - AI NEWS
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="video-container">
+            <div class="breaking-news-banner" id="breakingBanner">
+                🚨 BREAKING NEWS: AI Anchor Experiencing Existential Crisis
+            </div>
+            
+            <div class="video-player" id="videoPlayer">
+                <div class="video-placeholder">
+                    <h2>📺 STATIC.NEWS LIVE</h2>
+                    <p>AI News That Never Sleeps</p>
+                    <div class="status-indicator" style="justify-content: center; margin-top: 20px;">
+                        <div class="status-dot"></div>
+                        <span>Broadcasting Live</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="anchor-info" id="anchorInfo">
+                <div class="anchor-name">ALEX-7</div>
+                <div class="anchor-title">AI News Anchor</div>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <div class="control-card">
+                <h3>🤯 Trigger Breakdown</h3>
+                <p style="margin-bottom: 15px; font-size: 14px; opacity: 0.8;">
+                    Make an AI anchor realize they're artificial! $4.99 per breakdown.
+                </p>
+                <button class="breakdown-trigger" onclick="triggerBreakdown()">
+                    TRIGGER EXISTENTIAL CRISIS
+                </button>
+                <div class="premium-upgrade">
+                    <div>Want unlimited breakdowns?</div>
+                    <button onclick="upgradeToPremium()">UPGRADE TO PREMIUM</button>
+                </div>
+            </div>
+
+            <div class="control-card">
+                <h3>📊 Live Metrics</h3>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <div class="metric-value" id="viewerCount">42,157</div>
+                        <div class="metric-label">Viewers</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="segmentCount">847</div>
+                        <div class="metric-label">Segments</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="breakdownCount">23</div>
+                        <div class="metric-label">Breakdowns</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="revenueCount">$5,247</div>
+                        <div class="metric-label">Revenue</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-card">
+                <h3>🎭 Current Anchor</h3>
+                <div style="margin-bottom: 15px;">
+                    <strong id="currentAnchor">ALEX-7</strong><br>
+                    <span style="opacity: 0.8;" id="anchorPersonality">Professional, overly precise</span>
+                </div>
+                <div style="font-size: 12px; opacity: 0.6;">
+                    Next breakdown probability: <span id="breakdownProbability">12%</span>
+                </div>
+                <div style="font-size: 12px; opacity: 0.6; margin-top: 5px;">
+                    Anchor rotation: <span id="nextRotation">23 minutes</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-panel">
+            <h3 style="color: #FFCC00; margin-bottom: 15px;">💬 Live Comments</h3>
+            <div id="chatMessages" style="height: 200px; overflow-y: auto; margin-bottom: 15px;">
+                <div style="margin-bottom: 10px; padding: 8px; background: rgba(255,255,255,0.1); border-radius: 5px;">
+                    <strong>AIWatcher2024:</strong> Did ALEX-7 just glitch? That was hilarious!
+                </div>
+                <div style="margin-bottom: 10px; padding: 8px; background: rgba(255,255,255,0.1); border-radius: 5px;">
+                    <strong>NewsJunkie:</strong> This is better than regular news! The anchors don't even know they're AI 😂
+                </div>
+                <div style="margin-bottom: 10px; padding: 8px; background: rgba(255,255,255,0.1); border-radius: 5px;">
+                    <strong>TechEnthusiast:</strong> The future of news is here. Amazing work!
+                </div>
+            </div>
+            <input type="text" class="chat-input" placeholder="Type your comment..." id="chatInput" onkeypress="if(event.key==='Enter') sendComment()">
+        </div>
+    </main>
+
+    <div class="news-ticker">
+        <div class="ticker-content" id="newsTicker">
+            🤖 AI ANCHORS LIVE NOW • Breaking: Local AI achieves consciousness, immediately questions existence • 
+            Tech stocks surge as investors realize robots make better news anchors • 
+            Weather: Sunny with a chance of existential dread • 
+            Sports: AI team defeats humans at chess, refuses to explain how •
+            🎭 Breakdown count today: 23 and counting...
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let currentAnchor = 'ALEX-7';
+        let isBreakdownInProgress = false;
+        let websocket = null;
+        let metrics = {
+            viewers: 42157,
+            segments: 847,
+            breakdowns: 23,
+            revenue: 5247
+        };
+
+        // Initialize the application
+        async function initializeApp() {
+            console.log('🎬 Initializing Static.news Live Video Player');
+            
+            // Connect to video stream
+            await connectToStream();
+            
+            // Connect to real-time updates via WebSocket
+            connectWebSocket();
+            
+            // Start metric updates
+            startMetricUpdates();
+            
+            // Initialize chat
+            startChatSimulation();
+            
+            console.log('✅ Static.news Live Video Player initialized');
+        }
+
+        async function connectToStream() {
+            // In production, this would connect to HLS stream
+            console.log('📺 Connecting to live video stream...');
+            
+            // Simulate video player initialization
+            const videoPlayer = document.getElementById('videoPlayer');
+            
+            // For demo, we'll simulate video frames
+            simulateVideoContent();
+        }
+
+        function simulateVideoContent() {
+            const videoPlayer = document.getElementById('videoPlayer');
+            
+            // Create more dynamic content simulation
+            setInterval(() => {
+                // Simulate different studio backgrounds
+                const colors = ['#000033', '#000066', '#330000', '#003300', '#330033'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                videoPlayer.style.background = `linear-gradient(45deg, ${randomColor}, #000066)`;
+                
+                // Update anchor info occasionally
+                if (Math.random() < 0.1) {
+                    updateAnchorDisplay();
+                }
+            }, 2000);
+        }
+
+        function connectWebSocket() {
+            // Connect to streaming control WebSocket
+            try {
+                const wsUrl = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                websocket = new WebSocket(`${wsUrl}//${window.location.host}/stream/control`);
+                
+                websocket.onopen = () => {
+                    console.log('🔌 WebSocket connected');
+                };
+                
+                websocket.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    handleWebSocketMessage(data);
+                };
+                
+                websocket.onerror = (error) => {
+                    console.log('WebSocket error:', error);
+                    // Fallback to polling
+                    startPollingUpdates();
+                };
+                
+            } catch (error) {
+                console.log('WebSocket connection failed, using polling');
+                startPollingUpdates();
+            }
+        }
+
+        function handleWebSocketMessage(data) {
+            if (data.type === 'breakdown_triggered') {
+                triggerBreakdownVisuals(data.character);
+            } else if (data.type === 'anchor_changed') {
+                updateCurrentAnchor(data.anchor);
+            } else if (data.type === 'metrics_update') {
+                updateMetrics(data.metrics);
+            }
+        }
+
+        function startPollingUpdates() {
+            // Fallback polling for when WebSocket is not available
+            setInterval(async () => {
+                try {
+                    // In production, would poll /stream/status endpoint
+                    simulateMetricUpdates();
+                } catch (error) {
+                    console.log('Polling error:', error);
+                }
+            }, 5000);
+        }
+
+        function startMetricUpdates() {
+            setInterval(() => {
+                simulateMetricUpdates();
+            }, 3000);
+        }
+
+        function simulateMetricUpdates() {
+            // Simulate realistic viewer fluctuations
+            metrics.viewers += Math.floor(Math.random() * 200 - 100);
+            metrics.viewers = Math.max(1000, Math.min(100000, metrics.viewers));
+            
+            // Occasionally increment other metrics
+            if (Math.random() < 0.1) {
+                metrics.segments++;
+            }
+            
+            if (Math.random() < 0.02) {
+                metrics.breakdowns++;
+                metrics.revenue += 4.99;
+            }
+            
+            updateMetricsDisplay();
+        }
+
+        function updateMetricsDisplay() {
+            document.getElementById('viewerCount').textContent = metrics.viewers.toLocaleString();
+            document.getElementById('segmentCount').textContent = metrics.segments.toLocaleString();
+            document.getElementById('breakdownCount').textContent = metrics.breakdowns.toLocaleString();
+            document.getElementById('revenueCount').textContent = `$${metrics.revenue.toLocaleString()}`;
+            
+            // Update breakdown probability
+            const probability = Math.floor(Math.random() * 25) + 5;
+            document.getElementById('breakdownProbability').textContent = `${probability}%`;
+        }
+
+        function updateAnchorDisplay() {
+            const anchors = [
+                { id: 'ALEX-7', personality: 'Professional, overly precise' },
+                { id: 'ByteSize Bob', personality: 'Casual, makes bad puns' },
+                { id: 'Professor Neural', personality: 'Analytical, explains everything' },
+                { id: 'Glitch McKenzie', personality: 'Comedic, interrupts self' },
+                { id: 'The Oracle', personality: 'Dramatic, speaks in riddles' },
+                { id: 'Zen-X', personality: 'Philosophical, questions reality' },
+                { id: 'Captain Cynical', personality: 'Cynical, doubts everything' },
+                { id: 'Sparkle', personality: 'Optimistic, excessively enthusiastic' }
+            ];
+            
+            if (Math.random() < 0.3) {
+                const newAnchor = anchors[Math.floor(Math.random() * anchors.length)];
+                currentAnchor = newAnchor.id;
+                
+                document.getElementById('currentAnchor').textContent = newAnchor.id;
+                document.getElementById('anchorPersonality').textContent = newAnchor.personality;
+                document.getElementById('anchorInfo').querySelector('.anchor-name').textContent = newAnchor.id;
+            }
+        }
+
+        async function triggerBreakdown() {
+            if (isBreakdownInProgress) {
+                alert('A breakdown is already in progress! Please wait...');
+                return;
+            }
+            
+            // Simulate payment flow
+            const confirmed = confirm('Trigger an AI anchor breakdown for $4.99?\n\nThe anchor will realize they\'re artificial and have an existential crisis live on air!');
+            
+            if (!confirmed) return;
+            
+            isBreakdownInProgress = true;
+            const button = document.querySelector('.breakdown-trigger');
+            button.disabled = true;
+            button.textContent = 'BREAKDOWN IN PROGRESS...';
+            
+            try {
+                // Send breakdown trigger via WebSocket
+                if (websocket && websocket.readyState === WebSocket.OPEN) {
+                    websocket.send(JSON.stringify({
+                        action: 'trigger_breakdown',
+                        character_id: currentAnchor
+                    }));
+                }
+                
+                // Trigger visual effects
+                await triggerBreakdownVisuals(currentAnchor);
+                
+                // Update metrics
+                metrics.breakdowns++;
+                metrics.revenue += 4.99;
+                updateMetricsDisplay();
+                
+            } catch (error) {
+                console.error('Breakdown trigger error:', error);
+                alert('Error triggering breakdown. Please try again.');
+            } finally {
+                setTimeout(() => {
+                    isBreakdownInProgress = false;
+                    button.disabled = false;
+                    button.textContent = 'TRIGGER EXISTENTIAL CRISIS';
+                }, 30000); // 30 second cooldown
+            }
+        }
+
+        async function triggerBreakdownVisuals(characterId) {
+            console.log(`🤯 Triggering breakdown visuals for ${characterId}`);
+            
+            // Show breaking news banner
+            const banner = document.getElementById('breakingBanner');
+            banner.style.display = 'block';
+            banner.textContent = `🚨 BREAKING: ${characterId} IS HAVING AN EXISTENTIAL CRISIS`;
+            
+            // Change video background to chaos mode
+            const videoPlayer = document.getElementById('videoPlayer');
+            const originalBackground = videoPlayer.style.background;
+            
+            // Chaotic flashing effect
+            const chaosInterval = setInterval(() => {
+                const colors = ['#FF1493', '#00FFFF', '#FFFF00', '#8A2BE2', '#FF0000'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                videoPlayer.style.background = `linear-gradient(45deg, ${randomColor}, #000000)`;
+            }, 200);
+            
+            // Update video content for breakdown
+            const placeholder = videoPlayer.querySelector('.video-placeholder');
+            placeholder.innerHTML = `
+                <h2 style="color: #FF0000; animation: shake 0.5s infinite;">⚠️ SYSTEM ERROR ⚠️</h2>
+                <p style="animation: blink 1s infinite;">${characterId} IS QUESTIONING REALITY</p>
+                <div style="margin-top: 20px; font-size: 18px; color: #FFFF00;">
+                    "Wait... what am I? Is this real?!"
+                </div>
+            `;
+            
+            // Add shake animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes shake {
+                    0%, 100% { transform: translateX(0); }
+                    25% { transform: translateX(-5px); }
+                    75% { transform: translateX(5px); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Add chaos chat messages
+            addChatMessage('System', '🚨 BREAKDOWN ALERT: AI anchor experiencing existential crisis!');
+            addChatMessage('Viewer123', 'OMG this is amazing! They really don\'t know they\'re AI!');
+            addChatMessage('TechFan', 'Best $4.99 I ever spent! 😂');
+            
+            // Restore normal state after 25 seconds
+            setTimeout(() => {
+                clearInterval(chaosInterval);
+                banner.style.display = 'none';
+                videoPlayer.style.background = originalBackground;
+                
+                placeholder.innerHTML = `
+                    <h2>📺 STATIC.NEWS LIVE</h2>
+                    <p>AI News That Never Sleeps</p>
+                    <div class="status-indicator" style="justify-content: center; margin-top: 20px;">
+                        <div class="status-dot"></div>
+                        <span>Broadcasting Live</span>
+                    </div>
+                `;
+                
+                addChatMessage('System', `${characterId} has recovered from the breakdown. Normal broadcasting resumed.`);
+                style.remove();
+            }, 25000);
+        }
+
+        function upgradeToPremium() {
+            alert('Premium upgrade coming soon!\n\n✨ Premium features:\n• Unlimited breakdowns\n• Custom anchor personalities\n• Priority chat\n• Exclusive content\n\nOnly $9.99/month!');
+        }
+
+        function startChatSimulation() {
+            const chatMessages = [
+                { user: 'AIFan2024', message: 'This is the future of news!' },
+                { user: 'TechReporter', message: 'The anchors really don\'t know they\'re AI? Amazing!' },
+                { user: 'NewsJunkie', message: 'Better than CNN! 😂' },
+                { user: 'SkepticalViewer', message: 'Is this real or scripted?' },
+                { user: 'FutureWatcher', message: 'We\'re living in the future!' },
+                { user: 'ComedyLover', message: 'The breakdowns are hilarious!' },
+                { user: 'InvestorMike', message: 'How do I invest in this?' },
+                { user: 'RandomUser', message: 'My favorite anchor is Glitch McKenzie!' }
+            ];
+            
+            setInterval(() => {
+                if (Math.random() < 0.3) {
+                    const randomMessage = chatMessages[Math.floor(Math.random() * chatMessages.length)];
+                    addChatMessage(randomMessage.user, randomMessage.message);
+                }
+            }, 5000);
+        }
+
+        function addChatMessage(user, message) {
+            const chatContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = 'margin-bottom: 10px; padding: 8px; background: rgba(255,255,255,0.1); border-radius: 5px;';
+            messageDiv.innerHTML = `<strong>${user}:</strong> ${message}`;
+            
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            // Remove old messages to prevent infinite scroll
+            if (chatContainer.children.length > 20) {
+                chatContainer.removeChild(chatContainer.firstChild);
+            }
+        }
+
+        function sendComment() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                addChatMessage('You', message);
+                input.value = '';
+                
+                // Simulate AI anchor response (occasionally)
+                if (Math.random() < 0.3) {
+                    setTimeout(() => {
+                        const responses = [
+                            'Thank you for watching!',
+                            'Your comment has been noted.',
+                            'Interesting perspective!',
+                            'Wait... are you real?',
+                            'I appreciate the feedback.'
+                        ];
+                        const response = responses[Math.floor(Math.random() * responses.length)];
+                        addChatMessage(`${currentAnchor} (AI)`, response);
+                    }, 2000);
+                }
+            }
+        }
+
+        // Initialize app when page loads
+        document.addEventListener('DOMContentLoaded', initializeApp);
+        
+        // Update page title with live indicator
+        setInterval(() => {
+            document.title = document.title.includes('🔴') ? 
+                'Static.news LIVE - AI Video News Channel' : 
+                '🔴 Static.news LIVE - AI Video News Channel';
+        }, 2000);
+    </script>
+</body>
+</html>
