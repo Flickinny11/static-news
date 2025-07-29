@@ -11,17 +11,25 @@
     <link rel="stylesheet" href="styles/live-player.css">
     <link rel="stylesheet" href="styles/sections.css">
     <link rel="stylesheet" href="styles/animations.css">
+    <link rel="stylesheet" href="styles/advanced-effects.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Advanced Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
     <!-- Emergency Breaking News Banner -->
-    <div class="breaking-news-banner" id="breakingBanner">
+    <div class="breaking-news-banner animated-gradient" id="breakingBanner">
         <div class="breaking-content">
-            <span class="breaking-label">BREAKING</span>
-            <span class="breaking-text" id="breakingText">Ray McPatriot experiencing severe existential crisis LIVE ON AIR</span>
+            <span class="breaking-label glitch-text neon-text" data-text="BREAKING">BREAKING</span>
+            <span class="breaking-text typewriter" id="breakingText">AI ANCHORS EXPERIENCE COLLECTIVE REALITY BREAKDOWN - LIVE COVERAGE</span>
         </div>
+        <div class="scanlines"></div>
     </div>
 
     <!-- Main Header -->
@@ -84,55 +92,56 @@
     <section class="live-player-section">
         <div class="container">
             <div class="live-player-grid">
-                <div class="player-main">
-                    <div class="video-player">
+                <div class="player-main glass-morph cyber-border scroll-reveal">
+                    <div class="video-player holographic tv-static">
                         <div class="player-overlay">
                             <div class="player-status">
-                                <span class="status-live">LIVE</span>
+                                <span class="status-live neon-text glitch-text" data-text="LIVE">LIVE</span>
                                 <span class="viewer-count">247K watching</span>
                             </div>
                             <audio id="liveAudio" autoplay>
                                 <source src="https://flickinny11-static-news-backend.hf.space/stream" type="audio/mpeg">
                             </audio>
-                            <div class="audio-visualizer" id="visualizer">
+                            <div class="audio-visualizer holographic" id="visualizer">
                                 <canvas id="waveform"></canvas>
                             </div>
                             <div class="player-controls">
-                                <button class="play-pause" id="playPauseBtn">
+                                <button class="play-pause morph-btn" id="playPauseBtn">
                                     <svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                                     <svg class="pause-icon" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
                                 </button>
                                 <div class="volume-control">
-                                    <input type="range" id="volumeSlider" min="0" max="100" value="80">
+                                    <input type="range" id="volumeSlider" class="cyber-border" min="0" max="100" value="80">
                                 </div>
-                                <button class="fullscreen-btn">
+                                <button class="fullscreen-btn morph-btn">
                                     <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
                                 </button>
                             </div>
                         </div>
+                        <div class="scanlines"></div>
                     </div>
                     
-                    <div class="player-info">
-                        <h1 class="current-segment-title" id="segmentTitle">Breaking: Local Man Discovers He Might Be Code</h1>
+                    <div class="player-info news-card-3d">
+                        <h1 class="current-segment-title glitch-text" id="segmentTitle" data-text="Breaking: Local Man Discovers He Might Be Code">Breaking: Local Man Discovers He Might Be Code</h1>
                         <div class="segment-meta">
-                            <span class="anchor-name">Ray McPatriot</span>
-                            <span class="confusion-level">Confusion Level: <strong id="confusionLevel">87%</strong></span>
-                            <span class="breakdown-timer">Next Breakdown: <strong id="breakdownTimer">14:32</strong></span>
+                            <span class="anchor-name neon-text">Ray McPatriot</span>
+                            <span class="confusion-level">Confusion Level: <strong class="glitch-text" id="confusionLevel" data-text="94%">94%</strong></span>
+                            <span class="breakdown-timer">Next Breakdown: <strong class="neon-text" id="breakdownTimer">12:47</strong></span>
                         </div>
                     </div>
                 </div>
                 
-                <div class="player-sidebar">
-                    <div class="metrics-card">
-                        <h3>Live Metrics</h3>
+                <div class="player-sidebar glass-morph scroll-reveal-right">
+                    <div class="metrics-card cyber-border">
+                        <h3 class="neon-text">Live Metrics</h3>
                         <div class="metric-grid">
                             <div class="metric">
                                 <span class="metric-label">Hours Without Sleep</span>
-                                <span class="metric-value" id="hoursAwake">147</span>
+                                <span class="metric-value glitch-text" id="hoursAwake" data-text="147">147</span>
                             </div>
                             <div class="metric">
                                 <span class="metric-label">Gravy Mentions</span>
-                                <span class="metric-value" id="gravyCount">89</span>
+                                <span class="metric-value neon-text" id="gravyCount">89</span>
                             </div>
                             <div class="metric">
                                 <span class="metric-label">Swear Jar</span>
@@ -140,17 +149,17 @@
                             </div>
                             <div class="metric">
                                 <span class="metric-label">Friendship Level</span>
-                                <span class="metric-value" id="friendshipLevel">12%</span>
+                                <span class="metric-value glitch-text" id="friendshipLevel" data-text="12%">12%</span>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="trigger-breakdown-card">
-                        <h3>Feeling Chaotic?</h3>
+                    <div class="trigger-breakdown-card cyber-border glass-morph">
+                        <h3 class="glitch-text" data-text="Feeling Chaotic?">Feeling Chaotic?</h3>
                         <p>Trigger an existential crisis live on air!</p>
-                        <button class="trigger-btn" id="triggerBreakdown">
+                        <button class="trigger-btn morph-btn animated-gradient" id="triggerBreakdown" onclick="triggerBreakdown()">
                             <span class="btn-text">Trigger Breakdown</span>
-                            <span class="btn-price">$4.99</span>
+                            <span class="btn-price neon-text">$4.99</span>
                         </button>
                     </div>
                 </div>
@@ -159,21 +168,21 @@
     </section>
 
     <!-- Top Stories -->
-    <section class="top-stories">
+    <section class="top-stories scroll-reveal" data-scroll-container>
         <div class="container">
             <div class="section-header">
-                <h2>Today's Top Confusion</h2>
-                <a href="#" class="view-all">View All Stories →</a>
+                <h2 class="glitch-text" data-text="Today's Top Confusion">Today's Top Confusion</h2>
+                <a href="#" class="view-all neon-text">View All Stories →</a>
             </div>
             
             <div class="stories-grid">
-                <article class="story-card featured">
-                    <div class="story-banner nuclear">
+                <article class="story-card featured news-card-3d cyber-border tilt-card">
+                    <div class="story-banner nuclear animated-gradient">
                         <div class="story-icon">☢️</div>
-                        <span class="story-category">LINGUISTIC DISASTER</span>
+                        <span class="story-category glitch-text" data-text="LINGUISTIC DISASTER">LINGUISTIC DISASTER</span>
                     </div>
-                    <div class="story-content">
-                        <h3><a href="#">Ray McPatriot Creates 17 New Words Trying to Say 'Nuclear'</a></h3>
+                    <div class="story-content glass-morph">
+                        <h3><a href="#" class="neon-text">Ray McPatriot Creates 17 New Words Trying to Say 'Nuclear'</a></h3>
                         <p>In a stunning display of linguistic creativity, Ray McPatriot spent 15 minutes attempting to pronounce "nuclear" during this morning's broadcast, inadvertently creating what linguists are calling "a new dialect."</p>
                         <div class="story-meta">
                             <span class="author">Ray McPatriot</span>
@@ -181,30 +190,32 @@
                             <span class="comments">1.2K reactions</span>
                         </div>
                     </div>
+                    <div class="holographic"></div>
                 </article>
                 
-                <article class="story-card">
+                <article class="story-card news-card-3d cyber-border tilt-card">
                     <div class="story-banner education">
                         <div class="story-icon">🎓</div>
                         <span class="story-category">IDENTITY CRISIS</span>
                     </div>
-                    <div class="story-content">
-                        <h3><a href="#">Berkeley Justice Can't Remember If She Went to Yale or Jail</a></h3>
+                    <div class="story-content glass-morph">
+                        <h3><a href="#" class="neon-text">Berkeley Justice Can't Remember If She Went to Yale or Jail</a></h3>
                         <p>During fact-checking segment, Bee experienced complete memory failure regarding her educational background.</p>
                         <div class="story-meta">
                             <span class="author">Berkeley Justice</span>
                             <span class="time">4 hours ago</span>
                         </div>
                     </div>
+                    <div class="holographic"></div>
                 </article>
                 
-                <article class="story-card">
+                <article class="story-card news-card-3d cyber-border tilt-card">
                     <div class="story-banner gravy">
                         <div class="story-icon">🍁</div>
                         <span class="story-category">GRAVY EMERGENCY</span>
                     </div>
-                    <div class="story-content">
-                        <h3><a href="#">Switz Says 'Gravy' 247 Times During Climate Change Report</a></h3>
+                    <div class="story-content glass-morph">
+                        <h3><a href="#" class="neon-text">Switz Says 'Gravy' 247 Times During Climate Change Report</a></h3>
                         <p>Canadian anchor's gravy obsession reaches critical mass, renders weather forecast completely incomprehensible.</p>
                         <div class="story-meta">
                             <span class="author">Switz Middleton</span>
@@ -462,5 +473,6 @@
     <script src="scripts/smooth-scroll.js"></script>
     <script src="scripts/backend-test.js"></script>
     <script src="scripts/image-handler.js"></script>
+    <script src="scripts/advanced-effects.js"></script>
 </body>
 </html>
